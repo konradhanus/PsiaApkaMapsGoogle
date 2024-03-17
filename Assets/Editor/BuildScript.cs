@@ -45,9 +45,20 @@ public class BuildScript
     }
 
     [MenuItem("Custom/Build iOS")]
-    static void iOS()
+   static void iOS()
     {
-        CheckDir("/Users/konradhanus/Desktop/BuildJenkins/PsiaApka/Scratch/Xcode");
-        BuildPipeline.BuildPlayer(GetScenes(), "/Users/konradhanus/Desktop/BuildJenkins/PsiaApka/Scratch/Xcode", BuildTarget.iOS, BuildOptions.AcceptExternalModificationsToPlayer);
+        string buildPath = "/Users/konradhanus/Desktop/BuildJenkins/PsiaApka/Scratch/Xcode";
+
+        if (!Directory.Exists(buildPath) || Directory.GetFiles(buildPath).Length == 0)
+        {
+            CheckDir(buildPath);
+            Debug.Log("Folder is empty or does not exist. Setting BuildOptions to None.");
+            BuildPipeline.BuildPlayer(GetScenes(), buildPath, BuildTarget.iOS, BuildOptions.None);
+        }
+        else
+        {
+            Debug.Log("Folder contains files. Proceeding with AcceptExternalModificationsToPlayer.");
+            BuildPipeline.BuildPlayer(GetScenes(), buildPath, BuildTarget.iOS, BuildOptions.AcceptExternalModificationsToPlayer);
+        }
     }
 }
