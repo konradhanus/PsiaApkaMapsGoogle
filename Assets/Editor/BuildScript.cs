@@ -47,7 +47,7 @@ public class BuildScript
     [MenuItem("Custom/Build iOS")]
     static void iOS()
     {
-        CheckDir("/Users/konradhanus/Desktop/BuildJenkins/GTA7/Scratch/Xcode");
-        BuildPipeline.BuildPlayer(GetScenes(), "/Users/konradhanus/Desktop/BuildJenkins/GTA7/Scratch/Xcode", BuildTarget.iOS, BuildOptions.AcceptExternalModificationsToPlayer);
+        CheckDir("/Users/konradhanus/Desktop/BuildJenkins/PsiaApka/Scratch/Xcode");
+        BuildPipeline.BuildPlayer(GetScenes(), "/Users/konradhanus/Desktop/BuildJenkins/PsiaApka/Scratch/Xcode", BuildTarget.iOS, BuildOptions.AcceptExternalModificationsToPlayer);
     }
 }
