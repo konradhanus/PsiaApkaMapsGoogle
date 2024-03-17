@@ -11,7 +11,7 @@ public class BuildScript
 
     static BuildScript()
     {
-        _versionNumber = "1.0.0.0";
+        _versionNumber = "4.0.1";
         _buildNumber = "1";
 
         PlayerSettings.bundleVersion = _versionNumber;
