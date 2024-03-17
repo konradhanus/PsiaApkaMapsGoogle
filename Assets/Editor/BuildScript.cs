@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -34,15 +34,37 @@ public class BuildScript
     [MenuItem("Custom/Build Android")]
     static void Android()
     {
-        CheckDir("build");
-        int versionCode;
-        int.TryParse(_buildNumber, out versionCode);
-        PlayerSettings.Android.bundleVersionCode = versionCode;
-        //PlayerSettings.Android.keyaliasName = "StickmanEPIC";
-        //PlayerSettings.Android.keyaliasPass =
-        //    PlayerSettings.Android.keystorePass = "hcents3@";
-        //PlayerSettings.Android.keystoreName = Path.GetFullPath(@"NuGet\Android\Epic2.keystore").Replace('\\', '/');
-        BuildPipeline.BuildPlayer(GetScenes(), "build/UnityBuild.apk", BuildTarget.Android, BuildOptions.AcceptExternalModificationsToPlayer);
+        try
+        {
+            CheckDir("build");
+            int versionCode;
+            int.TryParse(_buildNumber, out versionCode);
+            PlayerSettings.Android.bundleVersionCode = versionCode;
+            //PlayerSettings.Android.keyaliasName = "StickmanEPIC";
+            //PlayerSettings.Android.keyaliasPass =
+            //    PlayerSettings.Android.keystorePass = "hcents3@";
+            //PlayerSettings.Android.keystoreName = Path.GetFullPath(@"NuGet\Android\Epic2.keystore")
+            //    .Replace('\\', '/');
+            BuildPipeline.BuildPlayer(GetScenes(), "build/UnityBuild.apk", BuildTarget.Android, BuildOptions.None);
+        }
+        catch (Exception ex)
+        {
+            // Zapisz wyjątek do pliku
+            Debug.Log("Exception occurred in Android build:");
+            Debug.Log(ex.ToString());
+            Debug.Log("---------------------------------------");
+
+            string logFilePath = "build_error_log.txt";
+            using (StreamWriter writer = new StreamWriter(logFilePath, true))
+            {
+                writer.WriteLine("Exception occurred in Android build:");
+                writer.WriteLine(ex.ToString());
+                writer.WriteLine("---------------------------------------");
+            }
+
+            // Wyrzuć wyjątek ponownie, aby program został zakończony z odpowiednim kodem wyjścia
+            throw;
+        }
     }
 
     [MenuItem("Custom/Build iOS")]
