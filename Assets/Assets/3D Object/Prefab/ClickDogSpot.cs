@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class ClickDogSpot : MonoBehaviour
 {
     public GameObject dogspot;
+    public Cinemachine.CinemachineVirtualCamera virtualCamera;
+    public GameObject menuToDisable; // Menu do wyłączenia
+    public GameObject menuToEnable; // Menu do wyłączenia
 
     public float rotationSpeed = 50f; // Prędkość obrotu
     public float fastRotationSpeedMultiplier = 2f; // Mnożnik szybkości obrotu po kliknięciu
@@ -17,6 +20,8 @@ public class ClickDogSpot : MonoBehaviour
     private float currentAccelerationTime = 0f; // Bieżący czas przyśpieszenia
     private float currentDecelerationTime = 0f; // Bieżący czas opóźnienia
 
+
+
     public float initialRotationOffset = 0f; // Początkowe przesunięcie rotacji
 
     void Start()
@@ -24,6 +29,7 @@ public class ClickDogSpot : MonoBehaviour
         // Dodaj losowe przesunięcie do początkowej rotacji
         transform.Rotate(Vector3.up, Random.Range(0f, 360f));
         currentRotationSpeed = rotationSpeed; // Ustaw bieżącą prędkość na normalną prędkość obrotu
+        dogspot.SetActive(true);
     }
 
     // Update is called once per frame
@@ -64,6 +70,17 @@ public class ClickDogSpot : MonoBehaviour
                 print("Clicked and touch");
                 currentRotationSpeed = fastRotationSpeedMultiplier * rotationSpeed; // Ustaw prędkość na szybką prędkość obrotu
                 currentDecelerationTime = 0f; // Zresetuj czas opóźnienia
+
+                virtualCamera.LookAt = dogspot.transform;
+                // Ustaw priorytet kamery na 50
+                virtualCamera.Priority = 50;
+
+                // Wyłącz menu
+                if (menuToDisable != null)
+                {
+                    menuToDisable.SetActive(false);
+                    menuToEnable.SetActive(true);
+                }
             }
         }
     }
