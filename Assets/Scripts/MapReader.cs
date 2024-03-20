@@ -115,8 +115,9 @@ class MapReader : MonoBehaviour
 
         // Zakończenie usługi GPS
         Input.location.Stop();
-
+        
         StartCoroutine(DownloadAndLoadOSMData());
+         yield return new WaitForSeconds(2);
     }
 
 

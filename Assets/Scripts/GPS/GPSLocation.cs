@@ -2,6 +2,30 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+
+// Singleton przechowujący dane o lokalizacji
+public class LocationManager : MonoBehaviour
+{
+    public static LocationManager Instance { get; private set; }
+
+    public float latitude = 0;
+    public float longitude = 0;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+}
+
 public class GPSLocation : MonoBehaviour
 {
     [SerializeField] public Text GPSStatus;
@@ -62,6 +86,7 @@ public class GPSLocation : MonoBehaviour
                  Vector3 previousPosition = new Vector3(Input.location.lastData.latitude, 0f, Input.location.lastData.longitude);
             }
         }
+        yield return new WaitForSeconds(2);
     }
 
     void UpdateGPSData()
@@ -78,6 +103,8 @@ public class GPSLocation : MonoBehaviour
 
             latitude = Input.location.lastData.latitude;
             longitude = Input.location.lastData.longitude;
+            LocationManager.Instance.latitude = latitude;
+            LocationManager.Instance.longitude = latitude;
 
             latitudeValue.text = Input.location.lastData.latitude.ToString();
             longitudeValue.text = Input.location.lastData.longitude.ToString();
