@@ -114,6 +114,7 @@
 			// Tworzenie zapytania URL
 			string url = $"{endpointURL}?latitude={latitudeGPS}&longitude={longitudeGPS}&radius={radius}";
 			Debug.Log("FETCH DATA");
+			Debug.Log(url);
 			// Wysłanie zapytania do serwera
 			UnityWebRequest request = UnityWebRequest.Get(url);
 			yield return request.SendWebRequest();
