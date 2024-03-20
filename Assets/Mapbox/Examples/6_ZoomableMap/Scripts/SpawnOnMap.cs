@@ -75,7 +75,8 @@
             if (!Input.location.isEnabledByUser)
             {
                 Debug.Log("GPS jest wyłączony. Włącz go, aby korzystać z tej funkcji.");
-                    yield break;
+					dogSpotStatus.text = "GPS jest wyłączony. Włącz go, aby korzystać z tej funkcji.";
+					yield break;
             }
 
             // Inicjalizacja GPS
@@ -108,10 +109,66 @@
             // Jeśli dostępne są dane GPS, pobierz szerokość i długość geograficzną
             latitudeGPS = Input.location.lastData.latitude;
             longitudeGPS = Input.location.lastData.longitude;
-        }else{
+
+
+			// Tworzenie zapytania URL
+			string url = $"{endpointURL}?latitude={latitudeGPS}&longitude={longitudeGPS}&radius={radius}";
+			Debug.Log("FETCH DATA");
+			// Wysłanie zapytania do serwera
+			UnityWebRequest request = UnityWebRequest.Get(url);
+			yield return request.SendWebRequest();
+			Debug.Log("poszło zapytanie");
+			dogSpotStatus.text = "poszło zapytanie";
+			// Sprawdzenie czy wystąpił błąd
+			if (request.result != UnityWebRequest.Result.Success)
+			{
+				Debug.LogError(request.error);
+				yield break;
+			}
+			Debug.Log("Sukcess");
+			dogSpotStatus.text = "Sukcess";
+			// Pobranie odpowiedzi w formie JSON
+			string jsonResponse = request.downloadHandler.text;
+			Debug.Log("Jest json" + jsonResponse);
+			dogSpotStatus.text = "Jest json" + jsonResponse;
+			// Przetworzenie JSON na listę obiektów
+			dataObjects = JsonConvert.DeserializeObject<List<DataObject>>(jsonResponse); // Użyj JsonConvert.DeserializeObject
+			Debug.Log("Data objects");
+			dogSpotStatus.text = "Data objects";
+			Debug.Log("Data objects");
+			// Debug.Log(dataObjects);
+			// dogSpotStatus.text = dataObjects;
+			_locations = new Vector2d[dataObjects.Count];
+			Debug.Log(_locations);
+			dogSpotStatus.text = "_locations";
+			// _spawnedObjects = new List<GameObject>();
+			// Przykładowe wykorzystanie pobranych danych
+				int i = 0;
+				foreach (var dataObject in dataObjects)
+				{
+					dogSpotStatus.text = "foreach";
+					Debug.Log($"ID: {dataObject.id}, Latitude: {dataObject.latitude}, Longitude: {dataObject.longitude}, Type: {dataObject.type}, Name: {dataObject.name}");
+
+					_locations[i] = Conversions.StringToLatLon($"{dataObject.latitude}, {dataObject.longitude}");
+					dogSpotStatus.text = "_locations[i]";
+
+					var instance = Instantiate(_markerPrefab);
+
+					dogSpotStatus.text = "instance";
+					instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i], true);
+					dogSpotStatus.text = "localPosition";
+					instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
+					dogSpotStatus.text = "new Vector3(_spawnScale, _spawnScale, _spawnScale)";
+					_spawnedObjects.Add(instance);
+					dogSpotStatus.text = "_spawnedObjects.Add(instance);";
+					i++;
+					dogSpotStatus.text = i.ToString();
+				}
+			}
+			else{
             latitudeGPS = latitude;
             longitudeGPS = longitude;
-        }
+
 			// Tworzenie zapytania URL
 			string url = $"{endpointURL}?latitude={latitudeGPS}&longitude={longitudeGPS}&radius={radius}";
 			Debug.Log("FETCH DATA");
@@ -165,6 +222,8 @@
 				i++;
 				dogSpotStatus.text = i.ToString();
 			}
+        }
+			
 
 		}
 	
