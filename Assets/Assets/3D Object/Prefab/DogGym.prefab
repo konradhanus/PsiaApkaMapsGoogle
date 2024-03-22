@@ -96,6 +96,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dogspot: {fileID: 7601197275003005179}
   virtualCamera: {fileID: 0}
+  menuToDisable: {fileID: 0}
+  menuToEnable: {fileID: 0}
   rotationSpeed: 50
   fastRotationSpeedMultiplier: 10
   fastRotationDuration: 2
