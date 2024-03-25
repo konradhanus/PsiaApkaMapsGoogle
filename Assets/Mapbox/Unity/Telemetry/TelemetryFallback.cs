@@ -25,6 +25,7 @@ namespace Mapbox.Unity.Telemetry
 		public void Initialize(string accessToken)
 		{
 			_url = string.Format("{0}events/v2?access_token={1}", Mapbox.Utils.Constants.EventsAPI, accessToken);
+			Debug.Log("TelemetryFallback.cs");
 		}
 
 		public void SendTurnstile()

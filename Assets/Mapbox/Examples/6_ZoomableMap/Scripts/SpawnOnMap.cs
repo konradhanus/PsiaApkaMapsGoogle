@@ -148,7 +148,7 @@
 				foreach (var dataObject in dataObjects)
 				{
 					dogSpotStatus.text = "foreach";
-					Debug.Log($"ID: {dataObject.id}, Latitude: {dataObject.latitude}, Longitude: {dataObject.longitude}, Type: {dataObject.type}, Name: {dataObject.name}");
+					// Debug.Log($"ID: {dataObject.id}, Latitude: {dataObject.latitude}, Longitude: {dataObject.longitude}, Type: {dataObject.type}, Name: {dataObject.name}");
 
 					_locations[i] = Conversions.StringToLatLon($"{dataObject.latitude.ToString().Replace(",", ".")}, {dataObject.longitude.ToString().Replace(",", ".")}");
 					dogSpotStatus.text = "_locations[i]";
@@ -172,11 +172,11 @@
 
 			// Tworzenie zapytania URL
 			string url = $"{endpointURL}?latitude={latitudeGPS}&longitude={longitudeGPS}&radius={radius}";
-			Debug.Log("FETCH DATA");
+			// Debug.Log("FETCH DATA");
 			// Wysłanie zapytania do serwera
 			UnityWebRequest request = UnityWebRequest.Get(url);
 			yield return request.SendWebRequest();
-			Debug.Log("poszło zapytanie");
+			// Debug.Log("poszło zapytanie");
 			dogSpotStatus.text = "poszło zapytanie";
 			// Sprawdzenie czy wystąpił błąd
 			if (request.result != UnityWebRequest.Result.Success)
@@ -206,7 +206,7 @@
 			foreach (var dataObject in dataObjects)
 			{
 				dogSpotStatus.text = "foreach";
-				Debug.Log($"ID: {dataObject.id}, Latitude: {dataObject.latitude}, Longitude: {dataObject.longitude}, Type: {dataObject.type}, Name: {dataObject.name}");
+				// Debug.Log($"ID: {dataObject.id}, Latitude: {dataObject.latitude}, Longitude: {dataObject.longitude}, Type: {dataObject.type}, Name: {dataObject.name}");
 				
 				_locations[i] = Conversions.StringToLatLon($"{dataObject.latitude}, {dataObject.longitude}");
 				dogSpotStatus.text = "_locations[i]";
