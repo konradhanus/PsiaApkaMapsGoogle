@@ -171,10 +171,10 @@ PlayerSettings:
   buildNumber:
     Standalone: 0
     VisionOS: 0
-    iPhone: 7
+    iPhone: 8
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 7
+  AndroidBundleVersionCode: 8
   AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 34
   AndroidPreferredInstallLocation: 1
@@ -301,30 +301,6 @@ PlayerSettings:
     m_Icons:
     - m_Textures:
       - {fileID: 2800000, guid: f20f54a5438184e60b29f8e04eb76b13, type: 3}
-      m_Width: 120
-      m_Height: 120
-      m_Kind: 3
-      m_SubKind: iPhone
-    - m_Textures:
-      - {fileID: 2800000, guid: f20f54a5438184e60b29f8e04eb76b13, type: 3}
-      m_Width: 80
-      m_Height: 80
-      m_Kind: 3
-      m_SubKind: iPhone
-    - m_Textures:
-      - {fileID: 2800000, guid: f20f54a5438184e60b29f8e04eb76b13, type: 3}
-      m_Width: 80
-      m_Height: 80
-      m_Kind: 3
-      m_SubKind: iPad
-    - m_Textures:
-      - {fileID: 2800000, guid: f20f54a5438184e60b29f8e04eb76b13, type: 3}
-      m_Width: 40
-      m_Height: 40
-      m_Kind: 3
-      m_SubKind: iPad
-    - m_Textures:
-      - {fileID: 2800000, guid: f20f54a5438184e60b29f8e04eb76b13, type: 3}
       m_Width: 87
       m_Height: 87
       m_Kind: 1
@@ -410,6 +386,30 @@ PlayerSettings:
       m_Width: 76
       m_Height: 76
       m_Kind: 0
+      m_SubKind: iPad
+    - m_Textures:
+      - {fileID: 2800000, guid: f20f54a5438184e60b29f8e04eb76b13, type: 3}
+      m_Width: 120
+      m_Height: 120
+      m_Kind: 3
+      m_SubKind: iPhone
+    - m_Textures:
+      - {fileID: 2800000, guid: f20f54a5438184e60b29f8e04eb76b13, type: 3}
+      m_Width: 80
+      m_Height: 80
+      m_Kind: 3
+      m_SubKind: iPhone
+    - m_Textures:
+      - {fileID: 2800000, guid: f20f54a5438184e60b29f8e04eb76b13, type: 3}
+      m_Width: 80
+      m_Height: 80
+      m_Kind: 3
+      m_SubKind: iPad
+    - m_Textures:
+      - {fileID: 2800000, guid: f20f54a5438184e60b29f8e04eb76b13, type: 3}
+      m_Width: 40
+      m_Height: 40
+      m_Kind: 3
       m_SubKind: iPad
   - m_BuildTarget: Android
     m_Icons:
