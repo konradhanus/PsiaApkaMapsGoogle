@@ -197,7 +197,7 @@ class MapReader2 : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Brak danych granic lub węzłów. Sprawdź poprawność danych OSM.");
+            // Debug.LogWarning("Brak danych granic lub węzłów. Sprawdź poprawność danych OSM.");
         }
     }
 
