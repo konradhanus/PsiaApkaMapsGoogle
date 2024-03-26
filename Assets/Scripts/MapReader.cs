@@ -5,12 +5,14 @@ using System.IO;                    // operacje wejścia/wyjścia (np. pliki)
 using System.Xml;                   // umożliwia obsługę operacji na dokumentach XML
 using UnityEngine;                  // klasy i funkcje do pracy z silnikiem Unity
 using UnityEngine.Networking;       // która obsługuje funkcje sieciowe w Unity
-using UnityEngine.UI;               // klasy obsługujące interfejs użytkownika w Unity
+using UnityEngine.UI;    
+           // klasy obsługujące interfejs użytkownika w Unity
+using Mapbox.Unity.Location;
+using Mapbox.Utils;
 
 class MapReader : MonoBehaviour 
 {
-
-    public GameObject popupTextObject;
+    private AbstractLocationProvider _locationProvider = null;
 
     float latitude = 51.08666657545862f;
     float longitude = 17.05298076897365f;
@@ -28,9 +30,11 @@ class MapReader : MonoBehaviour
     [SerializeField] public Text horizontalAccuracyValue;
     [SerializeField] public Text timestampValue;
 
+    public bool getCoorditanes = true;
 
-    private float latitudeGPS;
-    private float longitudeGPS;
+
+    private float latitudeGPS = 0;
+    private float longitudeGPS = 0;
 
     // Kolekcja przechowująca węzły mapy OSM
     [HideInInspector]
@@ -56,69 +60,12 @@ class MapReader : MonoBehaviour
     // Metoda wywoływana przy starcie aplikacji
     void Start()
     {
-        StartCoroutine(InitializeGPSAndLoadOSMData());
-    }
-
-    IEnumerator InitializeGPSAndLoadOSMData()
-    {
-        if(!debugMode) 
+        if (null == _locationProvider)
         {
-            // Sprawdzenie, czy urządzenie obsługuje GPS
-            if (!Input.location.isEnabledByUser)
-            {
-                Debug.Log("GPS jest wyłączony. Włącz go, aby korzystać z tej funkcji.");
-                    yield break;
-            }
-
-            // Inicjalizacja GPS
-            Input.location.Start();
-
-            // Czekanie na dostępność danych GPS
-            int maxWait = 20;
-            while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
-            {
-                maxWait--;
-                Debug.Log("Czekam na dostępność danych GPS...");
-                // Pauza na sekundę
-                yield return new WaitForSeconds(1);
-            }
-
-            // Sprawdzenie, czy timeout został osiągnięty
-            if (maxWait <= 0)
-            {
-                Debug.Log("Timeout podczas inicjalizacji GPS.");
-                yield break;
-            }
-
-            // Sprawdzenie, czy GPS jest w stanie dostarczyć dane
-            if (Input.location.status == LocationServiceStatus.Failed)
-            {
-                Debug.Log("Nie można uzyskać danych GPS.");
-                yield break;
-            }
-
-            // Jeśli dostępne są dane GPS, pobierz szerokość i długość geograficzną
-            latitudeGPS = Input.location.lastData.latitude;
-            longitudeGPS = Input.location.lastData.longitude;
-        }else{
-            latitudeGPS = latitude;
-            longitudeGPS = longitude;
+            _locationProvider = LocationProviderFactory.Instance.DefaultLocationProvider as AbstractLocationProvider;
         }
-        latitudeValue.text = Input.location.lastData.latitude.ToString();
-        longitudeValue.text = Input.location.lastData.longitude.ToString();
-        altitudeValue.text = Input.location.lastData.altitude.ToString();
-        horizontalAccuracyValue.text = Input.location.lastData.horizontalAccuracy.ToString();
-        timestampValue.text = Input.location.lastData.timestamp.ToString();
-
-        // Wyświetlenie danych w konsoli
-        Debug.Log("Latitude: " + latitudeGPS + ", Longitude: " + longitudeGPS);
-
-        // Zakończenie usługi GPS
-        Input.location.Stop();
-
-        StartCoroutine(DownloadAndLoadOSMData());
+        
     }
-
 
     // Asynchroniczna metoda pobierająca i ładowająca dane OSM
     IEnumerator DownloadAndLoadOSMData()
@@ -191,14 +138,14 @@ class MapReader : MonoBehaviour
             IsReady = true; 
 
             // Wyświetl popup z informacją o pobraniu danych
-            if (popupTextObject != null)
-            {
-                Text popupText = popupTextObject.GetComponent<Text>();
-                if (popupText != null)
-                {
-                    popupText.text = "Dane OSM zostały pomyślnie pobrane!";
-                }
-            }
+            // if (popupTextObject != null)
+            // {
+            //     Text popupText = popupTextObject.GetComponent<Text>();
+            //     if (popupText != null)
+            //     {
+            //         popupText.text = "Dane OSM zostały pomyślnie pobrane!";
+            //     }
+            // }
 
 
             // Wyświetl popup z informacją o zapisaniu danych do pamięci podręcznej
@@ -213,6 +160,41 @@ class MapReader : MonoBehaviour
     // Metoda wywoływana co klatkę
     void Update()
     {
+        Location currLoc = _locationProvider.CurrentLocation;
+
+			if (currLoc.IsLocationServiceInitializing)
+			{
+				// _statusText.text = "location services are initializing";
+			}
+			else
+			{
+				if (!currLoc.IsLocationServiceEnabled)
+				{
+					// _statusText.text = "location services not enabled";
+				}
+				else
+				{
+					if (currLoc.LatitudeLongitude.Equals(Vector2d.zero))
+					{
+						// _statusText.text = "Waiting for location ....";
+					}
+					else
+					{
+                        if(getCoorditanes)
+                        {
+                            // _statusText.text = string.Format("{0}", currLoc.LatitudeLongitude);
+                            latitudeGPS = (float)currLoc.LatitudeLongitude.x;
+                            longitudeGPS = (float)currLoc.LatitudeLongitude.y;
+                            
+                            // Możesz tutaj wykorzystać zmienne latitude i longitude według potrzeb
+                            Debug.Log("Latitude: " + latitude + ", Longitude: " + longitude);
+                            getCoorditanes = false;
+                            StartCoroutine(DownloadAndLoadOSMData());
+                        }
+					}
+				}
+			}
+
         if (bounds != null && nodes != null)
         {
             foreach (OsmWay w in ways)
@@ -247,6 +229,14 @@ class MapReader : MonoBehaviour
             // Debug.LogWarning("Brak danych granic lub węzłów. Sprawdź poprawność danych OSM.");
         }
     }
+
+
+
+    //
+
+
+
+    //
 
     // Metoda przetwarzająca drogi z danych XML
     void GetWays(XmlNodeList xmlNodeList)
@@ -288,14 +278,14 @@ class MapReader : MonoBehaviour
     // Metoda wyświetlająca komunikat na obiekcie Text
     private void DisplayPopup(string message)
     {
-        if (popupTextObject != null)
-        {
-            Text popupText = popupTextObject.GetComponent<Text>();
-            if (popupText != null)
-            {
-                popupText.text = message;
-            }
-        }
+        // if (popupTextObject != null)
+        // {
+        //     Text popupText = popupTextObject.GetComponent<Text>();
+        //     if (popupText != null)
+        //     {
+        //         popupText.text = message;
+        //     }
+        // }
     }
 
 }
