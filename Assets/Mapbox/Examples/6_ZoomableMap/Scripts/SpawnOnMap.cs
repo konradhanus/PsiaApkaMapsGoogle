@@ -113,12 +113,12 @@
 
 				// Tworzenie zapytania URL
 				string url = $"{endpointURL}?latitude={latitudeGPS.ToString().Replace(",", ".")}&longitude={longitudeGPS.ToString().Replace(",", ".")}&radius={radius.ToString().Replace(",", ".")}";
-				Debug.Log("FETCH DATA");
+				// Debug.Log("FETCH DATA");
 			Debug.Log(url);
 			// Wysłanie zapytania do serwera
 			UnityWebRequest request = UnityWebRequest.Get(url);
 			yield return request.SendWebRequest();
-			Debug.Log("poszło zapytanie");
+			// Debug.Log("poszło zapytanie");
 			dogSpotStatus.text = "poszło zapytanie";
 			// Sprawdzenie czy wystąpił błąd
 			if (request.result != UnityWebRequest.Result.Success)
@@ -126,21 +126,21 @@
 				Debug.LogError(request.error);
 				yield break;
 			}
-			Debug.Log("Sukcess");
+			// Debug.Log("Sukcess");
 			dogSpotStatus.text = "Sukcess";
 			// Pobranie odpowiedzi w formie JSON
 			string jsonResponse = request.downloadHandler.text;
-			Debug.Log("Jest json" + jsonResponse);
+			// Debug.Log("Jest json" + jsonResponse);
 			dogSpotStatus.text = "Jest json" + jsonResponse;
 			// Przetworzenie JSON na listę obiektów
 			dataObjects = JsonConvert.DeserializeObject<List<DataObject>>(jsonResponse); // Użyj JsonConvert.DeserializeObject
-			Debug.Log("Data objects");
+			// Debug.Log("Data objects");
 			dogSpotStatus.text = "Data objects";
-			Debug.Log("Data objects");
+			// Debug.Log("Data objects");
 			// Debug.Log(dataObjects);
 			// dogSpotStatus.text = dataObjects;
 			_locations = new Vector2d[dataObjects.Count];
-			Debug.Log(_locations);
+			// Debug.Log(_locations);
 			dogSpotStatus.text = "_locations";
 			// _spawnedObjects = new List<GameObject>();
 			// Przykładowe wykorzystanie pobranych danych
@@ -148,7 +148,7 @@
 				foreach (var dataObject in dataObjects)
 				{
 					dogSpotStatus.text = "foreach";
-					Debug.Log($"ID: {dataObject.id}, Latitude: {dataObject.latitude}, Longitude: {dataObject.longitude}, Type: {dataObject.type}, Name: {dataObject.name}");
+					// Debug.Log($"ID: {dataObject.id}, Latitude: {dataObject.latitude}, Longitude: {dataObject.longitude}, Type: {dataObject.type}, Name: {dataObject.name}");
 
 					_locations[i] = Conversions.StringToLatLon($"{dataObject.latitude.ToString().Replace(",", ".")}, {dataObject.longitude.ToString().Replace(",", ".")}");
 					dogSpotStatus.text = "_locations[i]";
@@ -172,11 +172,11 @@
 
 			// Tworzenie zapytania URL
 			string url = $"{endpointURL}?latitude={latitudeGPS}&longitude={longitudeGPS}&radius={radius}";
-			Debug.Log("FETCH DATA");
+			// Debug.Log("FETCH DATA");
 			// Wysłanie zapytania do serwera
 			UnityWebRequest request = UnityWebRequest.Get(url);
 			yield return request.SendWebRequest();
-			Debug.Log("poszło zapytanie");
+			// Debug.Log("poszło zapytanie");
 			dogSpotStatus.text = "poszło zapytanie";
 			// Sprawdzenie czy wystąpił błąd
 			if (request.result != UnityWebRequest.Result.Success)
@@ -184,21 +184,21 @@
 				Debug.LogError(request.error);
 				yield break;
 			}
-			Debug.Log("Sukcess");
+			// Debug.Log("Sukcess");
 			dogSpotStatus.text = "Sukcess";
 			 // Pobranie odpowiedzi w formie JSON
 			string jsonResponse = request.downloadHandler.text;
-			Debug.Log("Jest json" + jsonResponse);
+			// Debug.Log("Jest json" + jsonResponse);
 			dogSpotStatus.text = "Jest json" + jsonResponse;
 			// Przetworzenie JSON na listę obiektów
 			dataObjects = JsonConvert.DeserializeObject<List<DataObject>>(jsonResponse); // Użyj JsonConvert.DeserializeObject
-			Debug.Log("Data objects");
+			// Debug.Log("Data objects");
 			dogSpotStatus.text = "Data objects";
-			Debug.Log("Data objects");
+			// Debug.Log("Data objects");
 			// Debug.Log(dataObjects);
 			// dogSpotStatus.text = dataObjects;
 			_locations = new Vector2d[dataObjects.Count];
-			Debug.Log(_locations);
+			// Debug.Log(_locations);
 			dogSpotStatus.text = "_locations";
 			// _spawnedObjects = new List<GameObject>();
 			// Przykładowe wykorzystanie pobranych danych
@@ -206,7 +206,7 @@
 			foreach (var dataObject in dataObjects)
 			{
 				dogSpotStatus.text = "foreach";
-				Debug.Log($"ID: {dataObject.id}, Latitude: {dataObject.latitude}, Longitude: {dataObject.longitude}, Type: {dataObject.type}, Name: {dataObject.name}");
+				// Debug.Log($"ID: {dataObject.id}, Latitude: {dataObject.latitude}, Longitude: {dataObject.longitude}, Type: {dataObject.type}, Name: {dataObject.name}");
 				
 				_locations[i] = Conversions.StringToLatLon($"{dataObject.latitude}, {dataObject.longitude}");
 				dogSpotStatus.text = "_locations[i]";
