@@ -4,7 +4,7 @@ using System.Collections;
 public class AnimationScript : MonoBehaviour {
 
     public bool isAnimated = false;
-
+    public GameObject plusOne;
     public bool isRotating = false;
     public bool isFloating = false;
     public bool isScaling = false;
@@ -35,7 +35,7 @@ public class AnimationScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
         // Określ pozycję krawędzi górnej ekranu w przestrzeni świata
-
+        plusOne.SetActive(false);
         topEdge = GameObject.Find("TopEdge");
     }
 
@@ -51,8 +51,6 @@ public class AnimationScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
-
 
         if (isAnimated)
         {
@@ -96,15 +94,19 @@ public class AnimationScript : MonoBehaviour {
                 // Pobierz lokalną przestrzeń osi Y w oparciu o aktualną rotację obiektu
                 Vector3 localUp = transform.TransformDirection(Vector3.forward);
 
-                // Przesuń obiekt wzdłuż lokalnej przestrzeni osi Y
-                transform.position += localUp * speed * Time.deltaTime;
+               
 
                 float topEdgePositionY = topEdge.transform.position.y;
                 // Sprawdź, czy obiekt przekroczył górną krawędź ekranu
                 if (transform.position.y >= topEdgePositionY)
                 {
                     // Zniszcz obiekt
-                    Destroy(gameObject);
+                    // Destroy(gameObject);
+                    isAnimated = false;
+
+                }else{
+                     // Przesuń obiekt wzdłuż lokalnej przestrzeni osi Y
+                    transform.position += localUp * speed * Time.deltaTime;
                 }
             }
 
@@ -128,6 +130,63 @@ public class AnimationScript : MonoBehaviour {
                     scaleTimer = 0;
                 }
             }
+        }else{
+            ApplyEffect();
         }
 	}
+    private void ApplyEffect()
+    {
+        plusOne.SetActive(true);
+        // Utwórz nowy wektor pozycji z zadanymi współrzędnymi
+
+
+
+
+
+        Vector3 newPosition2 = new Vector3(1.9f, 4.2f, transform.position.z);
+ 
+        RaycastHit hit;
+
+        // Sprawdź, czy miejsce docelowe jest wolne
+        if (Physics.Raycast(newPosition2, Vector3.down, out hit))
+        {
+            // Jeśli trafiono na coś
+            if (hit.collider != null)
+            {
+                // Jeśli trafiony collider nie jest naszym obiektem
+                if (hit.collider.gameObject != gameObject)
+                {
+                    // Znajdź najniższy punkt na trafionym obiekcie
+                    Vector3 newPosition = hit.point;
+                    newPosition.y += GetComponent<Collider>().bounds.extents.y; // Dodaj wysokość aktualnego obiektu
+
+                    // Przesuń obiekt do nowej pozycji
+                    transform.position = newPosition;
+                }
+            }
+        }
+        else
+        {
+            // Jeśli miejsce docelowe jest wolne, po prostu przesuń obiekt do tej pozycji
+            transform.position = newPosition2;
+        }
+        
+        Vector3 currentRotation = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(currentRotation.x, 0, currentRotation.z);
+        Destroy(gameObject, 2f);
+    }
+    // Obsługa kliknięcia myszką
+    private void OnMouseDown()
+    {
+        ApplyEffect();
+    }
+
+    // Obsługa kliknięcia palcem (dotyku)
+    private void OnMouseOver()
+    {
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            ApplyEffect();
+        }
+    }
 }
