@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6625215735059298892}
   m_Layer: 0
   m_Name: DiamondPlus
-  m_TagString: Untagged
+  m_TagString: Gem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,10 +136,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2.3679068
+  m_Radius: 1.5999988
   m_Height: 4.735814
   m_Direction: 1
-  m_Center: {x: -1.8716595e-15, y: -8.689765e-15, z: -0.76790655}
+  m_Center: {x: 3.678409e-21, y: 1.715309e-20, z: 0.000001490116}
 --- !u!95 &6625215735059298892
 Animator:
   serializedVersion: 5

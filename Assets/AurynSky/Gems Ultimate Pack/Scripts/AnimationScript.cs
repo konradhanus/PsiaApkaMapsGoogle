@@ -13,7 +13,7 @@ public class AnimationScript : MonoBehaviour {
 
     public Vector3 rotationAngle;
     public float rotationSpeed;
-
+    private bool isMoved = false;
     public float floatSpeed;
     private bool goingUp = true;
     public float floatRate;
@@ -51,129 +51,152 @@ public class AnimationScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
-        if (isAnimated)
-        {
-            if (isRotating)
+        if(!isMoved){
+            if (isAnimated)
             {
-                transform.Rotate(rotationAngle * rotationSpeed * Time.deltaTime);
+                if (isRotating)
+                {
+                    transform.Rotate(rotationAngle * rotationSpeed * Time.deltaTime);
+                }
+
+                if (isFloating)
+                {
+                    floatTimer += Time.deltaTime;
+
+                    // Ustal wektor ruchu na podstawie aktualnej pozycji obiektu
+                    Vector3 moveDir = new Vector3(floatSpeed, 0.0f, 0.0f); // Zmiana na osią X
+                    if (transform.position.y < leftBoundary)
+                        moveDir.y = floatSpeed;
+                    else if (transform.position.y > rightBoundary)
+                        moveDir.y = -floatSpeed;
+
+                    // Wykonaj translację obiektu
+                    transform.Translate(moveDir * Time.deltaTime);
+
+                    // Sprawdź, czy obiekt powinien zmienić kierunek ruchu
+                    if (goingUp && floatTimer >= floatRate)
+                    {
+                        goingUp = false;
+                        floatTimer = 0;
+                        floatSpeed = -floatSpeed;
+                    }
+                    else if (!goingUp && floatTimer >= floatRate)
+                    {
+                        goingUp = true;
+                        floatTimer = 0;
+                        floatSpeed = +floatSpeed;
+                    }
+                }
+
+
+                if (isMovingToTop)
+                {
+                    // Pobierz lokalną przestrzeń osi Y w oparciu o aktualną rotację obiektu
+                    Vector3 localUp = transform.TransformDirection(Vector3.forward);
+
+                
+
+                    float topEdgePositionY = topEdge.transform.position.y;
+                    // Sprawdź, czy obiekt przekroczył górną krawędź ekranu
+                    if (transform.position.y >= topEdgePositionY)
+                    {
+                        // Zniszcz obiekt
+                        // Destroy(gameObject);
+                        isAnimated = false;
+
+                    }else{
+                        // Przesuń obiekt wzdłuż lokalnej przestrzeni osi Y
+                        transform.position += localUp * speed * Time.deltaTime;
+                    }
+                }
+
+                if (isScaling)
+                {
+                    scaleTimer += Time.deltaTime;
+
+                    if (scalingUp)
+                    {
+                        transform.localScale = Vector3.Lerp(transform.localScale, endScale, scaleSpeed * Time.deltaTime);
+                    }
+                    else if (!scalingUp)
+                    {
+                        transform.localScale = Vector3.Lerp(transform.localScale, startScale, scaleSpeed * Time.deltaTime);
+                    }
+
+                    if (scaleTimer >= scaleRate)
+                    {
+                        if (scalingUp) { scalingUp = false; }
+                        else if (!scalingUp) { scalingUp = true; }
+                        scaleTimer = 0;
+                    }
+                }
+            }else{
+                ApplyEffect();
             }
-
-            if (isFloating)
-            {
-                floatTimer += Time.deltaTime;
-
-                // Ustal wektor ruchu na podstawie aktualnej pozycji obiektu
-                Vector3 moveDir = new Vector3(floatSpeed, 0.0f, 0.0f); // Zmiana na osią X
-                if (transform.position.y < leftBoundary)
-                    moveDir.y = floatSpeed;
-                else if (transform.position.y > rightBoundary)
-                    moveDir.y = -floatSpeed;
-
-                // Wykonaj translację obiektu
-                transform.Translate(moveDir * Time.deltaTime);
-
-                // Sprawdź, czy obiekt powinien zmienić kierunek ruchu
-                if (goingUp && floatTimer >= floatRate)
-                {
-                    goingUp = false;
-                    floatTimer = 0;
-                    floatSpeed = -floatSpeed;
-                }
-                else if (!goingUp && floatTimer >= floatRate)
-                {
-                    goingUp = true;
-                    floatTimer = 0;
-                    floatSpeed = +floatSpeed;
-                }
-            }
-
-
-            if (isMovingToTop)
-            {
-                // Pobierz lokalną przestrzeń osi Y w oparciu o aktualną rotację obiektu
-                Vector3 localUp = transform.TransformDirection(Vector3.forward);
-
-               
-
-                float topEdgePositionY = topEdge.transform.position.y;
-                // Sprawdź, czy obiekt przekroczył górną krawędź ekranu
-                if (transform.position.y >= topEdgePositionY)
-                {
-                    // Zniszcz obiekt
-                    // Destroy(gameObject);
-                    isAnimated = false;
-
-                }else{
-                     // Przesuń obiekt wzdłuż lokalnej przestrzeni osi Y
-                    transform.position += localUp * speed * Time.deltaTime;
-                }
-            }
-
-            if (isScaling)
-            {
-                scaleTimer += Time.deltaTime;
-
-                if (scalingUp)
-                {
-                    transform.localScale = Vector3.Lerp(transform.localScale, endScale, scaleSpeed * Time.deltaTime);
-                }
-                else if (!scalingUp)
-                {
-                    transform.localScale = Vector3.Lerp(transform.localScale, startScale, scaleSpeed * Time.deltaTime);
-                }
-
-                if (scaleTimer >= scaleRate)
-                {
-                    if (scalingUp) { scalingUp = false; }
-                    else if (!scalingUp) { scalingUp = true; }
-                    scaleTimer = 0;
-                }
-            }
-        }else{
-            ApplyEffect();
         }
 	}
+    
     private void ApplyEffect()
     {
         plusOne.SetActive(true);
-        // Utwórz nowy wektor pozycji z zadanymi współrzędnymi
+        isAnimated = false;
+        
+        Vector3 newPosition0 = new Vector3(1.9f, 5.0f, transform.position.z);
+        Vector3 newPosition1 = new Vector3(1.9f, 4.2f, transform.position.z);
+        Vector3 newPosition2 = new Vector3(1.9f, 3.4f, transform.position.z);
+        Vector3 newPosition3 = new Vector3(1.9f, 2.6f, transform.position.z);
+        Vector3 newPosition4 = new Vector3(1.9f, 1.8f, transform.position.z);
+        Vector3 newPosition5 = new Vector3(1.9f, 1.0f, transform.position.z);
+        Vector3 newPosition6 = new Vector3(1.9f, 0.2f, transform.position.z);
 
+        Vector3[] positions = { newPosition0, newPosition1, newPosition2, newPosition3, newPosition4, newPosition5, newPosition6 };
 
-
-
-
-        Vector3 newPosition2 = new Vector3(1.9f, 4.2f, transform.position.z);
- 
-        RaycastHit hit;
-
-        // Sprawdź, czy miejsce docelowe jest wolne
-        if (Physics.Raycast(newPosition2, Vector3.down, out hit))
+        foreach (Vector3 position in positions)
         {
-            // Jeśli trafiono na coś
-            if (hit.collider != null)
+            if (!IsPositionOccupied(position))
             {
-                // Jeśli trafiony collider nie jest naszym obiektem
-                if (hit.collider.gameObject != gameObject)
-                {
-                    // Znajdź najniższy punkt na trafionym obiekcie
-                    Vector3 newPosition = hit.point;
-                    newPosition.y += GetComponent<Collider>().bounds.extents.y; // Dodaj wysokość aktualnego obiektu
+                transform.position = position;
+                break;
+            }
+        }
 
-                    // Przesuń obiekt do nowej pozycji
-                    transform.position = newPosition;
+        Vector3 currentRotation = transform.rotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(currentRotation.x, 0, currentRotation.z);
+        isMoved = true;
+        Destroy(gameObject, 2f);
+    }
+
+    private bool IsPositionOccupied(Vector3 position)
+    {
+       // Pobierz rodzica obiektu
+       Transform parent = transform.parent;
+       
+       if (parent != null)
+       {
+            // Pobierz wszystkie dzieci rodzica, które mają tag "Gem"
+            GameObject[] gems = GameObject.FindGameObjectsWithTag("Gem");
+
+            // Dla każdego znalezionego obiektu "Gem"
+            foreach (GameObject gem in gems)
+            {
+                // Jeśli obiekt "Gem" jest dzieckiem tego samego rodzica co obecny obiekt
+                if (gem.transform.parent == parent)
+                {
+                    // Pobierz pozycję obiektu "Gem" i wyświetl ją
+                    Vector3 gemPosition = gem.transform.position;
+                    float threshold = 0.001f; // progiem tolerancji
+
+                    if (Mathf.Abs(position.y - gemPosition.y) < threshold)
+                    {
+                        Debug.Log("Pozycja obiektu Gem: " + gemPosition + " object" + position);
+                        return true;
+                    }
+                     Debug.Log("2Pozycja obiektu Gem: " + gemPosition + " object" + position);
+                    
                 }
             }
         }
-        else
-        {
-            // Jeśli miejsce docelowe jest wolne, po prostu przesuń obiekt do tej pozycji
-            transform.position = newPosition2;
-        }
-        
-        Vector3 currentRotation = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(currentRotation.x, 0, currentRotation.z);
-        Destroy(gameObject, 2f);
+        return false;
     }
     // Obsługa kliknięcia myszką
     private void OnMouseDown()
