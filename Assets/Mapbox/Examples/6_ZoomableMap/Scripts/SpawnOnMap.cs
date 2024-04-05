@@ -205,21 +205,25 @@
 			int i = 0;
 			foreach (var dataObject in dataObjects)
 			{
-				dogSpotStatus.text = "foreach";
-				// Debug.Log($"ID: {dataObject.id}, Latitude: {dataObject.latitude}, Longitude: {dataObject.longitude}, Type: {dataObject.type}, Name: {dataObject.name}");
-				
 				_locations[i] = Conversions.StringToLatLon($"{dataObject.latitude}, {dataObject.longitude}");
-				dogSpotStatus.text = "_locations[i]";
-				
+
 				var instance = Instantiate(_markerPrefab);
-				
-				dogSpotStatus.text = "instance";
+				instance.name = dataObject.name;
+
+				// Przekazanie id jako parametru do skryptu obiektu
+				var markerScript = instance.GetComponent<ClickDogSpot>(); // Zastąp "YourMarkerScript" rzeczywistą nazwą skryptu
+				if (markerScript != null)
+				{
+					markerScript.SetId(dataObject.id);
+					Debug.Log("znalazł");
+				}else{
+					Debug.Log("nie znalazł");
+				}
+
 				instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i], true);
-				dogSpotStatus.text = "localPosition";
 				instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
-				dogSpotStatus.text = "new Vector3(_spawnScale, _spawnScale, _spawnScale)";
 				_spawnedObjects.Add(instance);
-				dogSpotStatus.text = "_spawnedObjects.Add(instance);";
+
 				i++;
 				dogSpotStatus.text = i.ToString();
 			}

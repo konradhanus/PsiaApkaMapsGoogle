@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+
 
 public class ClickDogSpot : MonoBehaviour
 {
+    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
     public GameObject dogspot;
     public Cinemachine.CinemachineVirtualCamera virtualCamera;
     public GameObject menuToDisable; // Menu do wyłączenia
@@ -30,6 +33,15 @@ public class ClickDogSpot : MonoBehaviour
     private int clickCount = 0; // Licznik kliknięć
     public float initialRotationOffset = 0f; // Początkowe przesunięcie rotacji
 
+
+    private string id; // Dodaj pole przechowujące id
+
+    // Dodaj metodę SetId, która ustawia id
+    public void SetId(string newId)
+    {
+        id = newId;
+        Debug.Log("SET ID"+id);
+    }
     void Start()
     {
         // Dodaj losowe przesunięcie do początkowej rotacji
@@ -84,30 +96,32 @@ public class ClickDogSpot : MonoBehaviour
 
                 if (clickCount == 3) // Jeśli kliknięto trzy razy
                 {
-                    print("3x kliknołeś"); // Wyświetl informację w konsoli
-
-                    // Lista przechowująca pozycje już istniejących prefabów
-                    List<Vector3> usedPositions = new List<Vector3>();
-
-                    // Tworzenie gemów z wykorzystaniem tablicy prefabrykatów
-                    GameObject dogSpotBack = GameObject.Find("DogSpotBack");
-                    for (int i = 0; i < 5; i++)
-                    {
-                        Vector3 gemPosition = GenerateRandomPosition(usedPositions);
-
-                        // Utwórz obiekt gem w losowej pozycji
-                        GameObject gem = Instantiate(gemPrefabs[i], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
-                        gem.name = "Gem"; // Nadaj nazwę elementowi
-                        gem.transform.localScale = new Vector3(30f, 30f, 30f);
-                        gem.layer = LayerMask.NameToLayer("UI");
-                        gem.transform.SetParent(dogSpotBack.transform, false);
-
-                        // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
-                        usedPositions.Add(gemPosition);
-                    }
-
-                    // clickCount = 0; // Zresetuj licznik kliknięć
+                     StartCoroutine(SendRequest());
                 }
+                //     print("3x kliknołeś"); // Wyświetl informację w konsoli
+
+                //     // Lista przechowująca pozycje już istniejących prefabów
+                //     List<Vector3> usedPositions = new List<Vector3>();
+
+                //     // Tworzenie gemów z wykorzystaniem tablicy prefabrykatów
+                //     GameObject dogSpotBack = GameObject.Find("DogSpotBack");
+                //     for (int i = 0; i < 5; i++)
+                //     {
+                //         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
+
+                //         // Utwórz obiekt gem w losowej pozycji
+                //         GameObject gem = Instantiate(gemPrefabs[i], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
+                //         gem.name = "Gem"; // Nadaj nazwę elementowi
+                //         gem.transform.localScale = new Vector3(30f, 30f, 30f);
+                //         gem.layer = LayerMask.NameToLayer("UI");
+                //         gem.transform.SetParent(dogSpotBack.transform, false);
+
+                //         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
+                //         usedPositions.Add(gemPosition);
+                //     }
+
+                //     // clickCount = 0; // Zresetuj licznik kliknięć
+                // }
 
                 currentRotationSpeed = fastRotationSpeedMultiplier * rotationSpeed; // Ustaw prędkość na szybką prędkość obrotu
                 currentDecelerationTime = 0f; // Zresetuj czas opóźnienia
@@ -124,6 +138,89 @@ public class ClickDogSpot : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    IEnumerator SendRequest()
+    {
+        string url = $"https://psiaapka.pl/visitdogspot.php?dog_spot_id={id}&user_id={userId}&message=test";
+
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                string responseText = request.downloadHandler.text;
+
+                // Sprawdź, czy odpowiedź to JSON
+                if (responseText.StartsWith("{"))
+                {
+                    // Odpowiedź JSON
+                    Debug.Log("AAA Odpowiedź JSON: " + responseText);
+                    // Lista przechowująca pozycje już istniejących prefabów
+                    List<Vector3> usedPositions = new List<Vector3>();
+
+                    // Tworzenie gemów z wykorzystaniem tablicy prefabrykatów
+                    GameObject dogSpotBack = GameObject.Find("DogSpotBack");
+
+                    // Wykonaj kod tworzenia obiektów gem tylko jeśli otrzymano odpowiedź JSON
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Vector3 gemPosition = GenerateRandomPosition(usedPositions);
+
+                        // Utwórz obiekt gem w losowej pozycji
+                        GameObject gem = Instantiate(gemPrefabs[i], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
+                        gem.name = "Gem"; // Nadaj nazwę elementowi
+                        gem.transform.localScale = new Vector3(30f, 30f, 30f);
+                        gem.layer = LayerMask.NameToLayer("UI");
+                        gem.transform.SetParent(dogSpotBack.transform, false);
+
+                        // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
+                        usedPositions.Add(gemPosition);
+                    }
+                }
+                else
+                {
+                    // Odpowiedź nie jest JSON-em, nie wykonuj dodatkowych działań
+                    Debug.Log("AAA Odpowiedź nie jest w formacie JSON: " + responseText);
+                    // Sprawdź, czy istnieje canvas o nazwie "Noticeboard" jako dziecko tego obiektu
+                    Transform noticeboard = transform.Find("Noticeboard");
+                    
+                    // Jeśli canvas został znaleziony, ustaw go jako aktywny
+                    if (noticeboard != null)
+                    {
+                        noticeboard.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        Debug.LogError("Canvas 'Noticeboard' not found as a child of this object.");
+                    }
+                }
+            }
+            else
+            {
+                // Obsłuż błąd
+                Debug.LogError("AAA Błąd podczas wysyłania zapytania: " + request.error);
+            }
+        }
+    }
+
+    public void CloseNoticeBoard()
+    {
+         // Znajdź wszystkie canvasy o nazwie "Noticeboard" na planszy
+            Canvas[] noticeboards = FindObjectsOfType<Canvas>();
+
+            // Przejdź przez wszystkie znalezione canvasy
+            foreach (Canvas noticeboard in noticeboards)
+            {
+                // Sprawdź, czy canvas ma nazwę "Noticeboard"
+                if (noticeboard.gameObject.name == "Noticeboard")
+                {
+                    // Ustaw canvas na nieaktywny
+                    noticeboard.gameObject.SetActive(false);
+                }
+            }
     }
 
     Vector3 GenerateRandomPosition(List<Vector3> usedPositions)
