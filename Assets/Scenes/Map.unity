@@ -14716,7 +14716,7 @@ MonoBehaviour:
   _spawnScale: 1
   _markerPrefab: {fileID: 388634293}
   dogSpotStatus: {fileID: 1659821816}
-  debugMode: 0
+  debugMode: 1
 --- !u!4 &1751096392
 Transform:
   m_ObjectHideFlags: 0
@@ -20470,7 +20470,7 @@ PrefabInstance:
     - target: {fileID: 3558424955750877682, guid: 461624ef1757f42d0bd53435d5a4ed26,
         type: 3}
       propertyPath: debugMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3558424955750877682, guid: 461624ef1757f42d0bd53435d5a4ed26,
         type: 3}
