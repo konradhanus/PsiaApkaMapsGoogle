@@ -104,19 +104,6 @@ abstract class InfrastructureBehaviour : MonoBehaviour
 
         // Dodaj BoxCollider do obiektu
         BoxCollider boxCollider = go.AddComponent<BoxCollider>();
-
-       
-        // Ustaw rodzica obiektu w folderze "World"
-        if (objectName == "Building")
-        {
-            Transform worldFolder = GameObject.Find("Buildings").transform;
-            go.transform.SetParent(worldFolder);
-        }
-        else {
-            Transform worldFolder = GameObject.Find("Ways").transform;
-            go.transform.SetParent(worldFolder);
-        }
-      
     }
 
     protected abstract void OnObjectCreated(OsmWay way, Vector3 origin, List<Vector3> vectors, List<Vector3> normals, List<Vector2> uvs, List<int> indices);
