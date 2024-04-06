@@ -1,17 +1,73 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class GlobalData : MonoBehaviour
 {
     public static GlobalData Instance;
 
     // Dane z API
-    public int gold = 6;
-    public int diamond = 6;
-    public int chicken = 6;
-    public int ball = 6;
-    public int water = 6;
+    public int gold = 0;
+    public int diamond = 0;
+    public int chicken = 0;
+    public int ball = 0;
+    public int water = 0;
+    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
+
+    // Struktura do przechowywania danych z JSON-a
+    [System.Serializable]
+    public class DataResponse
+    {
+        public Data[] data;
+    }
+
+    [System.Serializable]
+    public class Data
+    {
+        public string gold;
+        public string diamond;
+        public string chicken;
+        public string ball;
+        public string water;
+    }
+    
+    void Start()
+    {
+        // Wykonaj call do API i zaktualizuj dane
+        StartCoroutine(UpdateDataFromAPI());
+    }
+
+    IEnumerator UpdateDataFromAPI()
+    {
+        // URL do API
+        string url = "https://psiaapka.pl/resources.php?user_id="+userId;
+
+        // Wykonaj call do API
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
+
+        // Sprawdź, czy wystąpił błąd podczas pobierania danych
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("Błąd podczas pobierania danych z API: " + request.error);
+            yield break;
+        }
+
+        // Parsuj otrzymany JSON
+        string jsonResponse = request.downloadHandler.text;
+        DataResponse dataResponse = JsonUtility.FromJson<DataResponse>(jsonResponse);
+
+        // Aktualizuj dane na podstawie otrzymanego JSON-a
+        if (dataResponse != null && dataResponse.data.Length > 0)
+        {
+            UpdateData(int.Parse(dataResponse.data[0].gold), int.Parse(dataResponse.data[0].diamond), int.Parse(dataResponse.data[0].chicken), int.Parse(dataResponse.data[0].ball), int.Parse(dataResponse.data[0].water));
+        }
+        else
+        {
+            Debug.LogError("Błąd podczas parsowania odpowiedzi z API.");
+        }
+    }
 
     void Awake()
     {

@@ -36,6 +36,33 @@ public class ClickDogSpot : MonoBehaviour
 
     private string id; // Dodaj pole przechowujące id
 
+    [System.Serializable]
+    public class DataResponse
+    {
+        public DataObject[] data;
+        public AwardObject award;
+    }
+
+    [System.Serializable]
+    public class DataObject
+    {
+        public string gold;
+        public string diamond;
+        public string chicken;
+        public string ball;
+        public string water;
+    }
+
+    [System.Serializable]
+    public class AwardObject
+    {
+        public int diamond;
+        public int ball;
+        public int water;
+        public int gold;
+        public int chicken;
+    }
+
     // Dodaj metodę SetId, która ustawia id
     public void SetId(string newId)
     {
@@ -96,32 +123,32 @@ public class ClickDogSpot : MonoBehaviour
 
                 if (clickCount == 3) // Jeśli kliknięto trzy razy
                 {
-                     StartCoroutine(SendRequest());
-                }
+                    // StartCoroutine(SendRequest());
+                // }
                 //     print("3x kliknołeś"); // Wyświetl informację w konsoli
 
-                //     // Lista przechowująca pozycje już istniejących prefabów
-                //     List<Vector3> usedPositions = new List<Vector3>();
+                    // Lista przechowująca pozycje już istniejących prefabów
+                    List<Vector3> usedPositions = new List<Vector3>();
 
-                //     // Tworzenie gemów z wykorzystaniem tablicy prefabrykatów
-                //     GameObject dogSpotBack = GameObject.Find("DogSpotBack");
-                //     for (int i = 0; i < 5; i++)
-                //     {
-                //         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
+                    // Tworzenie gemów z wykorzystaniem tablicy prefabrykatów
+                    GameObject dogSpotBack = GameObject.Find("DogSpotBack");
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Vector3 gemPosition = GenerateRandomPosition(usedPositions);
 
-                //         // Utwórz obiekt gem w losowej pozycji
-                //         GameObject gem = Instantiate(gemPrefabs[i], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
-                //         gem.name = "Gem"; // Nadaj nazwę elementowi
-                //         gem.transform.localScale = new Vector3(30f, 30f, 30f);
-                //         gem.layer = LayerMask.NameToLayer("UI");
-                //         gem.transform.SetParent(dogSpotBack.transform, false);
+                        // Utwórz obiekt gem w losowej pozycji
+                        GameObject gem = Instantiate(gemPrefabs[i], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
+                        gem.name = "Gem"; // Nadaj nazwę elementowi
+                        gem.transform.localScale = new Vector3(30f, 30f, 30f);
+                        gem.layer = LayerMask.NameToLayer("UI");
+                        gem.transform.SetParent(dogSpotBack.transform, false);
 
-                //         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
-                //         usedPositions.Add(gemPosition);
-                //     }
+                        // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
+                        usedPositions.Add(gemPosition);
+                    }
 
-                //     // clickCount = 0; // Zresetuj licznik kliknięć
-                // }
+                    // clickCount = 0; // Zresetuj licznik kliknięć
+                }
 
                 currentRotationSpeed = fastRotationSpeedMultiplier * rotationSpeed; // Ustaw prędkość na szybką prędkość obrotu
                 currentDecelerationTime = 0f; // Zresetuj czas opóźnienia
@@ -152,12 +179,21 @@ public class ClickDogSpot : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 string responseText = request.downloadHandler.text;
+                DataResponse dataResponse = JsonUtility.FromJson<DataResponse>(responseText);
 
                 // Sprawdź, czy odpowiedź to JSON
                 if (responseText.StartsWith("{"))
                 {
                     // Odpowiedź JSON
                     Debug.Log("AAA Odpowiedź JSON: " + responseText);
+                    GlobalData.Instance.UpdateData(int.Parse(dataResponse.data[0].gold), int.Parse(dataResponse.data[0].diamond), int.Parse(dataResponse.data[0].chicken), int.Parse(dataResponse.data[0].ball), int.Parse(dataResponse.data[0].water));
+                    
+                    int awardGold = dataResponse.award.gold;
+                    int awardDiamond = dataResponse.award.diamond;
+                    int awardBall = dataResponse.award.ball;
+                    int awardWater = dataResponse.award.water;
+                    int awardChicken = dataResponse.award.chicken;
+
                     // Lista przechowująca pozycje już istniejących prefabów
                     List<Vector3> usedPositions = new List<Vector3>();
 
@@ -165,12 +201,27 @@ public class ClickDogSpot : MonoBehaviour
                     GameObject dogSpotBack = GameObject.Find("DogSpotBack");
 
                     // Wykonaj kod tworzenia obiektów gem tylko jeśli otrzymano odpowiedź JSON
-                    for (int i = 0; i < 5; i++)
-                    {
+                   if(awardGold > 0)
+                   {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
 
                         // Utwórz obiekt gem w losowej pozycji
-                        GameObject gem = Instantiate(gemPrefabs[i], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
+                        GameObject gem = Instantiate(gemPrefabs[1], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
+                        gem.name = "Gold"; // Nadaj nazwę elementowi
+                        gem.transform.localScale = new Vector3(30f, 30f, 30f);
+                        gem.layer = LayerMask.NameToLayer("UI");
+                        gem.transform.SetParent(dogSpotBack.transform, false);
+
+                        // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
+                        usedPositions.Add(gemPosition);
+                   }  
+
+                   if(awardDiamond > 0)
+                   {
+                        Vector3 gemPosition = GenerateRandomPosition(usedPositions);
+
+                        // Utwórz obiekt gem w losowej pozycji
+                        GameObject gem = Instantiate(gemPrefabs[2], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
                         gem.name = "Gem"; // Nadaj nazwę elementowi
                         gem.transform.localScale = new Vector3(30f, 30f, 30f);
                         gem.layer = LayerMask.NameToLayer("UI");
@@ -178,7 +229,53 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
-                    }
+                   }     
+
+                   if(awardBall > 0)
+                   {
+                        Vector3 gemPosition = GenerateRandomPosition(usedPositions);
+
+                        // Utwórz obiekt gem w losowej pozycji
+                        GameObject gem = Instantiate(gemPrefabs[3], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
+                        gem.name = "Ball"; // Nadaj nazwę elementowi
+                        gem.transform.localScale = new Vector3(30f, 30f, 30f);
+                        gem.layer = LayerMask.NameToLayer("UI");
+                        gem.transform.SetParent(dogSpotBack.transform, false);
+
+                        // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
+                        usedPositions.Add(gemPosition);
+                   }     
+
+                   if(awardWater > 0)
+                   {
+                        Vector3 gemPosition = GenerateRandomPosition(usedPositions);
+
+                        // Utwórz obiekt gem w losowej pozycji
+                        GameObject gem = Instantiate(gemPrefabs[4], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
+                        gem.name = "Water"; // Nadaj nazwę elementowi
+                        gem.transform.localScale = new Vector3(30f, 30f, 30f);
+                        gem.layer = LayerMask.NameToLayer("UI");
+                        gem.transform.SetParent(dogSpotBack.transform, false);
+
+                        // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
+                        usedPositions.Add(gemPosition);
+                   }     
+
+                   if(awardChicken > 0)
+                   {
+                        Vector3 gemPosition = GenerateRandomPosition(usedPositions);
+
+                        // Utwórz obiekt gem w losowej pozycji
+                        GameObject gem = Instantiate(gemPrefabs[5], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
+                        gem.name = "Chicken"; // Nadaj nazwę elementowi
+                        gem.transform.localScale = new Vector3(30f, 30f, 30f);
+                        gem.layer = LayerMask.NameToLayer("UI");
+                        gem.transform.SetParent(dogSpotBack.transform, false);
+
+                        // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
+                        usedPositions.Add(gemPosition);
+                   }     
+                    
                 }
                 else
                 {
@@ -267,6 +364,10 @@ public class ClickDogSpot : MonoBehaviour
     public void UsunElementPoNazwie(GameObject dogSpotBack)
     {
         string nazwaElementu = "Gem";
+        string chickenName  = "Chicken";
+        string goldName  = "Gold";
+        string waterName  = "Water";
+        string ballName  = "Ball";
         // Sprawdź, czy obiekt dogSpotBack istnieje
         if (dogSpotBack != null)
         {
@@ -274,6 +375,22 @@ public class ClickDogSpot : MonoBehaviour
             foreach (Transform child in dogSpotBack.transform)
             {
                 if (child.gameObject.name == nazwaElementu)
+                {
+                    Destroy(child.gameObject);
+                }
+                if (child.gameObject.name == chickenName)
+                {
+                    Destroy(child.gameObject);
+                }
+                 if (child.gameObject.name == goldName)
+                {
+                    Destroy(child.gameObject);
+                }
+                 if (child.gameObject.name == waterName)
+                {
+                    Destroy(child.gameObject);
+                }
+                 if (child.gameObject.name == ballName)
                 {
                     Destroy(child.gameObject);
                 }

@@ -1,9 +1,9 @@
 using UnityEngine;
 using TMPro;
 
-public class GetDiamondValue : MonoBehaviour
+public class GetCoinValue : MonoBehaviour
 {
-    public TextMeshProUGUI diamondText;
+    public TextMeshProUGUI coinText;
 
     void OnEnable()
     {
@@ -14,6 +14,6 @@ public class GetDiamondValue : MonoBehaviour
         GlobalData.Instance.ReadData(out gold, out diamond, out chicken, out ball, out water);
 
         // Ustaw wartość diamentu w TextMeshPro
-        diamondText.text = diamond.ToString();
+        coinText.text = gold.ToString();
     }
 }
