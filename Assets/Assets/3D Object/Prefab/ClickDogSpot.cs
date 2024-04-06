@@ -123,7 +123,7 @@ public class ClickDogSpot : MonoBehaviour
 
                 if (clickCount == 3) // Jeśli kliknięto trzy razy
                 {
-                    // StartCoroutine(SendRequest());
+                     StartCoroutine(SendRequest());
                 // }
                 //     print("3x kliknołeś"); // Wyświetl informację w konsoli
 
@@ -132,20 +132,20 @@ public class ClickDogSpot : MonoBehaviour
 
                     // Tworzenie gemów z wykorzystaniem tablicy prefabrykatów
                     GameObject dogSpotBack = GameObject.Find("DogSpotBack");
-                    for (int i = 0; i < 5; i++)
-                    {
-                        Vector3 gemPosition = GenerateRandomPosition(usedPositions);
+                    // for (int i = 0; i < 5; i++)
+                    // {
+                    //     Vector3 gemPosition = GenerateRandomPosition(usedPositions);
 
-                        // Utwórz obiekt gem w losowej pozycji
-                        GameObject gem = Instantiate(gemPrefabs[i], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
-                        gem.name = "Gem"; // Nadaj nazwę elementowi
-                        gem.transform.localScale = new Vector3(30f, 30f, 30f);
-                        gem.layer = LayerMask.NameToLayer("UI");
-                        gem.transform.SetParent(dogSpotBack.transform, false);
+                    //     // Utwórz obiekt gem w losowej pozycji
+                    //     GameObject gem = Instantiate(gemPrefabs[i], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
+                    //     gem.name = "Gem"; // Nadaj nazwę elementowi
+                    //     gem.transform.localScale = new Vector3(30f, 30f, 30f);
+                    //     gem.layer = LayerMask.NameToLayer("UI");
+                    //     gem.transform.SetParent(dogSpotBack.transform, false);
 
-                        // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
-                        usedPositions.Add(gemPosition);
-                    }
+                    //     // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
+                    //     usedPositions.Add(gemPosition);
+                    // }
 
                     // clickCount = 0; // Zresetuj licznik kliknięć
                 }
@@ -231,13 +231,13 @@ public class ClickDogSpot : MonoBehaviour
                         usedPositions.Add(gemPosition);
                    }     
 
-                   if(awardBall > 0)
+                   if(awardWater > 0)
                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
 
                         // Utwórz obiekt gem w losowej pozycji
                         GameObject gem = Instantiate(gemPrefabs[3], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
-                        gem.name = "Ball"; // Nadaj nazwę elementowi
+                        gem.name = "Water"; // Nadaj nazwę elementowi
                         gem.transform.localScale = new Vector3(30f, 30f, 30f);
                         gem.layer = LayerMask.NameToLayer("UI");
                         gem.transform.SetParent(dogSpotBack.transform, false);
@@ -246,13 +246,13 @@ public class ClickDogSpot : MonoBehaviour
                         usedPositions.Add(gemPosition);
                    }     
 
-                   if(awardWater > 0)
+                   if(awardBall > 0)
                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
 
                         // Utwórz obiekt gem w losowej pozycji
                         GameObject gem = Instantiate(gemPrefabs[4], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
-                        gem.name = "Water"; // Nadaj nazwę elementowi
+                        gem.name = "Ball"; // Nadaj nazwę elementowi
                         gem.transform.localScale = new Vector3(30f, 30f, 30f);
                         gem.layer = LayerMask.NameToLayer("UI");
                         gem.transform.SetParent(dogSpotBack.transform, false);

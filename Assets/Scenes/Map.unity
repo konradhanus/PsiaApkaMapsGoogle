@@ -2579,31 +2579,31 @@ PrefabInstance:
         type: 3}
       propertyPath: gemPrefab1
       value: 
-      objectReference: {fileID: 2146949039613697866, guid: ad93c886ca92943c18b9cdc17f35050b,
+      objectReference: {fileID: 7383793194712369058, guid: cf00223654c4e4cf191ba246a9b95262,
         type: 3}
     - target: {fileID: 3552295797684915517, guid: 52c8ab4ea7e48a548980b530268d7bbd,
         type: 3}
       propertyPath: gemPrefab2
       value: 
-      objectReference: {fileID: 5299044616825412978, guid: 3f1dadcbe6668475789e1d3822694087,
+      objectReference: {fileID: 7383793194712369058, guid: b01b8a2675fe646b78b8f4c8b3000b99,
         type: 3}
     - target: {fileID: 3552295797684915517, guid: 52c8ab4ea7e48a548980b530268d7bbd,
         type: 3}
       propertyPath: gemPrefab3
       value: 
-      objectReference: {fileID: 5299044616825412978, guid: 3f1dadcbe6668475789e1d3822694087,
+      objectReference: {fileID: 7383793194712369058, guid: ce74f4381c3aa4c4680a0fb88ec1daf3,
         type: 3}
     - target: {fileID: 3552295797684915517, guid: 52c8ab4ea7e48a548980b530268d7bbd,
         type: 3}
       propertyPath: gemPrefab4
       value: 
-      objectReference: {fileID: 5299044616825412978, guid: 3f1dadcbe6668475789e1d3822694087,
+      objectReference: {fileID: 7383793194712369058, guid: 426fdbb5ff5094fe4a10629aea5ed407,
         type: 3}
     - target: {fileID: 3552295797684915517, guid: 52c8ab4ea7e48a548980b530268d7bbd,
         type: 3}
       propertyPath: gemPrefab5
       value: 
-      objectReference: {fileID: 5299044616825412978, guid: 3f1dadcbe6668475789e1d3822694087,
+      objectReference: {fileID: 7383793194712369058, guid: 9428437e1677c483ca34a0699a0c7fa7,
         type: 3}
     - target: {fileID: 3552295797684915517, guid: 52c8ab4ea7e48a548980b530268d7bbd,
         type: 3}
@@ -14143,7 +14143,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529967495}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0000000023522244, y: 0.7882307, z: -0.6153799, w: 0.0000000030129288}
+  m_LocalRotation: {x: 0.0000000023522209, y: 0.7882307, z: -0.6153799, w: 0.0000000030129252}
   m_LocalPosition: {x: 0, y: 30, z: 6.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -15215,7 +15215,7 @@ MonoBehaviour:
   _spawnScale: 1
   _markerPrefab: {fileID: 388634293}
   dogSpotStatus: {fileID: 1659821816}
-  debugMode: 1
+  debugMode: 0
 --- !u!4 &1751096392
 Transform:
   m_ObjectHideFlags: 0
@@ -20972,7 +20972,7 @@ PrefabInstance:
     - target: {fileID: 3558424955750877682, guid: 461624ef1757f42d0bd53435d5a4ed26,
         type: 3}
       propertyPath: debugMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3558424955750877682, guid: 461624ef1757f42d0bd53435d5a4ed26,
         type: 3}

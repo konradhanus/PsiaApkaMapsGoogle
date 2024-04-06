@@ -250,7 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAnimated: 1
   plusOne: {fileID: 5587508768305148942}
-  isRotating: 0
+  isRotating: 1
   isFloating: 1
   isScaling: 0
   isMovingToTop: 1
