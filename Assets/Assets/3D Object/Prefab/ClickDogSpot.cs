@@ -124,6 +124,7 @@ public class ClickDogSpot : MonoBehaviour
                 if (clickCount == 3) // Jeśli kliknięto trzy razy
                 {
                      StartCoroutine(SendRequest());
+                     Debug.Log("AAA"+clickCount);
                 // }
                 //     print("3x kliknołeś"); // Wyświetl informację w konsoli
 
@@ -147,7 +148,7 @@ public class ClickDogSpot : MonoBehaviour
                     //     usedPositions.Add(gemPosition);
                     // }
 
-                    // clickCount = 0; // Zresetuj licznik kliknięć
+                     clickCount = 0; // Zresetuj licznik kliknięć
                 }
 
                 currentRotationSpeed = fastRotationSpeedMultiplier * rotationSpeed; // Ustaw prędkość na szybką prędkość obrotu
@@ -170,22 +171,24 @@ public class ClickDogSpot : MonoBehaviour
 
     IEnumerator SendRequest()
     {
+        // Debug.Log("AAA SendRequest");
         string url = $"https://psiaapka.pl/visitdogspot.php?dog_spot_id={id}&user_id={userId}&message=test";
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             yield return request.SendWebRequest();
-
+           
             if (request.result == UnityWebRequest.Result.Success)
             {
+              
                 string responseText = request.downloadHandler.text;
-                DataResponse dataResponse = JsonUtility.FromJson<DataResponse>(responseText);
-
+           
                 // Sprawdź, czy odpowiedź to JSON
                 if (responseText.StartsWith("{"))
                 {
+                    DataResponse dataResponse = JsonUtility.FromJson<DataResponse>(responseText);
                     // Odpowiedź JSON
-                    Debug.Log("AAA Odpowiedź JSON: " + responseText);
+                  
                     GlobalData.Instance.UpdateData(int.Parse(dataResponse.data[0].gold), int.Parse(dataResponse.data[0].diamond), int.Parse(dataResponse.data[0].chicken), int.Parse(dataResponse.data[0].ball), int.Parse(dataResponse.data[0].water));
                     
                     int awardGold = dataResponse.award.gold;
