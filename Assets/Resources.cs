@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class GlobalData : MonoBehaviour
 {
     public static GlobalData Instance;
-
+    public Text logTxt;
     // Dane z API
     public int gold = 0;
     public int diamond = 0;
@@ -41,8 +41,38 @@ public class GlobalData : MonoBehaviour
         // Wykonaj call do API i zaktualizuj dane
         userId = AuthenticationService.Instance.PlayerId;
         print("Player Id:" + userId);
+        logTxt.text = userId;
         StartCoroutine(UpdateDataFromAPI());
+        
+        // if(!string.IsNullOrEmpty(userId))
+        // {
+           
+        // }
+        // else
+        // {
+        //     Task.Run(async () =>
+        //     {
+        //         try
+        //         {
+        //             await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+        //             UnityMainThreadDispatcher.Instance.Enqueue(() =>
+        //             {
+        //                 print("Sign in Success");
+        //                 StartCoroutine(UpdateDataFromAPI());
+        //                 // print("Player Id:" + AuthenticationService.Instance.PlayerId);
+        //                 // logTxt.text = "Player id:" + AuthenticationService.Instance.PlayerId;
+        //             });
+        //         }
+        //         catch (AuthenticationException ex)
+        //         {
+        //             print("Sign in failed!!");
+        //             Debug.LogException(ex);
+        //         }
+        //     });
+        // }
     }
+
 
     IEnumerator UpdateDataFromAPI()
     {
