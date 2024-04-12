@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Unity.Services.Core;
+using Unity.Services.Authentication;
+using System.Threading.Tasks;
+using UnityEngine.UI;
 
 public class GlobalData : MonoBehaviour
 {
@@ -13,7 +17,7 @@ public class GlobalData : MonoBehaviour
     public int chicken = 0;
     public int ball = 0;
     public int water = 0;
-    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
+    public string userId;
 
     // Struktura do przechowywania danych z JSON-a
     [System.Serializable]
@@ -35,6 +39,8 @@ public class GlobalData : MonoBehaviour
     void Start()
     {
         // Wykonaj call do API i zaktualizuj dane
+        userId = AuthenticationService.Instance.PlayerId;
+        print("Player Id:" + userId);
         StartCoroutine(UpdateDataFromAPI());
     }
 
