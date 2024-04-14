@@ -6,7 +6,7 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using System.Threading.Tasks;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class GlobalData : MonoBehaviour
 {
     public static GlobalData Instance;
@@ -39,7 +39,7 @@ public class GlobalData : MonoBehaviour
     void Start()
     {
         // Wykonaj call do API i zaktualizuj dane
-        userId = AuthenticationService.Instance.PlayerId;
+        userId = ReferencesUserFirebase.userId;
         print("Player Id:" + userId);
         logTxt.text = userId;
         StartCoroutine(UpdateDataFromAPI());
@@ -73,6 +73,10 @@ public class GlobalData : MonoBehaviour
         // }
     }
 
+    public void LogOut()
+    {
+        SceneManager.LoadSceneAsync(0);
+    }
 
     IEnumerator UpdateDataFromAPI()
     {
