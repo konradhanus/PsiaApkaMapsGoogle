@@ -5,7 +5,7 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using System.Threading.Tasks;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class authManager : MonoBehaviour
 {
     public Text logTxt;
@@ -15,6 +15,10 @@ public class authManager : MonoBehaviour
         // SignIn();
     }
 
+    public void PlayGame()
+    {
+        SceneManager.LoadSceneAsync(1);
+    }
 
     public async void SignIn() {
         await signInAnonymous();
@@ -27,6 +31,7 @@ public class authManager : MonoBehaviour
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
             print("Sign in Success");
+            PlayGame();
             // print("Player Id:" + AuthenticationService.Instance.PlayerId);
            // logTxt.text = "Player id:" + AuthenticationService.Instance.PlayerId;
         }
