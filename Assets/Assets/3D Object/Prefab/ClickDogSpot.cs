@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 public class ClickDogSpot : MonoBehaviour
 {
-    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
+    public string userId;
     public GameObject dogspot;
     public Cinemachine.CinemachineVirtualCamera virtualCamera;
     public GameObject menuToDisable; // Menu do wyłączenia
@@ -71,6 +71,8 @@ public class ClickDogSpot : MonoBehaviour
     }
     void Start()
     {
+        userId = ReferencesUserFirebase.userId;
+        print("Click Dog Spot Player Id:" + userId);
         // Dodaj losowe przesunięcie do początkowej rotacji
         transform.Rotate(Vector3.up, Random.Range(0f, 360f));
         currentRotationSpeed = rotationSpeed; // Ustaw bieżącą prędkość na normalną prędkość obrotu
