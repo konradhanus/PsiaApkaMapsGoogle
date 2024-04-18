@@ -34,6 +34,10 @@ public class FirebaseAuthManager : MonoBehaviour
     public TMP_InputField passwordRegisterField;
     public TMP_InputField confirmPasswordRegisterField;
 
+    public GameObject SuccessScreen;
+    public GameObject LoginScreen;
+    public GameObject FailureScreen;
+
     public Text logger;
 
     private void PlayGame()
@@ -146,11 +150,13 @@ public class FirebaseAuthManager : MonoBehaviour
             ReferencesUserFirebase.userName = user.DisplayName;
             
             Debug.LogFormat("{0} You Are Successfully Logged In", user.DisplayName);
+            
+
             logger.text = user.DisplayName;
             if (!string.IsNullOrEmpty(user.UserId))
             {
-          
-                PlayGame();
+                 PlayGame();
+                
             }else{
                   Debug.LogError("jest pusty");
                    logger.text = "jest pusty";
@@ -263,6 +269,8 @@ public class FirebaseAuthManager : MonoBehaviour
                 {
                     Debug.Log("Registration Sucessful Welcome " + user.DisplayName);
                     logger.text = "Registration Sucessful Welcome " + user.DisplayName;
+                    SuccessScreen.SetActive(true);
+                    LoginScreen.SetActive(false);
                     // UIManager.Instance.OpenLoginPanel();
                 }
             }
