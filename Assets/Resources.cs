@@ -7,9 +7,12 @@ using Unity.Services.Authentication;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 public class GlobalData : MonoBehaviour
 {
+    public bool debugMode = true;
     public static GlobalData Instance;
+    // public TextMeshProUGUI nickName;
     public Text logTxt;
     // Dane z API
     public int gold = 0;
@@ -18,6 +21,7 @@ public class GlobalData : MonoBehaviour
     public int ball = 0;
     public int water = 0;
     public string userId;
+    private FirebaseAuthManager authManager;
 
     // Struktura do przechowywania danych z JSON-a
     [System.Serializable]
@@ -36,41 +40,18 @@ public class GlobalData : MonoBehaviour
         public string water;
     }
     
+    
+
     void Start()
     {
+        authManager = new FirebaseAuthManager();
         // Wykonaj call do API i zaktualizuj dane
         userId = ReferencesUserFirebase.userId;
+ 
         print("Player Id:" + userId);
         logTxt.text = userId;
+        // nickName.text = ReferencesUserFirebase.userName;
         StartCoroutine(UpdateDataFromAPI());
-        
-        // if(!string.IsNullOrEmpty(userId))
-        // {
-           
-        // }
-        // else
-        // {
-        //     Task.Run(async () =>
-        //     {
-        //         try
-        //         {
-        //             await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
-        //             UnityMainThreadDispatcher.Instance.Enqueue(() =>
-        //             {
-        //                 print("Sign in Success");
-        //                 StartCoroutine(UpdateDataFromAPI());
-        //                 // print("Player Id:" + AuthenticationService.Instance.PlayerId);
-        //                 // logTxt.text = "Player id:" + AuthenticationService.Instance.PlayerId;
-        //             });
-        //         }
-        //         catch (AuthenticationException ex)
-        //         {
-        //             print("Sign in failed!!");
-        //             Debug.LogException(ex);
-        //         }
-        //     });
-        // }
     }
 
     public void LogOut()

@@ -40,9 +40,19 @@ public class FirebaseAuthManager : MonoBehaviour
 
     public Text logger;
 
+    bool loogedIn = false;
+
     private void PlayGame()
     {
         SceneManager.LoadSceneAsync(1);
+    }
+
+    void Update()
+    {
+        if(loogedIn)
+        {
+            PlayGame();
+        }
     }
 
     private void Awake()
@@ -83,16 +93,16 @@ public class FirebaseAuthManager : MonoBehaviour
             if (!signedIn && user != null)
             {
                 Debug.Log("Signed out " + user.UserId);
-                logger.text = "Signed out " + user.UserId;
+                loogedIn = false;
             }
 
             user = auth.CurrentUser;
 
             if (signedIn)
             {
-                Debug.Log("Signed in " + user.UserId);
-                logger.text = "Signed in " + user.UserId;
-               
+                Debug.Log("AuthStateChanged Signed in " + user.UserId);
+                loogedIn = true;
+
             }
         }
     }
@@ -102,8 +112,9 @@ public class FirebaseAuthManager : MonoBehaviour
         StartCoroutine(LoginAsync(emailLoginField.text, passwordLoginField.text));
     }
 
-    private IEnumerator LoginAsync(string email, string password)
+    public IEnumerator LoginAsync(string email, string password)
     {
+        Debug.Log("LoginAsync");
         var loginTask = auth.SignInWithEmailAndPasswordAsync(email, password);
 
         yield return new WaitUntil(() => loginTask.IsCompleted);
@@ -138,7 +149,7 @@ public class FirebaseAuthManager : MonoBehaviour
                     break;
             }
             
-            logger.text = failedMessage;
+            // logger.text = failedMessage;
 
             Debug.Log(failedMessage);
         }
@@ -152,14 +163,14 @@ public class FirebaseAuthManager : MonoBehaviour
             Debug.LogFormat("{0} You Are Successfully Logged In", user.DisplayName);
             
 
-            logger.text = user.DisplayName;
+            // logger.text = user.DisplayName;
             if (!string.IsNullOrEmpty(user.UserId))
             {
                  PlayGame();
                 
             }else{
                   Debug.LogError("jest pusty");
-                   logger.text = "jest pusty";
+                //    logger.text = "jest pusty";
             }
         }
     }
