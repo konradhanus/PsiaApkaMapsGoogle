@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System;
 
 
 public class ClickDogSpot : MonoBehaviour
 {
-    public string userId;
+    private string userId;
+    private long lastDate;
+    private string prevUserId;
     public GameObject dogspot;
     public Cinemachine.CinemachineVirtualCamera virtualCamera;
     public GameObject menuToDisable; // Menu do wyłączenia
@@ -19,6 +22,31 @@ public class ClickDogSpot : MonoBehaviour
     public GameObject gemPrefab4; // Prefabrykat obiektu gem
     public GameObject gemPrefab5; // Prefabrykat obiektu gem
     public GameObject[] gemPrefabs;
+
+    // SAVE DATA
+    private const string VisitedDogSpotId = "VisitedDogSpotId";
+
+    private void SaveVisitedDogSpots()
+    {
+        long lastVisitTimestamp = GetCurrentTimestamp();
+        string data = lastVisitTimestamp.ToString();
+        string keyDogSpot = VisitedDogSpotId+id;
+        PlayerPrefs.SetString(keyDogSpot, data);
+        PlayerPrefs.Save();
+        Debug.Log("SAVE: "+data);
+    }
+
+    public void AddVisitedDogSpot(int dogSpotId)
+    {
+        SaveVisitedDogSpots();
+    }
+
+    private long GetCurrentTimestamp()
+    {
+        return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+    }
+
+    public Material visitedDogSpotMaterial; // Nowy materiał, który chcesz przypisać dzieciom
    
 
     public float rotationSpeed = 50f; // Prędkość obrotu
@@ -69,12 +97,28 @@ public class ClickDogSpot : MonoBehaviour
         id = newId;
         Debug.Log("SET ID"+id);
     }
+
+    public void SetLastDate(string date)
+    {
+        if (!string.IsNullOrEmpty(date))
+        {
+            long longValue = long.Parse(date);
+            lastDate = longValue;
+        }
+        Debug.Log("SET date"+date);
+    }
+
+
+
     void Start()
     {
+
         userId = ReferencesUserFirebase.userId;
-        print("Click Dog Spot Player Id:" + userId);
+        print("AA Click Dog Spot Player Id:" + userId);
+        prevUserId = userId;
         // Dodaj losowe przesunięcie do początkowej rotacji
-        transform.Rotate(Vector3.up, Random.Range(0f, 360f));
+        transform.Rotate(Vector3.up, UnityEngine.Random.Range(0f, 360f));
+
         currentRotationSpeed = rotationSpeed; // Ustaw bieżącą prędkość na normalną prędkość obrotu
         dogspot.SetActive(true);
 
@@ -84,11 +128,40 @@ public class ClickDogSpot : MonoBehaviour
         gemPrefabs[2] = gemPrefab3;
         gemPrefabs[3] = gemPrefab4;
         gemPrefabs[4] = gemPrefab5;
+
+        
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Pobierz obecną datę i godzinę w sekundach od epoki Unixa
+        long currentTimestamp = GetCurrentTimestamp();
+
+        // Sprawdź, czy lastDate nie jest równa zeru
+        if (lastDate != 0)
+        {
+            // Oblicz różnicę między obecną datą a datą przechowywaną w lastDate
+            long timeDifference = currentTimestamp - lastDate;
+
+            // Sprawdź, czy minęło 24 godziny (86400 sekund)
+            if (timeDifference <= 86400)
+            {
+                // Zmiana materiału dla wszystkich dzieci
+                Renderer[] renderers = GetComponentsInChildren<Renderer>();
+                foreach (Renderer renderer in renderers)
+                {
+                    renderer.material = visitedDogSpotMaterial;
+                }
+            }
+        }
+       
+        if(prevUserId != ReferencesUserFirebase.userId)
+        {
+            userId = ReferencesUserFirebase.userId;
+            prevUserId = userId;
+        }
         // Obracaj z bieżącą prędkością obrotu
         transform.Rotate(Vector3.up, -currentRotationSpeed * Time.deltaTime);
 
@@ -121,6 +194,12 @@ public class ClickDogSpot : MonoBehaviour
             // Pobierz kliknięty obiekt
             if (dogspot == getClickedObject(out RaycastHit hit))
             {
+                if(!string.IsNullOrEmpty(id))
+                {
+                    Debug.Log("AAA DogSpot Id:"+id);
+                }else{
+                    Debug.Log("AAA Nie ma DogSpot Id:"+id);
+                }
                 clickCount++; // Inkrementuj licznik kliknięć
 
                 if (clickCount == 3) // Jeśli kliknięto trzy razy
@@ -170,16 +249,26 @@ public class ClickDogSpot : MonoBehaviour
         }
     }
 
-
     IEnumerator SendRequest()
     {
-        // Debug.Log("AAA SendRequest");
+        
         string url = $"https://psiaapka.pl/visitdogspot.php?dog_spot_id={id}&user_id={userId}&message=test";
+        Debug.Log("AAA SendRequest: "+ url);
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             yield return request.SendWebRequest();
-           
+
+            int dogSpotId = int.Parse(id);
+            AddVisitedDogSpot(dogSpotId);
+
+            // Zmiana materiału dla wszystkich dzieci
+            Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.material = visitedDogSpotMaterial;
+            }
+
             if (request.result == UnityWebRequest.Result.Success)
             {
               
@@ -330,8 +419,8 @@ public class ClickDogSpot : MonoBehaviour
         // Dopóki nie zostanie znaleziona odpowiednia pozycja, kontynuuj próby generowania
         while (true)
         {
-            float randomX = Random.Range(-Screen.width / 4f, Screen.width / 4f); // Bliżej środka ekranu w osi X
-            float randomY = Random.Range(-Screen.height / 4f, Screen.height / 4f); // Bliżej środka ekranu w osi Y
+            float randomX = UnityEngine.Random.Range(-Screen.width / 4f, Screen.width / 4f); // Bliżej środka ekranu w osi X
+            float randomY = UnityEngine.Random.Range(-Screen.height / 4f, Screen.height / 4f); // Bliżej środka ekranu w osi Y
             Vector3 gemPosition = new Vector3(randomX, randomY, 0f);
 
             // Sprawdź, czy nowa pozycja jest wystarczająco oddalona od pozycji istniejących prefabów

@@ -9,7 +9,7 @@
 	using System.Collections.Generic;
 	using UnityEngine.Networking;
 	using Newtonsoft.Json;
-	using UnityEngine.UI;               // klasy obsługujące interfejs użytkownika w Unity	
+	using UnityEngine.UI;               	
 
 	public class SpawnOnMap : MonoBehaviour
 	{
@@ -45,6 +45,22 @@
 		
 		// Adres URL endpointu
 		string endpointURL = "https://psiaapka.pl/psiaapka/dogspots.php";
+
+		private const string VisitedDogSpotId = "VisitedDogSpotId";
+		private string LoadVisitedDogSpots(int id)
+		{
+			
+			string keyDogSpot = VisitedDogSpotId+id;
+			string data = PlayerPrefs.GetString(keyDogSpot);
+			if (!string.IsNullOrEmpty(data))
+			{
+				
+				Debug.Log("LOAD: "+ data);
+				return data;
+
+			}
+			return null;
+		}
 
 		void Start()
 		{
@@ -155,6 +171,23 @@
 
 					var instance = Instantiate(_markerPrefab);
 
+
+					// Przekazanie id jako parametru do skryptu obiektu
+					var markerScript = instance.GetComponent<ClickDogSpot>(); // Zastąp "YourMarkerScript" rzeczywistą nazwą skryptu
+					if (markerScript != null)
+					{
+						markerScript.SetId(dataObject.id);
+						Debug.Log(dataObject.id);
+						Debug.Log("znalazł");
+						
+						string lastDate = LoadVisitedDogSpots(int.Parse(dataObject.id));
+						markerScript.SetLastDate(lastDate);
+
+						
+					}else{
+						Debug.Log("nie znalazł");
+					}
+
 					dogSpotStatus.text = "instance";
 					instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i], true);
 					dogSpotStatus.text = "localPosition";
@@ -176,7 +209,7 @@
 			// Wysłanie zapytania do serwera
 			UnityWebRequest request = UnityWebRequest.Get(url);
 			yield return request.SendWebRequest();
-			// Debug.Log("poszło zapytanie");
+			Debug.Log("poszło zapytanie");
 			dogSpotStatus.text = "poszło zapytanie";
 			// Sprawdzenie czy wystąpił błąd
 			if (request.result != UnityWebRequest.Result.Success)
@@ -188,7 +221,7 @@
 			dogSpotStatus.text = "Sukcess";
 			 // Pobranie odpowiedzi w formie JSON
 			string jsonResponse = request.downloadHandler.text;
-			// Debug.Log("Jest json" + jsonResponse);
+			Debug.Log("Jest json" + jsonResponse);
 			dogSpotStatus.text = "Jest json" + jsonResponse;
 			// Przetworzenie JSON na listę obiektów
 			dataObjects = JsonConvert.DeserializeObject<List<DataObject>>(jsonResponse); // Użyj JsonConvert.DeserializeObject
@@ -198,7 +231,7 @@
 			// Debug.Log(dataObjects);
 			// dogSpotStatus.text = dataObjects;
 			_locations = new Vector2d[dataObjects.Count];
-			// Debug.Log(_locations);
+			Debug.Log(_locations);
 			dogSpotStatus.text = "_locations";
 			// _spawnedObjects = new List<GameObject>();
 			// Przykładowe wykorzystanie pobranych danych
@@ -210,12 +243,18 @@
 				var instance = Instantiate(_markerPrefab);
 				instance.name = dataObject.name;
 
+				Debug.Log(instance.name);
+
 				// Przekazanie id jako parametru do skryptu obiektu
 				var markerScript = instance.GetComponent<ClickDogSpot>(); // Zastąp "YourMarkerScript" rzeczywistą nazwą skryptu
 				if (markerScript != null)
 				{
 					markerScript.SetId(dataObject.id);
+					Debug.Log(dataObject.id);
 					Debug.Log("znalazł");
+					
+					string lastDate = LoadVisitedDogSpots(int.Parse(dataObject.id));
+					markerScript.SetLastDate(lastDate);
 				}else{
 					Debug.Log("nie znalazł");
 				}
@@ -263,6 +302,8 @@
 		}
 	}
 
+
+	
 
 	[System.Serializable]
 	public class DataObject
