@@ -54,11 +54,6 @@ public class GlobalData : MonoBehaviour
         StartCoroutine(UpdateDataFromAPI());
     }
 
-    public void LogOut()
-    {
-        SceneManager.LoadSceneAsync(0);
-    }
-
     IEnumerator UpdateDataFromAPI()
     {
         // URL do API

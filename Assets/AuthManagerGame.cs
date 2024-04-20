@@ -112,6 +112,12 @@ public class AuthManagerGame : MonoBehaviour
         }
     }
 
+    public void LogOut()
+    {
+        auth.SignOut();
+        SceneManager.LoadSceneAsync(0);
+    }
+
 
     public string GetUsernameFromEmail(string email)
     {
