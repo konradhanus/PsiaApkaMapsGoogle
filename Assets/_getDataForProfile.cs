@@ -7,14 +7,19 @@ using Newtonsoft.Json; // Dodaj referencję do biblioteki Newtonsoft.Json
 
 public class DogSpotCounter : MonoBehaviour
 {
-    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1"; 
     public TextMeshProUGUI counterText; 
 
     private string baseUrl = "https://psiaapka.pl/getmydogspot.php?user_id=";
     private List<string> dogSpotIds = new List<string>();
+    public string userId;
+    private FirebaseAuthManager authManager;
 
     private void Start()
     {
+        authManager = new FirebaseAuthManager();
+        // Wykonaj call do API i zaktualizuj dane
+        userId = ReferencesUserFirebase.userId;
+        print("Player Id:" + userId);
         StartCoroutine(GetDogSpots());
     }
 
