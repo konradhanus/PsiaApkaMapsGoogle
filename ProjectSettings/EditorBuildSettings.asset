@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/BEHealthKit/Example/Full Test Scene.unity
     guid: cf2be9da2fa594c5586590252c5dd629
-  - enabled: 1
+  - enabled: 0
     path: Assets/BEHealthKit/Example/Simple Test Scene.unity
     guid: 08df81dabcc074ff6860e00fda2a7166
   - enabled: 1

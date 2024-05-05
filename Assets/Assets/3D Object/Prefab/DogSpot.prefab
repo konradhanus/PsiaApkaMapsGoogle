@@ -724,7 +724,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d4b18690cd84144a19b770ee72084583,
         type: 3}
       propertyPath: m_Name
-      value: DogGym
+      value: DogSpot
       objectReference: {fileID: 0}
     - target: {fileID: 1365132098506396400, guid: d4b18690cd84144a19b770ee72084583,
         type: 3}
