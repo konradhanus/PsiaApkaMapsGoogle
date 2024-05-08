@@ -42,16 +42,28 @@ public class DogSpotCounter : MonoBehaviour
         // Parsowanie danych JSON z użyciem Newtonsoft.Json
         DogSpotData[] dogSpotDataArray = JsonConvert.DeserializeObject<DogSpotData[]>(jsonString);
         
+        dogSpotIds.Clear(); // Wyczyszczenie listy przed dodaniem nowych danych
+
         // Wczytanie danych o odwiedzonych dogspotach
         foreach (DogSpotData data in dogSpotDataArray)
         {
             dogSpotIds.Add(data.dog_spot_id);
         }
 
-        // Aktualizacja licznika i pola TextMeshPro
+        UpdateCounter();
+    }
+
+
+    public void RefreshDogSpots()
+    {
+        StartCoroutine(GetDogSpots());
+    }
+
+    private void UpdateCounter()
+    {
         int dogSpotCount = dogSpotIds.Count;
         Debug.Log("Liczba odwiedzonych dogspotów: " + dogSpotCount);
-        counterText.text = ""+dogSpotCount;
+        counterText.text = dogSpotCount.ToString();
     }
 
     // Struktura danych do parsowania JSON
