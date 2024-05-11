@@ -44,7 +44,7 @@
     	private float longitudeGPS;
 		
 		// Adres URL endpointu
-		string endpointURL = "https://psiaapka.pl/psiaapka/dogspots.php";
+		public string endpointURL = "https://psiaapka.pl/psiaapka/dogspots.php";
 
 		private const string VisitedDogSpotId = "VisitedDogSpotId";
 		private string LoadVisitedDogSpots(int id)
