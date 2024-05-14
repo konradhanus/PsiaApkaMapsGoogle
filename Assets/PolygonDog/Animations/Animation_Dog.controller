@@ -60,7 +60,7 @@ AnimatorController:
   - m_Name: AttackType_int
     m_Type: 3
     m_DefaultFloat: 0
-    m_DefaultInt: 0
+    m_DefaultInt: 2
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: TurnAngle_int
@@ -6698,8 +6698,8 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Falling
-  m_Speed: 1
-  m_CycleOffset: 0
+  m_Speed: 3
+  m_CycleOffset: 1
   m_Transitions:
   - {fileID: 1101198127140114572}
   - {fileID: 1101699708503240386}
@@ -6718,7 +6718,7 @@ AnimatorState:
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: Movement_f
 --- !u!1102 &1102489685550728314
 AnimatorState:
   serializedVersion: 6
@@ -8471,7 +8471,7 @@ AnimatorStateMachine:
     m_Position: {x: 48, y: 156, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102489685550728314}
-    m_Position: {x: -168, y: 216, z: 0}
+    m_Position: {x: -170, y: 220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102126646486593454}
     m_Position: {x: 48, y: 216, z: 0}
