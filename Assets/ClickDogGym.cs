@@ -31,7 +31,7 @@ public class ClickDogGym : MonoBehaviour
                 if (clickCount == maxClicks)
                 {
                     // Przenieś na scenę nr 4
-                    SceneManager.LoadSceneAsync(1);
+                    SceneManager.LoadSceneAsync(3);
                 }
 
                 // Wyłącz menu
