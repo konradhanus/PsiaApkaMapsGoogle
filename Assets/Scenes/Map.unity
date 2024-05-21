@@ -869,6 +869,20 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2395578754957192973}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &164125067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164125066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13eac28f41c34ee47bf7ead662d79228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuToDisable: {fileID: 1973167125}
+  menuToEnable: {fileID: 115365363}
 --- !u!1 &187240729
 GameObject:
   m_ObjectHideFlags: 0
@@ -21482,6 +21496,11 @@ PrefabInstance:
       objectReference: {fileID: 1093449731}
     - target: {fileID: 7829681848822748473, guid: 516e07caaf294490baa90be2e4a2f2fa,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7829681848822748473, guid: 516e07caaf294490baa90be2e4a2f2fa,
+        type: 3}
       propertyPath: menuToEnable
       value: 
       objectReference: {fileID: 115365363}
@@ -21498,7 +21517,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3789837065894539519, guid: 516e07caaf294490baa90be2e4a2f2fa,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 164125067}
   m_SourcePrefab: {fileID: 100100000, guid: 516e07caaf294490baa90be2e4a2f2fa, type: 3}
 --- !u!1001 &3114257039797110354
 PrefabInstance:
