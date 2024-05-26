@@ -1602,6 +1602,7 @@ MonoBehaviour:
   stopDistance: 5
   stopDistanceFromStart: 5
   distanceText: {fileID: 1214935251}
+  hasReachedBall: 0
 --- !u!54 &1579565414
 Rigidbody:
   m_ObjectHideFlags: 0

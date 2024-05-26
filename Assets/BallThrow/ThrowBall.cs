@@ -23,6 +23,7 @@ public class ThrowBall : MonoBehaviour
     private Vector3 rotationDamping = new Vector3(0.95f, 0.95f, 0.95f); // Damping factor for rotation
 
     Rigidbody rb;
+    public Animator dogAnimator; // Dodanie Animatora psa
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,10 @@ public class ThrowBall : MonoBehaviour
         startPos = Input.mousePosition;
         previousMousePos = startPos;
         holding = true;
+        if (dogAnimator != null)
+        {
+            dogAnimator.SetBool("AttackReady_b", true);
+        }
     }
 
     private void OnMouseDrag()
@@ -64,7 +69,14 @@ public class ThrowBall : MonoBehaviour
             rb.useGravity = true;
             holding = false;
             thrown = true;
-            Invoke("ResetBall", 4f);
+
+            // Ustawienie parametru animacji psa
+            if (dogAnimator != null)
+            {
+                dogAnimator.SetBool("AttackReady_b", false);
+            }
+
+            Invoke("ResetBall", 5f);
         }
         else
         {

@@ -15,7 +15,7 @@ public class DogController : MonoBehaviour
     private Rigidbody rb;
     private BallController ballController;
     private Animator animator;
-    private bool hasReachedBall = false;
+    public bool hasReachedBall = false;
 
     void Start()
     {
@@ -52,19 +52,20 @@ public class DogController : MonoBehaviour
 
                     if (distance > stopDistance)
                     {
-                        //hasReachedBall = false;
-                        animator.SetFloat("Movement_f", 1f);
+                        // hasReachedBall = false;
+                        
                         Debug.Log("Piłka dotknęła ziemi. Dodawanie siły: " + direction * speed);
                         // Dodaj siłę w kierunku piłki
                         rb.AddForce(direction * speed);
+                        animator.SetFloat("Movement_f", 1f);
                     }
                     else
                     {
-                        //hasReachedBall = true;
+                        // hasReachedBall = true;
                         rb.velocity = Vector3.zero;
                         rb.angularVelocity = Vector3.zero;
                         animator.SetFloat("Movement_f", 0f);
-                        Debug.Log("Pies dotarł do piłki. Zatrzymanie ruchu i uruchomienie animacji 2.");
+                        // Debug.Log("Pies dotarł do piłki. Zatrzymanie ruchu i uruchomienie animacji 2.");
                         StartCoroutine(ExecuteAction());
                     }
                 }
