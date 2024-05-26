@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro; // Dodanie referencji do TextMeshPro
+using System.Collections; // Dodanie referencji do System.Collections
 
 public class DogController : MonoBehaviour
 {
@@ -64,6 +65,7 @@ public class DogController : MonoBehaviour
                         rb.angularVelocity = Vector3.zero;
                         animator.SetFloat("Movement_f", 0f);
                         Debug.Log("Pies dotarł do piłki. Zatrzymanie ruchu i uruchomienie animacji 2.");
+                        StartCoroutine(ExecuteAction());
                     }
                 }
                 else
@@ -93,7 +95,7 @@ public class DogController : MonoBehaviour
         {
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToStart.x, 0, directionToStart.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-
+            
             animator.SetFloat("Movement_f", 1f);
             rb.AddForce(directionToStart * speed);
         }
@@ -102,6 +104,7 @@ public class DogController : MonoBehaviour
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             animator.SetFloat("Movement_f", 0f);
+            
             Debug.Log("Pies dotarł do pozycji startowej.");
         }
     }
@@ -112,5 +115,12 @@ public class DogController : MonoBehaviour
         {
             distanceText.text = "Odległość do piłki: " + distance.ToString("F2") + " m";
         }
+    }
+
+    IEnumerator ExecuteAction()
+    {
+        animator.SetInteger("ActionType_int", 13); // Uruchomienie akcji 13
+        yield return new WaitForSeconds(1); // Czekanie 1 sekundy
+        animator.SetInteger("ActionType_int", 0); // Zmiana wartości na 0 po 1 sekundzie
     }
 }
