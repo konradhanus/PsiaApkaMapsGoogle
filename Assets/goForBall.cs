@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro; // Dodanie referencji do TextMeshPro
 
 public class DogController : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class DogController : MonoBehaviour
     public float rotationSpeed = 5f; // Prędkość rotacji psa
     public float stopDistance = 1f; // Odległość, w której pies przestaje biec
     public float stopDistanceFromStart = 5f; // Odległość, w której pies przestaje biec do punktu startowego
+    public TextMeshProUGUI distanceText; // Zmienna TextMeshPro do wyświetlania odległości
 
     private Rigidbody rb;
     private BallController ballController;
@@ -29,6 +31,9 @@ public class DogController : MonoBehaviour
     {
         if (ball != null)
         {
+            float distance = Vector3.Distance(transform.position, ball.transform.position);
+            UpdateDistanceText(distance); // Aktualizacja tekstu z odległością
+
             if (!hasReachedBall)
             {
                 // Oblicz kierunek w stronę piłki
@@ -42,31 +47,27 @@ public class DogController : MonoBehaviour
 
                 if (ballController != null && ballController.hasTouchedGround)
                 {
-                    float distance = Vector3.Distance(transform.position, ball.transform.position);
                     Debug.Log("Odległość do piłki: " + distance);
 
                     if (distance > stopDistance)
                     {
-                        // animator.SetBool("Sit_b", false);
+                        //hasReachedBall = false;
                         animator.SetFloat("Movement_f", 1f);
                         Debug.Log("Piłka dotknęła ziemi. Dodawanie siły: " + direction * speed);
                         // Dodaj siłę w kierunku piłki
-                        
                         rb.AddForce(direction * speed);
                     }
                     else
                     {
-                        hasReachedBall = true;
+                        //hasReachedBall = true;
                         rb.velocity = Vector3.zero;
                         rb.angularVelocity = Vector3.zero;
                         animator.SetFloat("Movement_f", 0f);
-                        // animator.SetBool("Sit_b", true);
                         Debug.Log("Pies dotarł do piłki. Zatrzymanie ruchu i uruchomienie animacji 2.");
                     }
                 }
                 else
                 {
-                    // Zatrzymaj animację ruchu
                     animator.SetFloat("Movement_f", 0f);
                     Debug.Log("Piłka nie dotknęła jeszcze ziemi. Pies wraca do pozycji startowej.");
                     ReturnToStartPosition();
@@ -83,7 +84,6 @@ public class DogController : MonoBehaviour
 
         if (distanceToStart > stopDistanceFromStart)
         {
-            // Zatrzymaj ruch i animację psa, gdy jest w odległości 5 metrów od punktu startowego
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             animator.SetFloat("Movement_f", 0f);
@@ -91,7 +91,6 @@ public class DogController : MonoBehaviour
         }
         else if (distanceToStart > stopDistance)
         {
-            // Oblicz rotację w stronę pozycji startowej
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToStart.x, 0, directionToStart.z));
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
@@ -103,8 +102,15 @@ public class DogController : MonoBehaviour
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             animator.SetFloat("Movement_f", 0f);
-            // animator.SetBool("Sit_b", true);
             Debug.Log("Pies dotarł do pozycji startowej.");
+        }
+    }
+
+    void UpdateDistanceText(float distance)
+    {
+        if (distanceText != null)
+        {
+            distanceText.text = "Odległość do piłki: " + distance.ToString("F2") + " m";
         }
     }
 }
