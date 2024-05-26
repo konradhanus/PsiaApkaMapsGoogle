@@ -773,7 +773,7 @@ PrefabInstance:
     - target: {fileID: 2532299419783186109, guid: 33b410bab611d4a86927beead5f6423b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -46.6
+      value: -48.1
       objectReference: {fileID: 0}
     - target: {fileID: 2532299419783186109, guid: 33b410bab611d4a86927beead5f6423b,
         type: 3}
@@ -783,7 +783,7 @@ PrefabInstance:
     - target: {fileID: 2532299419783186109, guid: 33b410bab611d4a86927beead5f6423b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 51.3
+      value: 105.1
       objectReference: {fileID: 0}
     - target: {fileID: 2532299419783186109, guid: 33b410bab611d4a86927beead5f6423b,
         type: 3}
@@ -1599,8 +1599,8 @@ MonoBehaviour:
   startPointDog: {fileID: 1050604335}
   speed: 5
   rotationSpeed: 5
-  stopDistance: 5
-  stopDistanceFromStart: 5
+  stopDistance: 3
+  stopDistanceFromStart: 3
   distanceText: {fileID: 1214935251}
   hasReachedBall: 0
 --- !u!54 &1579565414
@@ -1651,6 +1651,12 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.40100494, y: 1.0019689, z: 0.9411223}
   m_Center: {x: 0.018892195, y: 0.5022545, z: -0.029438866}
+--- !u!95 &1579565418 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3010795082958184442, guid: 4367e05a6c908bf4abb25e0d7831e1da,
+    type: 3}
+  m_PrefabInstance: {fileID: 1836771023}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1738345858
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1871,7 +1877,7 @@ PrefabInstance:
     - target: {fileID: 7017370209667145348, guid: 4367e05a6c908bf4abb25e0d7831e1da,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1932,6 +1938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MinSwipDist: 0
   MaxBallSpeed: 350
+  dogAnimator: {fileID: 1579565418}
 --- !u!54 &2018923731
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1940,7 +1947,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018923729}
   serializedVersion: 4
-  m_Mass: 15
+  m_Mass: 8
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
