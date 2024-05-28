@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ThrowBall : MonoBehaviour
 {
+
+    public GameObject ball; // GameObject piłki
+    public GameObject ball2; // GameObject piłki
     float startTime, endTime, swipeDistance, swipeTime;
     private Vector2 startPos;
     private Vector2 endPos;
@@ -76,16 +79,23 @@ public class ThrowBall : MonoBehaviour
                 dogAnimator.SetBool("AttackReady_b", false);
             }
 
+
+            StartCoroutine(ShowBallCoroutine());
             Invoke("ResetBall", 5f);
         }
         else
         {
             ResetBall();
+            ball.SetActive(true);  // Ukryj piłkę
+            ball2.SetActive(false);  // Ukryj piłkę
         }
     }
 
     void ResetBall()
     {
+        ball.SetActive(true);  // Ukryj piłkę
+        ball2.SetActive(false);  // Ukryj piłkę
+
         angle = Vector3.zero;
         endPos = Vector2.zero;
         startPos = Vector2.zero;
@@ -101,6 +111,10 @@ public class ThrowBall : MonoBehaviour
         transform.position = resetPos;
         transform.rotation = Quaternion.identity; // Reset rotation
         currentRotationSpeed = Vector3.zero; // Reset rotation speed
+        
+        ball.SetActive(true);  // Ukryj piłkę
+        ball2.SetActive(false);  // Ukryj piłkę
+
     }
 
     void PickupBall()
@@ -159,4 +173,20 @@ public class ThrowBall : MonoBehaviour
         }
         swipeTime = 0;
     }
+
+    IEnumerator ShowBallCoroutine()
+    {
+        yield return new WaitForSeconds(10f);  // Czekaj 0.5 sekundy
+
+        if (ball != null)
+        {
+            ball.SetActive(true);  // Ukryj piłkę
+        }
+
+        if (ball2 != null)
+        {
+            ball2.SetActive(false);  // Pokaż drugą piłkę
+        }
+    }
+
 }

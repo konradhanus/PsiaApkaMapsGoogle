@@ -5,10 +5,11 @@ using System.Collections; // Dodanie referencji do System.Collections
 public class DogController : MonoBehaviour
 {
     public GameObject ball; // GameObject piłki
+    public GameObject ball2; // GameObject piłki
     public GameObject startPointDog; // GameObject pozycji startowej psa
     public float speed = 5f; // Prędkość poruszania się psa
     public float rotationSpeed = 5f; // Prędkość rotacji psa
-    public float stopDistance = 1f; // Odległość, w której pies przestaje biec
+    public float stopDistance = 2f; // Odległość, w której pies przestaje biec
     public float stopDistanceFromStart = 5f; // Odległość, w której pies przestaje biec do punktu startowego
     public TextMeshProUGUI distanceText; // Zmienna TextMeshPro do wyświetlania odległości
 
@@ -57,6 +58,7 @@ public class DogController : MonoBehaviour
                         Debug.Log("Piłka dotknęła ziemi. Dodawanie siły: " + direction * speed);
                         // Dodaj siłę w kierunku piłki
                         rb.AddForce(direction * speed);
+ 
                         animator.SetFloat("Movement_f", 1f);
                     }
                     else
@@ -65,8 +67,12 @@ public class DogController : MonoBehaviour
                         rb.velocity = Vector3.zero;
                         rb.angularVelocity = Vector3.zero;
                         animator.SetFloat("Movement_f", 0f);
+
                         // Debug.Log("Pies dotarł do piłki. Zatrzymanie ruchu i uruchomienie animacji 2.");
+                        StartCoroutine(HideAndShowBallCoroutine());
+                      
                         StartCoroutine(ExecuteAction());
+
                     }
                 }
                 else
@@ -81,6 +87,7 @@ public class DogController : MonoBehaviour
 
     void ReturnToStartPosition()
     {
+ 
         Vector3 startPosition = startPointDog.transform.position;
         Vector3 directionToStart = (startPosition - transform.position).normalized;
         float distanceToStart = Vector3.Distance(transform.position, startPosition);
@@ -121,7 +128,24 @@ public class DogController : MonoBehaviour
     IEnumerator ExecuteAction()
     {
         animator.SetInteger("ActionType_int", 13); // Uruchomienie akcji 13
-        yield return new WaitForSeconds(1); // Czekanie 1 sekundy
+        yield return new WaitForSeconds(1);
+
         animator.SetInteger("ActionType_int", 0); // Zmiana wartości na 0 po 1 sekundzie
     }
+
+    IEnumerator HideAndShowBallCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);  // Czekaj 0.5 sekundy
+
+        if (ball != null)
+        {
+            ball.SetActive(false);  // Ukryj piłkę
+        }
+
+        if (ball2 != null)
+        {
+            ball2.SetActive(true);  // Pokaż drugą piłkę
+        }
+    }
+
 }
