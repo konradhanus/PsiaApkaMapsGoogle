@@ -1,0 +1,119 @@
+{
+  "project_info": {
+    "project_number": "508224690915",
+    "firebase_url": "https://psiaapka.firebaseio.com",
+    "project_id": "psiaapka",
+    "storage_bucket": "psiaapka.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508224690915:android:c66b83cbe671365bea03d6",
+        "android_client_info": {
+          "package_name": "com.HanusCommercialArts.Gooutdog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508224690915-gog4avhqdbb80n6apoe4egdqnd6g3jed.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVBACh04JRir0k5I9tA_y4lYVPfnh9Vl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508224690915-gog4avhqdbb80n6apoe4egdqnd6g3jed.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "508224690915-3joi438g9tq7uj50sj5gri7cimgfqnm2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hanuscommercialarts.pisaapka"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508224690915:android:809b5b798444fdafea03d6",
+        "android_client_info": {
+          "package_name": "com.hanuscommercialarts.dogapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508224690915-gog4avhqdbb80n6apoe4egdqnd6g3jed.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVBACh04JRir0k5I9tA_y4lYVPfnh9Vl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508224690915-gog4avhqdbb80n6apoe4egdqnd6g3jed.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "508224690915-3joi438g9tq7uj50sj5gri7cimgfqnm2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hanuscommercialarts.pisaapka"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508224690915:android:bf3f4d20d8d939dcea03d6",
+        "android_client_info": {
+          "package_name": "com.hanuscommercialarts.psiaapka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508224690915-gog4avhqdbb80n6apoe4egdqnd6g3jed.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVBACh04JRir0k5I9tA_y4lYVPfnh9Vl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508224690915-gog4avhqdbb80n6apoe4egdqnd6g3jed.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "508224690915-3joi438g9tq7uj50sj5gri7cimgfqnm2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hanuscommercialarts.pisaapka"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
