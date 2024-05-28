@@ -27,6 +27,7 @@ public class SliderController : MonoBehaviour
     public void UpdateProgress()
     {
         progress++;
+        progress++;
         slider.value = progress;
         Debug.Log("progress " + progress);
 
