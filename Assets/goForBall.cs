@@ -60,26 +60,31 @@ public class DogController : MonoBehaviour
                         rb.AddForce(direction * speed);
  
                         animator.SetFloat("Movement_f", 1f);
+                        
                     }
                     else
                     {
+                        Debug.Log("Piłka w pysku psa");
                         // hasReachedBall = true;
                         rb.velocity = Vector3.zero;
                         rb.angularVelocity = Vector3.zero;
                         animator.SetFloat("Movement_f", 0f);
 
                         // Debug.Log("Pies dotarł do piłki. Zatrzymanie ruchu i uruchomienie animacji 2.");
-                        StartCoroutine(HideAndShowBallCoroutine());
-                      
+                        //StartCoroutine(HideAndShowBallCoroutine());
+
+
+                        ball.SetActive(false);  // Ukryj piłkę 1
+                        ball2.SetActive(true);  // Pokaz piłkę 2
                         StartCoroutine(ExecuteAction());
 
                     }
                 }
                 else
                 {
-                    animator.SetFloat("Movement_f", 0f);
-                    Debug.Log("Piłka nie dotknęła jeszcze ziemi. Pies wraca do pozycji startowej.");
-                    ReturnToStartPosition();
+                   animator.SetFloat("Movement_f", 0f);
+                   ReturnToStartPosition();
+                   
                 }
             }
         }
@@ -114,6 +119,8 @@ public class DogController : MonoBehaviour
             animator.SetFloat("Movement_f", 0f);
             
             Debug.Log("Pies dotarł do pozycji startowej.");
+    
+            animator.SetInteger("ActionType_int", 0);
         }
     }
 
@@ -129,23 +136,12 @@ public class DogController : MonoBehaviour
     {
         animator.SetInteger("ActionType_int", 13); // Uruchomienie akcji 13
         yield return new WaitForSeconds(1);
-
+       
         animator.SetInteger("ActionType_int", 0); // Zmiana wartości na 0 po 1 sekundzie
     }
 
-    IEnumerator HideAndShowBallCoroutine()
-    {
-        yield return new WaitForSeconds(0.5f);  // Czekaj 0.5 sekundy
 
-        if (ball != null)
-        {
-            ball.SetActive(false);  // Ukryj piłkę
-        }
+   
 
-        if (ball2 != null)
-        {
-            ball2.SetActive(true);  // Pokaż drugą piłkę
-        }
-    }
 
 }

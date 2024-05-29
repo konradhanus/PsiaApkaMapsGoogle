@@ -67,7 +67,7 @@ public class ThrowBall : MonoBehaviour
             CalSpeed();
             CalAngle();
             Debug.Log(angle);
-            rb.AddForce(new Vector3((angle.x * BallSpeed * 2 * 2), (angle.y * BallSpeed * 1.5f), (-angle.z * BallSpeed * 2)));
+            rb.AddForce(new Vector3((angle.x * BallSpeed * 2 * 2), (angle.y * BallSpeed ), (-angle.z * BallSpeed * 2)));
             rb.angularVelocity = currentRotationSpeed; // Preserve rotational velocity
             rb.useGravity = true;
             holding = false;
@@ -79,23 +79,18 @@ public class ThrowBall : MonoBehaviour
                 dogAnimator.SetBool("AttackReady_b", false);
             }
 
-
-            StartCoroutine(ShowBallCoroutine());
             Invoke("ResetBall", 5f);
         }
         else
         {
             ResetBall();
-            ball.SetActive(true);  // Ukryj piłkę
-            ball2.SetActive(false);  // Ukryj piłkę
+          
         }
     }
 
-    void ResetBall()
+    public void ResetBall()
     {
-        ball.SetActive(true);  // Ukryj piłkę
-        ball2.SetActive(false);  // Ukryj piłkę
-
+        Debug.Log("Reset Ball from ResetBall");
         angle = Vector3.zero;
         endPos = Vector2.zero;
         startPos = Vector2.zero;
@@ -112,8 +107,8 @@ public class ThrowBall : MonoBehaviour
         transform.rotation = Quaternion.identity; // Reset rotation
         currentRotationSpeed = Vector3.zero; // Reset rotation speed
         
-        ball.SetActive(true);  // Ukryj piłkę
-        ball2.SetActive(false);  // Ukryj piłkę
+        ball.SetActive(true);  // pokaz piłkę 1
+        ball2.SetActive(false);  // Ukryj piłkę 2
 
     }
 
@@ -165,7 +160,7 @@ public class ThrowBall : MonoBehaviour
         if (swipeTime > 0)
             BallVelocity = swipeDistance / (swipeDistance - swipeTime);
 
-        BallSpeed = BallVelocity * 40;
+        BallSpeed = BallVelocity * 4;
 
         if (BallSpeed <= MaxBallSpeed)
         {
@@ -174,19 +169,5 @@ public class ThrowBall : MonoBehaviour
         swipeTime = 0;
     }
 
-    IEnumerator ShowBallCoroutine()
-    {
-        yield return new WaitForSeconds(10f);  // Czekaj 0.5 sekundy
-
-        if (ball != null)
-        {
-            ball.SetActive(true);  // Ukryj piłkę
-        }
-
-        if (ball2 != null)
-        {
-            ball2.SetActive(false);  // Pokaż drugą piłkę
-        }
-    }
 
 }
