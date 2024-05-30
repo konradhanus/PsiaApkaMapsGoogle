@@ -4,6 +4,9 @@ using System.Collections; // Dodanie referencji do System.Collections
 
 public class DogController : MonoBehaviour
 {
+
+    public int actionType = 13;
+    public bool switch3DModels = true;
     public GameObject ball; // GameObject piłki
     public GameObject ball2; // GameObject piłki
     public GameObject startPointDog; // GameObject pozycji startowej psa
@@ -73,9 +76,11 @@ public class DogController : MonoBehaviour
                         // Debug.Log("Pies dotarł do piłki. Zatrzymanie ruchu i uruchomienie animacji 2.");
                         //StartCoroutine(HideAndShowBallCoroutine());
 
-
-                        ball.SetActive(false);  // Ukryj piłkę 1
-                        ball2.SetActive(true);  // Pokaz piłkę 2
+                        if (switch3DModels)
+                        {
+                            ball.SetActive(false);  // Ukryj piłkę 1
+                            ball2.SetActive(true);  // Pokaz piłkę 2
+                        }
                         StartCoroutine(ExecuteAction());
 
                     }
@@ -134,7 +139,7 @@ public class DogController : MonoBehaviour
 
     IEnumerator ExecuteAction()
     {
-        animator.SetInteger("ActionType_int", 13); // Uruchomienie akcji 13
+        animator.SetInteger("ActionType_int", actionType); // Uruchomienie akcji 13
         yield return new WaitForSeconds(1);
        
         animator.SetInteger("ActionType_int", 0); // Zmiana wartości na 0 po 1 sekundzie
