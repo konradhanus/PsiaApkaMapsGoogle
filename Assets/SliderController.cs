@@ -30,8 +30,8 @@ public class SliderController : MonoBehaviour
         progress++;
         slider.value = progress;
         Debug.Log("progress " + progress);
-
-        if (progress >= 100 && !messageDisplayed)
+        float percentage = slider.value / slider.maxValue;
+        if (percentage >= 1.0f && !messageDisplayed)
         {
             ShowMessage();
             messageDisplayed = true; // Ustaw flagę na true po wyświetleniu komunikatu

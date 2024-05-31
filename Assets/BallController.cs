@@ -4,8 +4,20 @@ public class BallController : MonoBehaviour
 {
     public bool hasTouchedGround = false;
     public float groundHeight = 0.1f;
-    public SliderController sliderController; // Dodajemy referencję do SliderController
+    public SliderController hungerSliderController; // Dodajemy referencję do SliderController
+    public SliderController tirstySliderController; // Dodajemy referencję do SliderController
+    public GameObject ButtonStatus;
 
+    private SwitcherFoodWater buttonStatus;
+
+
+    void Start()
+    {
+        if (ButtonStatus != null)
+        {
+            buttonStatus = ButtonStatus.GetComponent<SwitcherFoodWater>();
+        }
+    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -13,9 +25,15 @@ public class BallController : MonoBehaviour
         {
             hasTouchedGround = true;
 
-            if (sliderController != null)
+            if (hungerSliderController != null && !buttonStatus.isWaterActive)
             {
-                sliderController.UpdateProgress(); // Wywołujemy metodę UpdateProgress
+                hungerSliderController.UpdateProgress(); // Wywołujemy metodę UpdateProgress
+
+            }
+
+            if (tirstySliderController != null && buttonStatus.isWaterActive)
+            {
+                tirstySliderController.UpdateProgress(); // Wywołujemy metodę UpdateProgress
 
             }
             else {

@@ -19,7 +19,7 @@ public class ThrowBall : MonoBehaviour
     private float BallSpeed = 0;
     public float MaxBallSpeed = 350;
     private Vector3 angle;
-
+    public bool freezeRotation = false; // Nowy parametr
     private bool thrown, holding;
     private Vector3 newPosition, resetPos;
     private Vector3 currentRotationSpeed;
@@ -51,7 +51,10 @@ public class ThrowBall : MonoBehaviour
     private void OnMouseDrag()
     {
         PickupBall();
-        RotateBall();
+        if (!freezeRotation)
+        {
+            RotateBall();
+        }
     }
 
     private void OnMouseUp()
@@ -68,7 +71,10 @@ public class ThrowBall : MonoBehaviour
             CalAngle();
             Debug.Log(angle);
             rb.AddForce(new Vector3((angle.x * BallSpeed * 2 * 2), (angle.y * BallSpeed ), (-angle.z * BallSpeed * 2)));
-            rb.angularVelocity = currentRotationSpeed; // Preserve rotational velocity
+            if (!freezeRotation)
+            {
+                rb.angularVelocity = currentRotationSpeed; // Preserve rotational velocity
+            }
             rb.useGravity = true;
             holding = false;
             thrown = true;
@@ -138,7 +144,7 @@ public class ThrowBall : MonoBehaviour
 
     private void Update()
     {
-        if (!holding)
+        if (!holding && !freezeRotation)
         {
             // Apply damping to slow down rotation
             currentRotationSpeed = Vector3.Scale(currentRotationSpeed, rotationDamping);
