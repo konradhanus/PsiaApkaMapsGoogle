@@ -4,7 +4,9 @@ using TMPro;
 public class SwitcherFoodWater : MonoBehaviour
 {
     public GameObject food;
+    public GameObject foodCounter;
     public GameObject water;
+    public GameObject waterCounter;
     public TextMeshProUGUI text;
     public GameObject FoodOrWater;
     public GameObject Dog;
@@ -43,15 +45,22 @@ public class SwitcherFoodWater : MonoBehaviour
         {
             text.text = "Jedzenie";
             food.SetActive(false);
+            foodCounter.SetActive(false);
+
             water.SetActive(true);
+            waterCounter.SetActive(true);
             if (rb != null)
             {
                 rb.freezeRotation = true;
+               
             }
 
             if (throwBallScript != null)
             {
                 throwBallScript.freezeRotation = true;
+                throwBallScript.isWater = true;
+                throwBallScript.isChicken = false;
+                throwBallScript.isBall = false;
             }
 
             if (dogController != null)
@@ -64,7 +73,10 @@ public class SwitcherFoodWater : MonoBehaviour
         {
             text.text = "Woda";
             food.SetActive(true);
+            foodCounter.SetActive(true);
             water.SetActive(false);
+            waterCounter.SetActive(false);
+
             if (rb != null)
             {
                 rb.freezeRotation = false;
@@ -72,6 +84,9 @@ public class SwitcherFoodWater : MonoBehaviour
             if (throwBallScript != null)
             {
                 throwBallScript.freezeRotation = false;
+                throwBallScript.isWater = false;
+                throwBallScript.isChicken = true;
+                throwBallScript.isBall = false;
             }
             if (dogController != null)
             {

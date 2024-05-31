@@ -13,6 +13,10 @@ public class ThrowBall : MonoBehaviour
     private Vector2 previousMousePos;
     private Vector2 currentMousePos;
     private float rotationSpeed = 10f;
+    public bool isBall = true;
+    public bool isWater = false;
+    public bool isChicken = false;
+    public GameObject callbackGameObject; // Nowy parametr typu GameObject
 
     public float MinSwipDist = 0;
     private float BallVelocity = 0;
@@ -64,6 +68,36 @@ public class ThrowBall : MonoBehaviour
         swipeDistance = (endPos - startPos).magnitude;
         swipeTime = endTime - startTime;
 
+        // Wywołaj metodę callback
+        if (callbackGameObject != null)
+        {
+            GetFoodData getFoodData = callbackGameObject.GetComponent<GetFoodData>();
+            if (getFoodData != null)
+            {
+                if (isBall)
+                {
+                    getFoodData.StartCoroutine(getFoodData.UpdateResource("ball", -1));
+                }
+
+                if (isWater)
+                {
+                    getFoodData.StartCoroutine(getFoodData.UpdateResource("water", -1));
+                }
+
+                if (isChicken)
+                {
+                    getFoodData.StartCoroutine(getFoodData.UpdateResource("chicken", -1));
+                }
+
+                Debug.Log("FETCH");
+            }
+            else {
+                Debug.Log("NO FETCH");
+            }
+        }
+
+        
+
         if (swipeDistance > 30f)
         {
             //throw ball
@@ -90,7 +124,7 @@ public class ThrowBall : MonoBehaviour
         else
         {
             ResetBall();
-          
+            
         }
     }
 
