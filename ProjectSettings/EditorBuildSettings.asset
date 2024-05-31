@@ -12,14 +12,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Map.unity
     guid: 846752a9ee0d94cffa198b97a04a7e5f
   - enabled: 1
-    path: Assets/Scenes/Dog.unity
-    guid: 3f48203b190d806498f6982e149da473
+    path: Assets/BallThrow/Feeding.unity
+    guid: 2e5261fd2a6bb73408f5f107a760a6e4
   - enabled: 1
     path: Assets/BallThrow/Scene01.unity
     guid: 1a9343923f5a1e0448e5b945fba2d14c
   - enabled: 1
     path: Assets/Scenes/PlatformGame.unity
     guid: 3c1ef625366104699ac3b78b81b91f38
+  - enabled: 1
+    path: Assets/Scenes/Dog.unity
+    guid: 3f48203b190d806498f6982e149da473
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 484fbebaad686490daf465e8e94929a9,
       type: 2}
