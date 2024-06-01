@@ -20,8 +20,16 @@ public class GlobalData : MonoBehaviour
     public int chicken = 0;
     public int ball = 0;
     public int water = 0;
-    public string userId;
+    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
     private FirebaseAuthManager authManager;
+
+
+    // TextMeshPro references
+    public TextMeshProUGUI chickenText;
+    public TextMeshProUGUI diamondText;
+    public TextMeshProUGUI waterText;
+    public TextMeshProUGUI ballText;
+    public TextMeshProUGUI coinText;
 
     // Struktura do przechowywania danych z JSON-a
     [System.Serializable]
@@ -40,22 +48,28 @@ public class GlobalData : MonoBehaviour
         public string water;
     }
     
-    
-
     void Start()
     {
-        authManager = new FirebaseAuthManager();
-        // Wykonaj call do API i zaktualizuj dane
-        userId = ReferencesUserFirebase.userId;
- 
-        print("Player Id:" + userId);
-        logTxt.text = userId;
-        // nickName.text = ReferencesUserFirebase.userName;
+        if(debugMode)
+        {
+
+        }else{
+            authManager = new FirebaseAuthManager();
+            // Wykonaj call do API i zaktualizuj dane
+            userId = ReferencesUserFirebase.userId;
+    
+            print("Player Id:" + userId);
+            logTxt.text = userId;
+            // nickName.text = ReferencesUserFirebase.userName;
+        }
+        Debug.Log("FETCH! JESTEM PONOWNIE!");
         StartCoroutine(UpdateDataFromAPI());
     }
 
 
     public void FetchData() {
+        Debug.Log("FETCH!, fetch data");
+        Debug.Log("userId"+ userId);
         StartCoroutine(UpdateDataFromAPI());
     }
     IEnumerator UpdateDataFromAPI()
@@ -63,6 +77,7 @@ public class GlobalData : MonoBehaviour
         // URL do API
         string url = "https://psiaapka.pl/resources.php?user_id="+userId;
 
+        Debug.Log("FETCH! "+url);
         // Wykonaj call do API
         UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
@@ -81,6 +96,7 @@ public class GlobalData : MonoBehaviour
         // Aktualizuj dane na podstawie otrzymanego JSON-a
         if (dataResponse != null && dataResponse.data.Length > 0)
         {
+            Debug.Log("FETCH!");
             UpdateData(int.Parse(dataResponse.data[0].gold), int.Parse(dataResponse.data[0].diamond), int.Parse(dataResponse.data[0].chicken), int.Parse(dataResponse.data[0].ball), int.Parse(dataResponse.data[0].water));
         }
         else
@@ -89,30 +105,37 @@ public class GlobalData : MonoBehaviour
         }
     }
 
-    void Awake()
-    {
-        // Sprawdź, czy istnieje już instancja tego obiektu
-        if (Instance == null)
-        {
-            // Jeśli nie, ustaw ten obiekt jako instancję
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            // Jeśli instancja już istnieje, zniszcz ten obiekt, aby uniknąć duplikatów
-            Destroy(gameObject);
-        }
-    }
+    // void Awake()
+    // {
+    //     // Sprawdź, czy istnieje już instancja tego obiektu
+    //     if (Instance == null)
+    //     {
+    //         // Jeśli nie, ustaw ten obiekt jako instancję
+    //         Instance = this;
+    //         DontDestroyOnLoad(gameObject);
+    //     }
+    //     else
+    //     {
+    //         // Jeśli instancja już istnieje, zniszcz ten obiekt, aby uniknąć duplikatów
+    //         Destroy(gameObject);
+    //     }
+    // }
 
     // Metoda do aktualizacji danych z odpowiedzi API
     public void UpdateData(int newGold, int newDiamond, int newChicken, int newBall, int newWater)
     {
+        Debug.Log("FETCH! gold:"+newGold+", diamond:"+newDiamond+", chicken: "+newChicken+", ball:"+newBall+", water:"+newWater);
         gold = newGold;
         diamond = newDiamond;
         chicken = newChicken;
         ball = newBall;
         water = newWater;
+
+        chickenText.text = chicken.ToString();
+        diamondText.text = diamond.ToString();
+        waterText.text =  water.ToString();
+        ballText.text =  ball.ToString();
+        coinText.text =  gold.ToString();
     }
 
      // Metoda do odczytywania danych
