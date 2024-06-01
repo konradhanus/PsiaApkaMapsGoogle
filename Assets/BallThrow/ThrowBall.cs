@@ -72,12 +72,19 @@ public class ThrowBall : MonoBehaviour
         if (callbackGameObject != null)
         {
             GetFoodData getFoodData = callbackGameObject.GetComponent<GetFoodData>();
-            if (getFoodData != null)
-            {
+            GetBallNew getBall = callbackGameObject.GetComponent<GetBallNew>();
+
+            if(getBall != null)
+            { 
                 if (isBall)
                 {
-                    getFoodData.StartCoroutine(getFoodData.UpdateResource("ball", -1));
+                    getBall.StartCoroutine(getBall.UpdateResource("ball", -1));
                 }
+            }
+
+            if (getFoodData != null)
+            {
+              
 
                 if (isWater)
                 {

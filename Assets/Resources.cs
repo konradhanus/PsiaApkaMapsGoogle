@@ -54,6 +54,10 @@ public class GlobalData : MonoBehaviour
         StartCoroutine(UpdateDataFromAPI());
     }
 
+
+    public void FetchData() {
+        StartCoroutine(UpdateDataFromAPI());
+    }
     IEnumerator UpdateDataFromAPI()
     {
         // URL do API

@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 using TMPro;
 
 [System.Serializable]
-public class ResourceDataBall
+public class ResourceData
 {
     public string gold;
     public string diamond;
@@ -15,18 +15,17 @@ public class ResourceDataBall
 }
 
 [System.Serializable]
-public class ResourceResponseBall
+public class ResourceResponse
 {
-    public List<ResourceDataBall> data;
+    public List<ResourceData> data;
 }
 
-public class GetFoodData : MonoBehaviour
+public class GetBall : MonoBehaviour
 {
     private string url = "https://psiaapka.pl/resources.php?user_id=eOexsqawm4YO9GhnmYT9Ka7RbRq1";
     private string updateUrl = "https://psiaapka.pl/resourcesUtilizate.php?user_id=eOexsqawm4YO9GhnmYT9Ka7RbRq1&resources_name={0}&resources_quantity={1}";
 
-    public TextMeshProUGUI textChicken;
-    public TextMeshProUGUI textWater;
+    public TextMeshProUGUI textBall;
 
     void Start()
     {
@@ -37,22 +36,24 @@ public class GetFoodData : MonoBehaviour
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
+            // Send the request and wait for a response
             yield return webRequest.SendWebRequest();
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            if (webRequest.isNetworkError || webRequest.isHttpError)
             {
                 Debug.LogError("Error fetching data: " + webRequest.error);
             }
             else
             {
-                ResourceResponseBall resourceResponse = JsonUtility.FromJson<ResourceResponseBall>(webRequest.downloadHandler.text);
+                // Parse the response
+                ResourceResponse resourceResponse = JsonUtility.FromJson<ResourceResponse>(webRequest.downloadHandler.text);
                 HandleData(resourceResponse);
                 Debug.Log("FETCH YES");
             }
         }
     }
 
-    void HandleData(ResourceResponseBall resourceResponse)
+    void HandleData(ResourceResponse resourceResponse)
     {
         foreach (var data in resourceResponse.data)
         {
@@ -62,15 +63,12 @@ public class GetFoodData : MonoBehaviour
             Debug.Log("Ball: " + data.ball);
             Debug.Log("Water: " + data.water);
 
-            if (textChicken != null)
+            // Assign values to TextMeshPro text fields
+            if (textBall != null)
             {
-                textChicken.text = data.chicken;
+                textBall.text = data.chicken;
             }
 
-            if (textWater != null)
-            {
-                textWater.text = data.water;
-            }
         }
     }
 
@@ -80,15 +78,17 @@ public class GetFoodData : MonoBehaviour
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(formattedUrl))
         {
+            // Send the request and wait for a response
             yield return webRequest.SendWebRequest();
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            if (webRequest.isNetworkError || webRequest.isHttpError)
             {
                 Debug.LogError("Error updating resource: " + webRequest.error);
             }
             else
             {
-                ResourceResponseBall resourceResponse = JsonUtility.FromJson<ResourceResponseBall>(webRequest.downloadHandler.text);
+                // Parse the response
+                ResourceResponse resourceResponse = JsonUtility.FromJson<ResourceResponse>(webRequest.downloadHandler.text);
                 HandleData(resourceResponse);
             }
         }
