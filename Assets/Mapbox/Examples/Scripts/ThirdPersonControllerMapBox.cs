@@ -85,6 +85,11 @@ namespace StarterAssets
         [SerializeField] public Text SpeedValue;
         public bool LockCameraPosition = false;
 
+        public GameObject dog;
+        private Animator _dogAnimator; // Animator dla psa
+        private bool _hasDogAnimator; // Flaga dla animatora psa
+        private Vector3 _dogInitialPosition; // Zmienna do przechowywania początkowej pozycji psa
+
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -179,6 +184,16 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+
+
+            // Inicjalizacja animatora dla psa
+            if (dog != null)
+            {
+                _dogAnimator = dog.GetComponent<Animator>();
+                _hasDogAnimator = _dogAnimator != null;
+                _dogInitialPosition = dog.transform.position; // Zapamiętanie początkowej pozycji psa
+            }
+
         }
 
         private void Update()
@@ -341,11 +356,20 @@ namespace StarterAssets
                     _animator.SetFloat(_animIDSpeed, speed);
                     _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
                 }
+
+                // Ustawianie wartości dla animatora psa
+                if (_hasDogAnimator)
+                {
+                    _dogAnimator.SetFloat("Movement_f", speed/10);
+                    
+                    dog.transform.position = new Vector3(transform.position.x + 0.621f, transform.position.y + 0.024f, transform.position.z);
+                }
+
             }else{
                 if (_hasAnimator)
                 {
-                    _animator.SetFloat(_animIDSpeed, _animationBlend);
-                    _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
+                    _dogAnimator.SetFloat("Movement_f", _animationBlend/10);
+                     dog.transform.position = new Vector3(transform.position.x + 0.621f, transform.position.y + 0.024f, transform.position.z);
                 }
             }
         }
