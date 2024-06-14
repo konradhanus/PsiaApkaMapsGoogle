@@ -9,6 +9,9 @@ using System;
 
 public class ClickDogSpot : MonoBehaviour
 {
+    private static bool isClicked = false; // Statyczna zmienna, aby przechowywać stan kliknięcia
+    private static GameObject clickedObject = null; // Statyczna zmienna do przechowywania obiektu, który zablokował kliknięcia
+
     private string userId;
     private long lastDate;
     private string prevUserId;
@@ -191,9 +194,20 @@ public class ClickDogSpot : MonoBehaviour
         // Sprawdź, czy zostało kliknięte lub dotknięte
         if (Input.GetMouseButtonDown(0))
         {
+             // Jeśli już kliknięto, zablokuj dalsze kliknięcia
+            if (isClicked && clickedObject != dogspot)
+            {
+                return;
+            }
+            
+            
             // Pobierz kliknięty obiekt
             if (dogspot == getClickedObject(out RaycastHit hit))
             {
+                // Ustaw, że zaznaczyło dogspot aby uniemozliwić zaznaczanie innego
+                isClicked = true;
+                clickedObject = dogspot;
+
                 if(!string.IsNullOrEmpty(id))
                 {
                     Debug.Log("AAA DogSpot Id:"+id);
@@ -247,6 +261,13 @@ public class ClickDogSpot : MonoBehaviour
                 }
             }
         }
+    }
+
+    public static void ResetClick()
+    {
+        // Debug.Log("RESET CLICK");
+        isClicked = false;
+        clickedObject = null;
     }
 
     IEnumerator SendRequest()
