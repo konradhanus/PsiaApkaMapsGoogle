@@ -253,6 +253,16 @@ public class ClickDogSpot : MonoBehaviour
                 // Ustaw priorytet kamery na 50
                 virtualCamera.Priority = 50;
 
+                // Pobranie aktualnej pozycji dogspot
+                Vector3 dogspotPosition = dogspot.transform.position;
+                Vector3 virutalCameraPosition = virtualCamera.transform.position;
+                
+                // Dodanie przesunięcia o x: 20, y: 10
+                Vector3 cameraPosition = new Vector3(dogspotPosition.x + 3, 2, dogspotPosition.z + 3);
+                
+                // Ustawienie nowej pozycji kamery
+                virtualCamera.transform.position = cameraPosition;
+
                 // Wyłącz menu
                 if (menuToDisable != null)
                 {
