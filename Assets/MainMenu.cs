@@ -10,6 +10,14 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadSceneAsync(1);
     }
 
+    // public void ResetScene()
+    // {
+    //     // Pobierz nazwę aktualnej sceny
+    //     string currentSceneName = SceneManager.GetActiveScene().name;
+    //     // Załaduj ponownie tę scenę
+    //     SceneManager.LoadScene(currentSceneName);
+    // }
+
     public void BackToMainScreen()
     {
         SceneManager.LoadSceneAsync(0);

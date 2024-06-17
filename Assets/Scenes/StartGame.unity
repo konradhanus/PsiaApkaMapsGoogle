@@ -21147,6 +21147,11 @@ PrefabInstance:
       propertyPath: Gravity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3815996742709555113, guid: 2684b4070733f4d19bc9ad08c5407ec5,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3939764892693078293, guid: 2684b4070733f4d19bc9ad08c5407ec5,
         type: 3}
       propertyPath: m_Name
@@ -21160,6 +21165,11 @@ PrefabInstance:
     - target: {fileID: 4271907950235856082, guid: 2684b4070733f4d19bc9ad08c5407ec5,
         type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4431308944498126425, guid: 2684b4070733f4d19bc9ad08c5407ec5,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8113951798701725460, guid: 2684b4070733f4d19bc9ad08c5407ec5,
