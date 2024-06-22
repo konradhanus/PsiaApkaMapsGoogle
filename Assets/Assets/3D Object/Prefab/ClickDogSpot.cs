@@ -16,6 +16,8 @@ public class ClickDogSpot : MonoBehaviour
     private long lastDate;
     private string prevUserId;
     public GameObject dogspot;
+
+    public bool isDogGym = false; 
     public Cinemachine.CinemachineVirtualCamera virtualCamera;
     public GameObject menuToDisable; // Menu do wyłączenia
     public GameObject menuToEnable; // Menu do wyłączenia
@@ -36,7 +38,7 @@ public class ClickDogSpot : MonoBehaviour
         string keyDogSpot = VisitedDogSpotId+id;
         PlayerPrefs.SetString(keyDogSpot, data);
         PlayerPrefs.Save();
-        Debug.Log("SAVE: "+data);
+        //Debug.Log("SAVE: "+data);
     }
 
     public void AddVisitedDogSpot(int dogSpotId)
@@ -98,7 +100,7 @@ public class ClickDogSpot : MonoBehaviour
     public void SetId(string newId)
     {
         id = newId;
-        Debug.Log("SET ID"+id);
+        //Debug.Log("SET ID"+id);
     }
 
     public void SetLastDate(string date)
@@ -210,18 +212,21 @@ public class ClickDogSpot : MonoBehaviour
 
                 if(!string.IsNullOrEmpty(id))
                 {
-                    Debug.Log("AAA DogSpot Id:"+id);
+                    //Debug.Log("AAA DogSpot Id:"+id);
                 }else{
-                    Debug.Log("AAA Nie ma DogSpot Id:"+id);
+                    //Debug.Log("AAA Nie ma DogSpot Id:"+id);
                 }
                 clickCount++; // Inkrementuj licznik kliknięć
 
                 if (clickCount == 3) // Jeśli kliknięto trzy razy
                 {
+                    if(!isDogGym)
+                    {
                      StartCoroutine(SendRequest());
-                     Debug.Log("AAA"+clickCount);
+                    }
+                     //Debug.Log("AAA"+clickCount);
                 // }
-                //     print("3x kliknołeś"); // Wyświetl informację w konsoli
+                    print("3x kliknołeś"); // Wyświetl informację w konsoli
 
                     // Lista przechowująca pozycje już istniejących prefabów
                     List<Vector3> usedPositions = new List<Vector3>();
@@ -284,7 +289,7 @@ public class ClickDogSpot : MonoBehaviour
     {
         
         string url = $"https://psiaapka.pl/visitdogspot.php?dog_spot_id={id}&user_id={userId}&message=test";
-        Debug.Log("AAA SendRequest: "+ url);
+        //Debug.Log("AAA SendRequest: "+ url);
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
@@ -304,32 +309,34 @@ public class ClickDogSpot : MonoBehaviour
             {
               
                 string responseText = request.downloadHandler.text;
-           
+                //Debug.Log("AAA SendRequest: response "+ responseText);
                 // Sprawdź, czy odpowiedź to JSON
                 if (responseText.StartsWith("{"))
                 {
+                    //Debug.Log("AAA SendRequest: response jestem w ");
                     DataResponse dataResponse = JsonUtility.FromJson<DataResponse>(responseText);
+                    //Debug.Log("AAA SendRequest: ZA FORMJSON ");
                     // Odpowiedź JSON
                   
-                    GlobalData.Instance.UpdateData(int.Parse(dataResponse.data[0].gold), int.Parse(dataResponse.data[0].diamond), int.Parse(dataResponse.data[0].chicken), int.Parse(dataResponse.data[0].ball), int.Parse(dataResponse.data[0].water));
-                    
+                    //GlobalData.Instance.UpdateData(int.Parse(dataResponse.data[0].gold), int.Parse(dataResponse.data[0].diamond), int.Parse(dataResponse.data[0].chicken), int.Parse(dataResponse.data[0].ball), int.Parse(dataResponse.data[0].water));
+                     //Debug.Log("AAA SendRequest: ZA GlobalData ");
                     int awardGold = dataResponse.award.gold;
                     int awardDiamond = dataResponse.award.diamond;
                     int awardBall = dataResponse.award.ball;
                     int awardWater = dataResponse.award.water;
                     int awardChicken = dataResponse.award.chicken;
-
+                   // Debug.Log("AAA SendRequest: ZA awardChicken ");
                     // Lista przechowująca pozycje już istniejących prefabów
                     List<Vector3> usedPositions = new List<Vector3>();
 
                     // Tworzenie gemów z wykorzystaniem tablicy prefabrykatów
                     GameObject dogSpotBack = GameObject.Find("DogSpotBack");
-
+                    //Debug.Log("AAA SendRequest: ZA GameObject ");
                     // Wykonaj kod tworzenia obiektów gem tylko jeśli otrzymano odpowiedź JSON
                    if(awardGold > 0)
                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
-
+                        //Debug.Log("AAA SendRequest: GOLD ");
                         // Utwórz obiekt gem w losowej pozycji
                         GameObject gem = Instantiate(gemPrefabs[1], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
                         gem.name = "Gold"; // Nadaj nazwę elementowi
@@ -344,7 +351,7 @@ public class ClickDogSpot : MonoBehaviour
                    if(awardDiamond > 0)
                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
-
+                        //Debug.Log("AAA SendRequest: DIAMOND ");
                         // Utwórz obiekt gem w losowej pozycji
                         GameObject gem = Instantiate(gemPrefabs[2], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
                         gem.name = "Gem"; // Nadaj nazwę elementowi
@@ -359,7 +366,7 @@ public class ClickDogSpot : MonoBehaviour
                    if(awardWater > 0)
                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
-
+                        //Debug.Log("AAA SendRequest: WATER ");
                         // Utwórz obiekt gem w losowej pozycji
                         GameObject gem = Instantiate(gemPrefabs[3], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
                         gem.name = "Water"; // Nadaj nazwę elementowi
@@ -374,7 +381,7 @@ public class ClickDogSpot : MonoBehaviour
                    if(awardBall > 0)
                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
-
+                        //Debug.Log("AAA SendRequest: BALL ");
                         // Utwórz obiekt gem w losowej pozycji
                         GameObject gem = Instantiate(gemPrefabs[4], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
                         gem.name = "Ball"; // Nadaj nazwę elementowi
@@ -389,7 +396,7 @@ public class ClickDogSpot : MonoBehaviour
                    if(awardChicken > 0)
                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
-
+                        //Debug.Log("AAA SendRequest: CHICKEN ");
                         // Utwórz obiekt gem w losowej pozycji
                         GameObject gem = Instantiate(gemPrefabs[5], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
                         gem.name = "Chicken"; // Nadaj nazwę elementowi
@@ -404,8 +411,9 @@ public class ClickDogSpot : MonoBehaviour
                 }
                 else
                 {
+                    //Debug.Log("AAA SendRequest: ELSE ");
                     // Odpowiedź nie jest JSON-em, nie wykonuj dodatkowych działań
-                    Debug.Log("AAA Odpowiedź nie jest w formacie JSON: " + responseText);
+                    //Debug.Log("AAA Odpowiedź nie jest w formacie JSON: " + responseText);
                     // Sprawdź, czy istnieje canvas o nazwie "Noticeboard" jako dziecko tego obiektu
                     Transform noticeboard = transform.Find("Noticeboard");
                     
