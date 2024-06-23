@@ -25,7 +25,8 @@ public class UIScript : MonoBehaviour
     {
         // Dodawanie czasu od ostatniej ramki
         elapsedTime += Time.deltaTime;
-
+        if(LoadingScreenStore.isVisible)
+        {
         // Sprawdzenie, czy minęło 5 sekund
         if (elapsedTime >= 5f && !isImageHidden)
         {
@@ -37,11 +38,15 @@ public class UIScript : MonoBehaviour
             
             // Oznacz, że obraz został ukryty, aby uniknąć wielokrotnego ustawiania tych samych wartości
             isImageHidden = true;
+            LoadingScreenStore.isVisible = false;
         }
         else if (!isImageHidden)
         {
             // Proporcjonalne wypełnianie scrollbara
             scrollbar.size = elapsedTime / 3f;
+        }
+        }else{
+           imageToHide.gameObject.SetActive(false); 
         }
     }
 }

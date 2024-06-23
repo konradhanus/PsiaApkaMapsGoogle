@@ -19,6 +19,7 @@ public class FirebaseAuthManager : MonoBehaviour
     public DependencyStatus dependencyStatus;
     public FirebaseAuth auth;
     public FirebaseUser user;
+    public GameObject blackScreen;
 
     // Login Variables
     [Space]
@@ -46,12 +47,30 @@ public class FirebaseAuthManager : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(1);
     }
+    void Start()
+    {
+        if (blackScreen != null)
+        {
+            // Uruchom Coroutine, aby wyłączyć blackScreen po 2 sekundach
+            StartCoroutine(DisableBlackScreenAfterDelay(2.0f));
+        }
+    }
 
+    private IEnumerator DisableBlackScreenAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // Czekaj przez określony czas
+        blackScreen.SetActive(false);           // Wyłącz blackScreen
+    }
+    
     void Update()
     {
         if(loogedIn)
         {
             PlayGame();
+            // black screen on
+        }else{
+            
+            //black screen off
         }
     }
 
@@ -148,7 +167,7 @@ public class FirebaseAuthManager : MonoBehaviour
                     failedMessage = "Login Failed";
                     break;
             }
-            
+            blackScreen.SetActive(false);
             // logger.text = failedMessage;
 
             Debug.Log(failedMessage);
