@@ -17648,7 +17648,7 @@ MonoBehaviour:
   _markerPrefab: {fileID: 164125066}
   dogSpotStatus: {fileID: 1659821816}
   debugMode: 0
-  endpointURL: https://psiaapka.pl/psiaapka/doggyms.php
+  endpointURL: https://psiaapka.pl/psiaapka/doggyms_v2.php
 --- !u!4 &1800136791
 Transform:
   m_ObjectHideFlags: 0
