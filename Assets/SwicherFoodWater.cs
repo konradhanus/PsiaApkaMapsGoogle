@@ -7,12 +7,17 @@ public class SwitcherFoodWater : MonoBehaviour
     public GameObject foodCounter;
     public GameObject water;
     public GameObject waterCounter;
-    public TextMeshProUGUI text;
+    // public TextMeshProUGUI text;
     public GameObject FoodOrWater;
     public GameObject Dog;
 
+    public GameObject buttonWater;
+    public GameObject buttonChicken;
+
 
     public bool isWaterActive = true;
+
+    static bool isWaterActiveStatic = true;
     private Rigidbody rb;
     private ThrowBall throwBallScript;
     private DogController dogController;
@@ -35,17 +40,22 @@ public class SwitcherFoodWater : MonoBehaviour
 
     public void SwitchButton()
     {
-        isWaterActive = !isWaterActive;
+        isWaterActiveStatic = !isWaterActiveStatic;
+        // need this for BallController
+        isWaterActive = isWaterActiveStatic;
+        buttonWater.SetActive(!isWaterActiveStatic);
+        buttonChicken.SetActive(isWaterActiveStatic);
         UpdateState();
     }
 
     private void UpdateState()
     {
-        if (isWaterActive)
+        if (isWaterActiveStatic)
         {
-            text.text = "Jedzenie";
+            //text.text = "Jedzenie";
             food.SetActive(false);
             foodCounter.SetActive(false);
+           
 
             water.SetActive(true);
             waterCounter.SetActive(true);
@@ -71,7 +81,7 @@ public class SwitcherFoodWater : MonoBehaviour
         }
         else
         {
-            text.text = "Woda";
+            //text.text = "Woda";
             food.SetActive(true);
             foodCounter.SetActive(true);
             water.SetActive(false);
