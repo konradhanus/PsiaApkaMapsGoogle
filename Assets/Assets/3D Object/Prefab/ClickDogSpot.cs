@@ -16,7 +16,7 @@ public class ClickDogSpot : MonoBehaviour
     private long lastDate;
     private string prevUserId;
     public GameObject dogspot;
-
+    public GameObject PlayerArmature;
     public bool isDogGym = false; 
     public Cinemachine.CinemachineVirtualCamera virtualCamera;
     public GameObject menuToDisable; // Menu do wyłączenia
@@ -196,6 +196,9 @@ public class ClickDogSpot : MonoBehaviour
         // Sprawdź, czy zostało kliknięte lub dotknięte
         if (Input.GetMouseButtonDown(0))
         {
+
+           
+
              // Jeśli już kliknięto, zablokuj dalsze kliknięcia
             if (isClicked && clickedObject != dogspot)
             {
@@ -206,6 +209,11 @@ public class ClickDogSpot : MonoBehaviour
             // Pobierz kliknięty obiekt
             if (dogspot == getClickedObject(out RaycastHit hit))
             {
+                CloseInfoBar();
+                Transform infoBar = transform.Find("InfoBar");
+                
+                  
+
                 // Ustaw, że zaznaczyło dogspot aby uniemozliwić zaznaczanie innego
                 isClicked = true;
                 clickedObject = dogspot;
@@ -218,7 +226,24 @@ public class ClickDogSpot : MonoBehaviour
                 }
                 clickCount++; // Inkrementuj licznik kliknięć
 
-                if (clickCount == 3) // Jeśli kliknięto trzy razy
+                if (Vector3.Distance(PlayerArmature.transform.position, transform.position) > 4f)
+                {
+                                    
+                                    
+                    if (infoBar != null)
+                    {
+                        infoBar.gameObject.SetActive(true);
+                    }
+                                    
+                    // Debug.Log("za daleko" + Vector3.Distance(PlayerArmature.transform.position, transform.position));
+                }else
+                {
+                    // Debug.Log("za blisko" + Vector3.Distance(PlayerArmature.transform.position, transform.position));
+                    if (infoBar != null)
+                    {
+                        infoBar.gameObject.SetActive(false);
+                    }
+                    if (clickCount == 3) // Jeśli kliknięto trzy razy
                 {
                     if(!isDogGym)
                     {
@@ -250,7 +275,9 @@ public class ClickDogSpot : MonoBehaviour
 
                      clickCount = 0; // Zresetuj licznik kliknięć
                 }
-
+                
+                }
+                
                 currentRotationSpeed = fastRotationSpeedMultiplier * rotationSpeed; // Ustaw prędkość na szybką prędkość obrotu
                 currentDecelerationTime = 0f; // Zresetuj czas opóźnienia
 
@@ -274,7 +301,7 @@ public class ClickDogSpot : MonoBehaviour
                     menuToDisable.SetActive(false);
                     menuToEnable.SetActive(true);
                 }
-            }
+            } 
         }
     }
 
@@ -449,6 +476,23 @@ public class ClickDogSpot : MonoBehaviour
                 {
                     // Ustaw canvas na nieaktywny
                     noticeboard.gameObject.SetActive(false);
+                }
+            }
+    }
+
+    public void CloseInfoBar()
+    {
+         // Znajdź wszystkie canvasy o nazwie "Noticeboard" na planszy
+            Canvas[] infobars = FindObjectsOfType<Canvas>();
+
+            // Przejdź przez wszystkie znalezione canvasy
+            foreach (Canvas infobar in infobars)
+            {
+                // Sprawdź, czy canvas ma nazwę "Noticeboard"
+                if (infobar.gameObject.name == "InfoBar")
+                {
+                    // Ustaw canvas na nieaktywny
+                    infobar.gameObject.SetActive(false);
                 }
             }
     }
