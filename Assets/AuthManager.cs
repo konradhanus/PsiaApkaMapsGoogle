@@ -11,6 +11,7 @@ using Firebase;
 using Firebase.Auth;
 
 using TMPro;
+using UnityEngine.Networking;
 
 public class FirebaseAuthManager : MonoBehaviour
 {
@@ -120,6 +121,7 @@ public class FirebaseAuthManager : MonoBehaviour
             if (signedIn)
             {
                 Debug.Log("AuthStateChanged Signed in " + user.UserId);
+                Debug.Log("USER2:" + user.UserId);
                 loogedIn = true;
 
             }
@@ -199,6 +201,26 @@ public class FirebaseAuthManager : MonoBehaviour
         StartCoroutine(RegisterAsync(nameRegisterField.text, emailRegisterField.text, passwordRegisterField.text, confirmPasswordRegisterField.text));
     }
 
+    // Coroutine do wysyłania danych do endpointu
+    private IEnumerator SendRegistrationData(string UUID, string nick)
+    {
+        string url = $"https://psiaapka.pl/psiaapka/create_user_account.php?id_avatar=1&id_avatar_dog=1&nick={nick}&UUID={UUID}";
+
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("USER Error while sending data: " + webRequest.error);
+            }
+            else
+            {
+                Debug.Log("USER Data successfully sent: " + webRequest.downloadHandler.text);
+            }
+        }
+    }
+
     private IEnumerator RegisterAsync(string name, string email, string password, string confirmPassword)
     {
         if (name == "")
@@ -259,6 +281,9 @@ public class FirebaseAuthManager : MonoBehaviour
                 UserProfile userProfile = new UserProfile { DisplayName = name };
 
                 var updateProfileTask = user.UpdateUserProfileAsync(userProfile);
+                Debug.Log("USER JUST AFTER REGISTER" + user.UserId);
+
+                StartCoroutine(SendRegistrationData(user.UserId, name));
 
                 yield return new WaitUntil(() => updateProfileTask.IsCompleted);
 
@@ -299,6 +324,8 @@ public class FirebaseAuthManager : MonoBehaviour
                 {
                     Debug.Log("Registration Sucessful Welcome " + user.DisplayName);
                     logger.text = "Registration Sucessful Welcome " + user.DisplayName;
+
+                    Debug.Log("USER" + user);
                     SuccessScreen.SetActive(true);
                     LoginScreen.SetActive(false);
                     // UIManager.Instance.OpenLoginPanel();
