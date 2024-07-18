@@ -44,6 +44,11 @@ public class FirebaseAuthManager : MonoBehaviour
 
     bool loogedIn = false;
 
+    public GameObject avatar;
+    public GameObject dogAvatar;
+    private int selectedDogAvatar;
+    private int selectedGender;
+
     private void PlayGame()
     {
         SceneManager.LoadSceneAsync(1);
@@ -202,9 +207,9 @@ public class FirebaseAuthManager : MonoBehaviour
     }
 
     // Coroutine do wysyłania danych do endpointu
-    private IEnumerator SendRegistrationData(string UUID, string nick)
+    private IEnumerator SendRegistrationData(string UUID, string nick, int selectedGender, int dogAvatar)
     {
-        string url = $"https://psiaapka.pl/psiaapka/create_user_account.php?id_avatar=1&id_avatar_dog=1&nick={nick}&UUID={UUID}";
+        string url = $"https://psiaapka.pl/psiaapka/create_user_account.php?id_avatar={selectedGender}&id_avatar_dog={dogAvatar}&nick={nick}&UUID={UUID}";
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
@@ -283,7 +288,43 @@ public class FirebaseAuthManager : MonoBehaviour
                 var updateProfileTask = user.UpdateUserProfileAsync(userProfile);
                 Debug.Log("USER JUST AFTER REGISTER" + user.UserId);
 
-                StartCoroutine(SendRegistrationData(user.UserId, name));
+                if (avatar != null)
+                {
+                    AvatarSetter avatarSetter = avatar.GetComponent<AvatarSetter>();
+                    if (avatarSetter != null)
+                    {
+                        selectedGender = avatarSetter.selectedGender;
+                        Debug.Log("Selected Gender: " + selectedGender);
+                    }
+                    else
+                    {
+                        Debug.LogError("Brak komponentu AvatarSetter w targetGameObject.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("targetGameObject jest null.");
+                }
+
+                if (dogAvatar != null)
+                {
+                    ShowDog avatarDogSetter = dogAvatar.GetComponent<ShowDog>();
+                    if (avatarDogSetter != null)
+                    {
+                        selectedDogAvatar = avatarDogSetter._dogType;
+                        Debug.Log("Selected Dog Avatar: " + selectedDogAvatar);
+                    }
+                    else
+                    {
+                        Debug.LogError("Brak komponentu ShowDog w targetGameObject.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("targetGameObject jest null.");
+                }
+
+                StartCoroutine(SendRegistrationData(user.UserId, name, selectedGender, selectedDogAvatar));
 
                 yield return new WaitUntil(() => updateProfileTask.IsCompleted);
 

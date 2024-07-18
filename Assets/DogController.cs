@@ -4,7 +4,7 @@ using System.Collections;
 public class ShowDog : MonoBehaviour
 {
     public GameObject[] dogs; // Tablica przechowująca wszystkie obiekty dog
-    private int _dogType = 0;  // Iterator określający, który dog ma być pokazany
+    public int _dogType = 0;  // Iterator określający, który dog ma być pokazany
 
     private Animator animator; // Zmienna do przechowywania referencji do animatora
     private int[] possibleValues = new int[] { 4, 6, 7, 10, 12 }; // Możliwe losowe wartości

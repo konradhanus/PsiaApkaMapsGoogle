@@ -9,6 +9,7 @@ public class AvatarSetter : MonoBehaviour
     public Gender defaultGender = Gender.Man;
 
     private Animator animator;
+    public int selectedGender = 0; // women;
 
     public enum Gender
     {
@@ -31,11 +32,13 @@ public class AvatarSetter : MonoBehaviour
                 animator.avatar = womanAvatar;
                 womanGameObject.SetActive(true);
                 manGameObject.SetActive(false);
+                selectedGender = 0;
                 break;
             case Gender.Man:
                 animator.avatar = manAvatar;
                 womanGameObject.SetActive(false);
                 manGameObject.SetActive(true);
+                selectedGender = 1;
                 break;
             default:
                 Debug.LogError("Nieprawidłowa wartość płci.");
