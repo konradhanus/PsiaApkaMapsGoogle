@@ -18,6 +18,8 @@ public class GlobalUserData : MonoBehaviour
     public GameObject Woman;
     public GameObject Man;
 
+    public GameObject[] Dogs; // Tablica dla wszystkich psów
+
     UserData userData;
 
     public TextMeshProUGUI nickNameText;
@@ -81,7 +83,7 @@ public class GlobalUserData : MonoBehaviour
 
         if (dataResponse != null && dataResponse.data != null)
         {
-            Debug.Log("FETCH!!!"+ dataResponse);
+            Debug.Log("FETCH!!!" + dataResponse);
             userData = dataResponse.data;
             UpdateUserData(dataResponse.data);
         }
@@ -114,7 +116,7 @@ public class GlobalUserData : MonoBehaviour
             return;
         }
 
-        Debug.Log("FETCH!" +(userData.id_avatar == 0));
+        Debug.Log("FETCH!" + (userData.id_avatar == 0));
         if (userData.id_avatar == 0)
         {
             Debug.Log("FETCH! WOMAN");
@@ -129,8 +131,32 @@ public class GlobalUserData : MonoBehaviour
             Woman.SetActive(false);
             Man.SetActive(true);
         }
+        Debug.Log("FETCH!" + userData.id_avatar_dog);
+        // Update the visibility of the dogs based on the id_avatar_dog
+        ShowDog(userData.id_avatar_dog);
+    }
 
-        // Assign other data to UI or other variables as needed
+    private void ShowDog(int dogId)
+    {
+
+        Debug.Log("FETCH!XXX" + dogId);
+        // Ukryj wszystkie psy
+        foreach (GameObject dog in Dogs)
+        {
+            dog.SetActive(false);
+        }
+
+        int index;
+        if (dogId >= 1 && dogId <= Dogs.Length)
+        {
+            index = dogId - 1; // Przekszta³cenie dogId (1-28) na indeks (0-27)
+        }
+        else
+        {
+            index = 13; // Domyœlnie ustaw psa nr 14 (indeks 13)
+        }
+
+        Dogs[index].SetActive(true);
     }
 
     public void ReadData(out string nick, out int skinId, out int dogSkinId, out string date_created)
