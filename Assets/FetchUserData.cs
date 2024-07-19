@@ -11,6 +11,13 @@ public class GlobalUserData : MonoBehaviour
     public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
     private FirebaseAuthManager authManager;
 
+    public GameObject PlayerArmature;
+
+    public Avatar WomanAvatar;
+    public Avatar ManAvatar;
+    public GameObject Woman;
+    public GameObject Man;
+
     UserData userData;
 
     public TextMeshProUGUI nickNameText;
@@ -25,8 +32,8 @@ public class GlobalUserData : MonoBehaviour
     public class UserData
     {
         public string nick;
-        public int skinId;
-        public int dogSkinId;
+        public int id_avatar;
+        public int id_avatar_dog;
         public string date_created;
     }
 
@@ -86,10 +93,43 @@ public class GlobalUserData : MonoBehaviour
 
     public void UpdateUserData(UserData userData)
     {
-        Debug.Log("FETCH! Nick: " + userData.nick + ", SkinId: " + userData.skinId + ", DogSkinId: " + userData.dogSkinId + ", Registration Date: " + userData.date_created);
+        Debug.Log("FETCH! Nick: " + userData.nick + ", SkinId: " + userData.id_avatar + ", DogSkinId: " + userData.id_avatar_dog + ", Registration Date: " + userData.date_created);
 
         // Update UI elements with received data
-        nickNameText.text = userData.nick;
+        // nickNameText.text = userData.nick;
+
+        // Update avatar and character visibility based on skinId
+        Debug.Log("FETCH!" + userData.id_avatar);
+
+        if (PlayerArmature == null)
+        {
+            Debug.LogError("PlayerArmature is not assigned.");
+            return;
+        }
+
+        Animator playerAnimator = PlayerArmature.GetComponent<Animator>();
+        if (playerAnimator == null)
+        {
+            Debug.LogError("Animator component not found on PlayerArmature.");
+            return;
+        }
+
+        Debug.Log("FETCH!" +(userData.id_avatar == 0));
+        if (userData.id_avatar == 0)
+        {
+            Debug.Log("FETCH! WOMAN");
+            playerAnimator.avatar = WomanAvatar;
+            Woman.SetActive(true);
+            Man.SetActive(false);
+        }
+        else if (userData.id_avatar == 1)
+        {
+            Debug.Log("FETCH! MAN");
+            playerAnimator.avatar = ManAvatar;
+            Woman.SetActive(false);
+            Man.SetActive(true);
+        }
+
         // Assign other data to UI or other variables as needed
     }
 
@@ -98,8 +138,8 @@ public class GlobalUserData : MonoBehaviour
         // Return data from API response
         nick = nickNameText.text;
         // Directly assign the integer values from userData
-        skinId = userData.skinId;
-        dogSkinId = userData.dogSkinId;
+        skinId = userData.id_avatar;
+        dogSkinId = userData.id_avatar_dog;
         date_created = userData.date_created;
     }
 }
