@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
+using UnityEngine.UI;  // Dodaj to, aby mieæ dostêp do komponentu Image
 
 public class GlobalUserData : MonoBehaviour
 {
@@ -18,7 +19,20 @@ public class GlobalUserData : MonoBehaviour
     public GameObject Woman;
     public GameObject Man;
 
+    public GameObject WomanProfile;
+    public GameObject ManProfile;
+
+    public Sprite WomanCircleAvatarImage;
+    public Sprite ManCircleAvatarImage;
+
+    public GameObject PlayerAvatar;
+    public GameObject DogAvatar;
+
+    public Sprite[] DogsCircleAvatar; // Tablica dla wszystkich psów
+
     public GameObject[] Dogs; // Tablica dla wszystkich psów
+    public GameObject[] DogsProfile; // Tablica dla wszystkich psów
+    public GameObject[] DogsCoupleProfile; // Tablica dla wszystkich psów
 
     UserData userData;
 
@@ -109,12 +123,24 @@ public class GlobalUserData : MonoBehaviour
             return;
         }
 
+       
         Animator playerAnimator = PlayerArmature.GetComponent<Animator>();
         if (playerAnimator == null)
         {
             Debug.LogError("Animator component not found on PlayerArmature.");
             return;
         }
+
+        // Get the Image component from PlayerAvatar
+        Image avatarImage = PlayerAvatar.GetComponent<Image>();
+        if (avatarImage == null)
+        {
+            Debug.LogError("Image component not found on PlayerAvatar.");
+            return;
+        }
+
+       
+
 
         Debug.Log("FETCH!" + (userData.id_avatar == 0));
         if (userData.id_avatar == 0)
@@ -123,6 +149,11 @@ public class GlobalUserData : MonoBehaviour
             playerAnimator.avatar = WomanAvatar;
             Woman.SetActive(true);
             Man.SetActive(false);
+
+            WomanProfile.SetActive(true);
+            ManProfile.SetActive(false);
+
+            avatarImage.sprite = WomanCircleAvatarImage;  // Zmieniamy sprite
         }
         else if (userData.id_avatar == 1)
         {
@@ -130,6 +161,12 @@ public class GlobalUserData : MonoBehaviour
             playerAnimator.avatar = ManAvatar;
             Woman.SetActive(false);
             Man.SetActive(true);
+
+            WomanProfile.SetActive(false);
+            ManProfile.SetActive(true);
+
+
+            avatarImage.sprite = ManCircleAvatarImage;  // Zmieniamy sprite 
         }
         Debug.Log("FETCH!" + userData.id_avatar_dog);
         // Update the visibility of the dogs based on the id_avatar_dog
@@ -146,6 +183,16 @@ public class GlobalUserData : MonoBehaviour
             dog.SetActive(false);
         }
 
+        foreach (GameObject dogprofile in DogsProfile)
+        {
+            dogprofile.SetActive(false);
+        }
+
+        foreach (GameObject dogcoupleprofile in DogsCoupleProfile)
+        {
+            dogcoupleprofile.SetActive(false);
+        }
+
         int index;
         if (dogId >= 1 && dogId <= Dogs.Length)
         {
@@ -153,10 +200,27 @@ public class GlobalUserData : MonoBehaviour
         }
         else
         {
-            index = 13; // Domyœlnie ustaw psa nr 14 (indeks 13)
+            index = 24; // Domyœlnie ustaw psa nr 14 (indeks 13)
         }
 
+        if (DogAvatar == null)
+        {
+            Debug.LogError("DogAvatar is not assigned.");
+            return;
+        }
+
+        // Get the Image component from DogAvatar
+        Image avatarDogImage = DogAvatar.GetComponent<Image>();
+        if (avatarDogImage == null)
+        {
+            Debug.LogError("Image component not found on DogAvatar.");
+            return;
+        }
+
+        avatarDogImage.sprite = DogsCircleAvatar[index];
         Dogs[index].SetActive(true);
+        DogsProfile[index].SetActive(true);
+        DogsCoupleProfile[index].SetActive(true);
     }
 
     public void ReadData(out string nick, out int skinId, out int dogSkinId, out string date_created)
