@@ -16489,7 +16489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e70a30a782f11a469a9dbfc9f74b0ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 1
+  debugMode: 0
   userId: eOexsqawm4YO9GhnmYT9Ka7RbRq1
   PlayerArmature: {fileID: 5459964453452615341}
   WomanAvatar: {fileID: 9000000, guid: d65be7113a77e47f38a31b9d44073478, type: 3}
@@ -20225,7 +20225,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529967495}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0000000023522218, y: 0.7882307, z: -0.6153799, w: 0.0000000030129266}
+  m_LocalRotation: {x: 0.0000000023522209, y: 0.7882307, z: -0.6153799, w: 0.0000000030129252}
   m_LocalPosition: {x: 0, y: 30, z: 6.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

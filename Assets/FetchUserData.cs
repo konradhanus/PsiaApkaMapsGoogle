@@ -196,7 +196,7 @@ public class GlobalUserData : MonoBehaviour
         int index;
         if (dogId >= 1 && dogId <= Dogs.Length)
         {
-            index = dogId - 1; // Przekszta³cenie dogId (1-28) na indeks (0-27)
+            index = dogId; // Przekszta³cenie dogId (1-28) na indeks (0-27)
         }
         else
         {
