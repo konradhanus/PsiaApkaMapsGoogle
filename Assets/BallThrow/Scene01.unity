@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028353, g: 0.22571383, b: 0.3069225, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1411,6 +1411,7 @@ GameObject:
   - component: {fileID: 1082146932}
   - component: {fileID: 1082146933}
   - component: {fileID: 1082146934}
+  - component: {fileID: 1082146935}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -1486,7 +1487,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1951335282}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 5
   m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
@@ -1514,6 +1515,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9473ba95ef5c1c241b7ff69931fdaf85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1082146933}
+  messageText: {fileID: 1454166307}
+  messagePanel: {fileID: 790656600}
+  secondSlider: {fileID: 0}
+--- !u!114 &1082146935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082146931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca87c185808bf41578db2d8aa5cbb604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 1082146933}

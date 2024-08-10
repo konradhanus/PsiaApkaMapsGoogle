@@ -25,15 +25,17 @@ public class BallController : MonoBehaviour
         {
             hasTouchedGround = true;
 
-            if (hungerSliderController != null && !buttonStatus.isWaterActive)
+            if (hungerSliderController != null && buttonStatus.gameObject.activeInHierarchy)
             {
                 hungerSliderController.UpdateProgress(); // Wywołujemy metodę UpdateProgress
+                Debug.Log("HUNDER");
 
             }
 
-            if (tirstySliderController != null && buttonStatus.isWaterActive)
+            if (tirstySliderController != null && !buttonStatus.gameObject.activeInHierarchy)
             {
                 tirstySliderController.UpdateProgress(); // Wywołujemy metodę UpdateProgress
+                Debug.Log("HUNDER _ PICIE");
 
             }
             else {
