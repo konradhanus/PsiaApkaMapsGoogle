@@ -70,7 +70,7 @@ public class BuildScript
     [MenuItem("Custom/Build iOS")]
    static void iOS()
     {
-        string buildPath = "/Users/konradhanus/Desktop/BuildJenkins/PsiaApka/Scratch/Xcode";
+        string buildPath = "/Users/konradhanus/Desktop/GIT/_builds2";
 
         if (!Directory.Exists(buildPath) || Directory.GetFiles(buildPath).Length == 0)
         {
