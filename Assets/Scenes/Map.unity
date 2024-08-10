@@ -16490,7 +16490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 0
-  userId: eOexsqawm4YO9GhnmYT9Ka7RbRq1
+  userId: 6Fc26T7jRbXcqBFq6DfO5rn7bML2
   PlayerArmature: {fileID: 5459964453452615341}
   WomanAvatar: {fileID: 9000000, guid: d65be7113a77e47f38a31b9d44073478, type: 3}
   ManAvatar: {fileID: 9000000, guid: 0b72f1ae8ccc04aa7bfc88e4daa08137, type: 3}
@@ -22063,7 +22063,7 @@ MonoBehaviour:
   _spawnScale: 1
   _markerPrefab: {fileID: 998496190}
   dogSpotStatus: {fileID: 1659821816}
-  debugMode: 0
+  debugMode: 1
   endpointURL: https://psiaapka.pl/psiaapka/dogspots_v2.php
 --- !u!4 &1751096392
 Transform:
@@ -22610,7 +22610,7 @@ MonoBehaviour:
   _spawnScale: 1
   _markerPrefab: {fileID: 164125066}
   dogSpotStatus: {fileID: 1659821816}
-  debugMode: 0
+  debugMode: 1
   endpointURL: https://psiaapka.pl/psiaapka/doggyms_v2.php
 --- !u!4 &1800136791
 Transform:

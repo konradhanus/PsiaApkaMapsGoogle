@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
-using UnityEngine.UI;  // Dodaj to, aby mieæ dostêp do komponentu Image
+using UnityEngine.UI;  // Dodaj to, aby mie? dost?p do komponentu Image
 
 public class GlobalUserData : MonoBehaviour
 {
@@ -28,11 +28,11 @@ public class GlobalUserData : MonoBehaviour
     public GameObject PlayerAvatar;
     public GameObject DogAvatar;
 
-    public Sprite[] DogsCircleAvatar; // Tablica dla wszystkich psów
+    public Sprite[] DogsCircleAvatar; // Tablica dla wszystkich ps?w
 
-    public GameObject[] Dogs; // Tablica dla wszystkich psów
-    public GameObject[] DogsProfile; // Tablica dla wszystkich psów
-    public GameObject[] DogsCoupleProfile; // Tablica dla wszystkich psów
+    public GameObject[] Dogs; // Tablica dla wszystkich ps?w
+    public GameObject[] DogsProfile; // Tablica dla wszystkich ps?w
+    public GameObject[] DogsCoupleProfile; // Tablica dla wszystkich ps?w
 
     UserData userData;
 
@@ -88,7 +88,7 @@ public class GlobalUserData : MonoBehaviour
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("B³¹d podczas pobierania danych z API: " + request.error);
+            Debug.LogError("B??d podczas pobierania danych z API: " + request.error);
             yield break;
         }
 
@@ -103,7 +103,7 @@ public class GlobalUserData : MonoBehaviour
         }
         else
         {
-            Debug.LogError("B³¹d podczas parsowania odpowiedzi z API.");
+            Debug.LogError("B??d podczas parsowania odpowiedzi z API.");
         }
     }
 
@@ -194,13 +194,13 @@ public class GlobalUserData : MonoBehaviour
         }
 
         int index;
-        if (dogId >= 1 && dogId <= Dogs.Length)
+        if (dogId >= 0 && dogId <= Dogs.Length)
         {
-            index = dogId; // Przekszta³cenie dogId (1-28) na indeks (0-27)
+            index = dogId; // Przekszta?cenie dogId (1-28) na indeks (0-27)
         }
         else
         {
-            index = 24; // Domyœlnie ustaw psa nr 14 (indeks 13)
+            index = 24; // Domy?lnie ustaw psa nr 14 (indeks 13)
         }
 
         if (DogAvatar == null)

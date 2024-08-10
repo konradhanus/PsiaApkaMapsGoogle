@@ -8,7 +8,7 @@ using Mapbox.Map;
 public class GlobalUserDataFeeding : MonoBehaviour
 {
 
-    public GameObject[] Dogs; // Tablica dla wszystkich psów
+    public GameObject[] Dogs; // Tablica dla wszystkich ps?w
 
     public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
 
@@ -62,7 +62,7 @@ public class GlobalUserDataFeeding : MonoBehaviour
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("B³¹d podczas pobierania danych z API: " + request.error);
+            Debug.LogError("B??d podczas pobierania danych z API: " + request.error);
             yield break;
         }
 
@@ -77,7 +77,7 @@ public class GlobalUserDataFeeding : MonoBehaviour
         }
         else
         {
-            Debug.LogError("B³¹d podczas parsowania odpowiedzi z API.");
+            Debug.LogError("B??d podczas parsowania odpowiedzi z API.");
         }
     }
 
@@ -104,13 +104,13 @@ public class GlobalUserDataFeeding : MonoBehaviour
             dog.SetActive(false);
         }
         int index;
-        if (dogId >= 1 && dogId <= Dogs.Length)
+        if (dogId >= 0 && dogId <= Dogs.Length)
         {
-            index = dogId - 1; // Przekszta³cenie dogId (1-28) na indeks (0-27)
+            index = dogId; // Przekszta?cenie dogId (1-28) na indeks (0-27)
         }
         else
         {
-            index = 24; // Domyœlnie ustaw psa nr 14 (indeks 13)
+            index = 24; // Domy?lnie ustaw psa nr 14 (indeks 13)
         }
 
         Dogs[index].SetActive(true);
