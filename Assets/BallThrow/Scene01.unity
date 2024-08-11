@@ -1410,7 +1410,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1082146932}
   - component: {fileID: 1082146933}
-  - component: {fileID: 1082146934}
   - component: {fileID: 1082146935}
   m_Layer: 5
   m_Name: Slider
@@ -1487,13 +1486,13 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1951335282}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 5
+  m_MaxValue: 7
   m_WholeNumbers: 1
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1082146934}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SliderController, Assembly-CSharp
         m_MethodName: OnSliderChanged
         m_Mode: 0
@@ -1505,22 +1504,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1082146934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1082146931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9473ba95ef5c1c241b7ff69931fdaf85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slider: {fileID: 1082146933}
-  messageText: {fileID: 1454166307}
-  messagePanel: {fileID: 790656600}
-  secondSlider: {fileID: 0}
 --- !u!114 &1082146935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3407,7 +3390,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasTouchedGround: 0
   groundHeight: 1
+  single: 1
   hungerSliderController: {fileID: 0}
+  funrSliderController: {fileID: 1082146935}
   tirstySliderController: {fileID: 0}
   ButtonStatus: {fileID: 0}
 --- !u!1001 &2022747079

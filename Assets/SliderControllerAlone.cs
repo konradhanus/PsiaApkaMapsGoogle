@@ -33,8 +33,8 @@ public class SliderControllerAlone : MonoBehaviour
         float percentage = slider.value / slider.maxValue;
         if (percentage >= 1.0f && !messageDisplayed)
         {
-                ShowMessage();
-                messageDisplayed = true; // Ustaw flagę na true po wyświetleniu komunikatu
+            Invoke("ShowMessage", 3f);
+            messageDisplayed = true; // Ustaw flagę na true po wyświetleniu komunikatu
 
         }
     }

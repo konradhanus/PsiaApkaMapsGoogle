@@ -36,7 +36,7 @@ public class SliderController : MonoBehaviour
         {
             if (Mathf.Approximately(secondSlider.value, secondSlider.maxValue))
             {
-                ShowMessage();
+                Invoke("ShowMessage", 3f);
                 messageDisplayed = true; // Ustaw flagę na true po wyświetleniu komunikatu
             }
              
