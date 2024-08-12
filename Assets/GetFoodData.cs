@@ -22,20 +22,35 @@ public class ResourceResponseBall
 
 public class GetFoodData : MonoBehaviour
 {
-    private string url = "https://psiaapka.pl/resources.php?user_id=eOexsqawm4YO9GhnmYT9Ka7RbRq1";
-    private string updateUrl = "https://psiaapka.pl/resourcesUtilizate.php?user_id=eOexsqawm4YO9GhnmYT9Ka7RbRq1&resources_name={0}&resources_quantity={1}";
+    private string url = "https://psiaapka.pl/resources.php?user_id={0}";
+    private string updateUrl = "https://psiaapka.pl/resourcesUtilizate.php?user_id={2}&resources_name={0}&resources_quantity={1}";
 
     public TextMeshProUGUI textChicken;
     public TextMeshProUGUI textWater;
+    private FirebaseAuthManager authManager;
+    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1"; 
 
     void Start()
     {
+       
+            
+            authManager = new FirebaseAuthManager();
+            // Wykonaj call do API i zaktualizuj dane
+            userId = ReferencesUserFirebase.userId;
+
+            print("Player Id food:" + userId);
+
+            
+            Debug.Log("FETCH! JESTEM PONOWNIE!");
+      
+        
         StartCoroutine(FetchData());
     }
 
     public IEnumerator FetchData()
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        string formattedUrl = string.Format(url, userId);
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(formattedUrl))
         {
             yield return webRequest.SendWebRequest();
 
@@ -76,7 +91,7 @@ public class GetFoodData : MonoBehaviour
 
     public IEnumerator UpdateResource(string resourceName, int quantity)
     {
-        string formattedUrl = string.Format(updateUrl, resourceName, quantity);
+        string formattedUrl = string.Format(updateUrl, resourceName, quantity, userId);
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(formattedUrl))
         {

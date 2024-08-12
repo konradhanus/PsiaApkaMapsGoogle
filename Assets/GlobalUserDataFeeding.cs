@@ -43,6 +43,7 @@ public class GlobalUserDataFeeding : MonoBehaviour
     
         Debug.Log("FETCH! JESTEM PONOWNIE!");
         StartCoroutine(UpdateDataFromAPI());
+
     }
 
     public void FetchData()
