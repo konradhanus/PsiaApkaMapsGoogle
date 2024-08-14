@@ -33,6 +33,7 @@ public class GetFoodData : MonoBehaviour
     public int waterValue = 0;
     public GameObject Chicken;
     public GameObject Water;
+    public GameObject ChickenWaterContainer; 
 
     void Start()
     {
@@ -90,6 +91,7 @@ public class GetFoodData : MonoBehaviour
                     if (chickenValue <= 0)
                     {
                         Chicken.SetActive(false);
+                       // ChickenWaterContainer.SetActive(false);
                     }
                 }
 
@@ -107,6 +109,7 @@ public class GetFoodData : MonoBehaviour
                     if (waterValue <= 0)
                     {
                         Water.SetActive(false);
+                       // ChickenWaterContainer.SetActive(false);
                     }
                 }
             }
@@ -115,6 +118,7 @@ public class GetFoodData : MonoBehaviour
 
     public IEnumerator UpdateResource(string resourceName, int quantity)
     {
+        yield return new WaitForSeconds(3f);
         string formattedUrl = string.Format(updateUrl, resourceName, quantity, userId);
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(formattedUrl))

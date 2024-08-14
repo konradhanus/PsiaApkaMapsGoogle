@@ -2019,7 +2019,10 @@ MonoBehaviour:
   buttonWater: {fileID: 1035984740}
   buttonChicken: {fileID: 818702336}
   CounterWaterChicken: {fileID: 2057243514}
+  ChickenWaterContainer: {fileID: 2018923729}
   isWaterActive: 0
+  chickenCounterNumber: 0
+  waterCounterNumber: 0
 --- !u!114 &818702339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2397,7 +2400,10 @@ MonoBehaviour:
   buttonWater: {fileID: 1035984740}
   buttonChicken: {fileID: 818702336}
   CounterWaterChicken: {fileID: 2057243514}
+  ChickenWaterContainer: {fileID: 2018923729}
   isWaterActive: 1
+  chickenCounterNumber: 0
+  waterCounterNumber: 0
 --- !u!114 &1035984743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5604,6 +5610,7 @@ MonoBehaviour:
   waterValue: 0
   Chicken: {fileID: 1708151409}
   Water: {fileID: 815348564}
+  ChickenWaterContainer: {fileID: 2018923729}
 --- !u!1 &2061222408
 GameObject:
   m_ObjectHideFlags: 0

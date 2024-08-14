@@ -15,6 +15,8 @@ public class SwitcherFoodWater : MonoBehaviour
     public GameObject buttonChicken;
     public GameObject CounterWaterChicken;
 
+    public GameObject ChickenWaterContainer;
+
 
     public bool isWaterActive = true;
 
@@ -22,7 +24,10 @@ public class SwitcherFoodWater : MonoBehaviour
     private Rigidbody rb;
     private ThrowBall throwBallScript;
     private DogController dogController;
+    public int chickenCounterNumber = 0;
 
+    public int waterCounterNumber = 0;
+    
     void Start()
     {
         if (FoodOrWater != null)
@@ -36,7 +41,17 @@ public class SwitcherFoodWater : MonoBehaviour
             dogController = Dog.GetComponent<DogController>();
         }
 
+        
+
         UpdateState();
+        SwitchButton();
+        SwitchButton();
+        SwitchButton();
+
+        ChickenWaterContainer.SetActive(true);
+        water.SetActive(true);
+
+
     }
 
     public void SwitchButton()
@@ -49,8 +64,11 @@ public class SwitcherFoodWater : MonoBehaviour
         UpdateState();
     }
 
+
     private void UpdateState()
     {
+
+        ChickenWaterContainer.SetActive(true);
         if (isWaterActiveStatic)
         {
             //text.text = "Jedzenie";
@@ -106,22 +124,44 @@ public class SwitcherFoodWater : MonoBehaviour
         }
 
         GetFoodData foodData = CounterWaterChicken.GetComponent<GetFoodData>();
-        int chickenCounterNumber = foodData.chickenValue;
-        int waterCounterNumber = foodData.waterValue;
+        chickenCounterNumber = foodData.chickenValue;
+        waterCounterNumber = foodData.waterValue;
 
         if (chickenCounterNumber <= 0)
         {
             
             food.SetActive(false);
+            
         }
 
         if (waterCounterNumber <= 0)
         {
             water.SetActive(false);
+
+            
         }
 
+        if (isWaterActive && waterCounterNumber > 0)
+        {
+            ChickenWaterContainer.SetActive(true);
+        }
 
+        if (isWaterActive && waterCounterNumber <= 0)
+        {
+            ChickenWaterContainer.SetActive(false);
+        }
 
+        if (!isWaterActive && chickenCounterNumber > 0)
+        {
+            ChickenWaterContainer.SetActive(true);
+        }
+
+        if (!isWaterActive && chickenCounterNumber <= 0)
+        {
+            ChickenWaterContainer.SetActive(false);
+        }
+
+        
 
     }
 }
