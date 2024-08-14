@@ -7,19 +7,33 @@ using TMPro;
 
 public class GetBallNew : MonoBehaviour
 {
-    private string url = "https://psiaapka.pl/resources.php?user_id=eOexsqawm4YO9GhnmYT9Ka7RbRq1";
-    private string updateUrl = "https://psiaapka.pl/resourcesUtilizate.php?user_id=eOexsqawm4YO9GhnmYT9Ka7RbRq1&resources_name={0}&resources_quantity={1}";
+    private string url = "https://psiaapka.pl/resources.php?user_id={0}";
+    private string updateUrl = "https://psiaapka.pl/resourcesUtilizate.php?user_id={2}&resources_name={0}&resources_quantity={1}";
 
     public TextMeshProUGUI textBall;
+    private FirebaseAuthManager authManager;
+    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
+    public GameObject Ball;
+    public int ballValue = 0;
 
     void Start()
     {
+        authManager = new FirebaseAuthManager();
+        // Wykonaj call do API i zaktualizuj dane
+        userId = ReferencesUserFirebase.userId;
+
+        print("Player Id food:" + userId);
+
+
+        Debug.Log("FETCH! JESTEM PONOWNIE!");
+
         StartCoroutine(FetchData());
     }
 
     public IEnumerator FetchData()
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        string formattedUrl = string.Format(url, userId);
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(formattedUrl))
         {
             // Send the request and wait for a response
             yield return webRequest.SendWebRequest();
@@ -52,14 +66,26 @@ public class GetBallNew : MonoBehaviour
             if (textBall != null)
             {
                 textBall.text = data.ball;
+                if (int.TryParse(data.ball, out ballValue))
+                {
+                    if (ballValue <= 0)
+                    {
+                        Invoke("DisableBall", 3f);
+                    }
+                }
             }
 
         }
     }
 
+    void DisableBall()
+    {
+        Ball.SetActive(false);
+    }
+
     public IEnumerator UpdateResource(string resourceName, int quantity)
     {
-        string formattedUrl = string.Format(updateUrl, resourceName, quantity);
+        string formattedUrl = string.Format(updateUrl, resourceName, quantity, userId);
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(formattedUrl))
         {

@@ -3938,6 +3938,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textBall: {fileID: 2060895696}
+  userId: eOexsqawm4YO9GhnmYT9Ka7RbRq1
+  Ball: {fileID: 2018923729}
+  ballValue: 0
 --- !u!114 &2060895696 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7531834842634626929, guid: c63a7b07bcf379a4c8c470f413e3da17,

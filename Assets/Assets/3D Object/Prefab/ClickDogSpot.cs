@@ -119,7 +119,7 @@ public class ClickDogSpot : MonoBehaviour
     {
 
         userId = ReferencesUserFirebase.userId;
-        print("AA Click Dog Spot Player Id:" + userId);
+        // print("AA Click Dog Spot Player Id:" + userId);
         prevUserId = userId;
         // Dodaj losowe przesunięcie do początkowej rotacji
         transform.Rotate(Vector3.up, UnityEngine.Random.Range(0f, 360f));
@@ -218,7 +218,11 @@ public class ClickDogSpot : MonoBehaviour
                 isClicked = true;
                 clickedObject = dogspot;
 
-                if(!string.IsNullOrEmpty(id))
+                StartCoroutine(HideOtherDogSpotsAndGymsWithDelay(clickedObject, 0.6f));
+
+                // 
+
+                if (!string.IsNullOrEmpty(id))
                 {
                     //Debug.Log("AAA DogSpot Id:"+id);
                 }else{
@@ -305,11 +309,75 @@ public class ClickDogSpot : MonoBehaviour
         }
     }
 
+    public static List<GameObject> FindGameObjectsWithTagIncludingInactive(string tag)
+    {
+        List<GameObject> results = new List<GameObject>();
+        GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.CompareTag(tag) && obj.hideFlags == HideFlags.None)
+            {
+                results.Add(obj);
+            }
+        }
+
+        return results;
+    }
+
     public static void ResetClick()
     {
-        // Debug.Log("RESET CLICK");
+        Debug.Log("RESET CLICK");
         isClicked = false;
         clickedObject = null;
+    }
+
+    private IEnumerator HideOtherDogSpotsAndGymsWithDelay(GameObject clickedPoint, float delay)
+    {
+        // Czekaj przez określony czas
+        yield return new WaitForSeconds(delay);
+
+        // Znajdź wszystkie obiekty z tagiem DogSpot
+        GameObject[] dogSpots = GameObject.FindGameObjectsWithTag("DogSpot");
+        GameObject[] dogGyms = GameObject.FindGameObjectsWithTag("DogGym");
+
+        // Ukryj wszystkie obiekty z tagiem DogSpot, które nie są klikniętym obiektem
+        foreach (GameObject dogSpot in dogSpots)
+        {
+            if (dogSpot != clickedPoint)
+            {
+                dogSpot.SetActive(false);
+            }
+        }
+
+        // Ukryj wszystkie obiekty z tagiem DogGym
+        foreach (GameObject dogGym in dogGyms)
+        {
+            if (dogGym != clickedPoint)
+            {
+                dogGym.SetActive(false);
+            }
+        }
+    }
+
+    public static void ShowAllDogSpotsAndGyms()
+    {
+        // Znajdź wszystkie obiekty z tagiem DogSpot
+        List<GameObject> dogSpots = GameObjectFinder.FindGameObjectsWithTagIncludingInactive("DogSpot");
+        List<GameObject> dogGyms = GameObjectFinder.FindGameObjectsWithTagIncludingInactive("DogGym");
+
+        // Pokaż wszystkie obiekty z tagiem DogSpot
+        foreach (GameObject dogSpot in dogSpots)
+        {
+            dogSpot.SetActive(true);
+        }
+
+        // Pokaż wszystkie obiekty z tagiem DogGym
+        foreach (GameObject dogGym in dogGyms)
+        {
+            dogGym.SetActive(true);
+        }
+        Debug.Log("SHOW ALL");
     }
 
     IEnumerator SendRequest()
@@ -586,5 +654,25 @@ public class ClickDogSpot : MonoBehaviour
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(ped, results);
         return results.Count > 0;
+    }
+}
+
+
+public static class GameObjectFinder
+{
+    public static List<GameObject> FindGameObjectsWithTagIncludingInactive(string tag)
+    {
+        List<GameObject> results = new List<GameObject>();
+        GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.CompareTag(tag) && obj.hideFlags == HideFlags.None)
+            {
+                results.Add(obj);
+            }
+        }
+
+        return results;
     }
 }

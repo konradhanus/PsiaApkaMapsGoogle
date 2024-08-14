@@ -28,7 +28,11 @@ public class GetFoodData : MonoBehaviour
     public TextMeshProUGUI textChicken;
     public TextMeshProUGUI textWater;
     private FirebaseAuthManager authManager;
-    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1"; 
+    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
+    public int chickenValue = 0;
+    public int waterValue = 0;
+    public GameObject Chicken;
+    public GameObject Water;
 
     void Start()
     {
@@ -80,11 +84,31 @@ public class GetFoodData : MonoBehaviour
             if (textChicken != null)
             {
                 textChicken.text = data.chicken;
+
+                if (int.TryParse(data.chicken, out chickenValue))
+                {
+                    if (chickenValue <= 0)
+                    {
+                        Chicken.SetActive(false);
+                    }
+                }
+
+              
+
+
             }
 
             if (textWater != null)
             {
                 textWater.text = data.water;
+
+                if (int.TryParse(data.water, out waterValue))
+                {
+                    if (waterValue <= 0)
+                    {
+                        Water.SetActive(false);
+                    }
+                }
             }
         }
     }

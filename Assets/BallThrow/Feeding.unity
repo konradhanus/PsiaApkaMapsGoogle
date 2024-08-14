@@ -2018,6 +2018,7 @@ MonoBehaviour:
   Dog: {fileID: 1579565408}
   buttonWater: {fileID: 1035984740}
   buttonChicken: {fileID: 818702336}
+  CounterWaterChicken: {fileID: 2057243514}
   isWaterActive: 0
 --- !u!114 &818702339
 MonoBehaviour:
@@ -2395,6 +2396,7 @@ MonoBehaviour:
   Dog: {fileID: 1579565408}
   buttonWater: {fileID: 1035984740}
   buttonChicken: {fileID: 818702336}
+  CounterWaterChicken: {fileID: 2057243514}
   isWaterActive: 1
 --- !u!114 &1035984743
 MonoBehaviour:
@@ -5230,7 +5232,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasTouchedGround: 0
   groundHeight: 1
+  single: 0
   hungerSliderController: {fileID: 1082146934}
+  funrSliderController: {fileID: 0}
   tirstySliderController: {fileID: 391075796}
   ButtonStatus: {fileID: 1035984740}
 --- !u!65 &2018923737
@@ -5595,6 +5599,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textChicken: {fileID: 291712583}
   textWater: {fileID: 1361784098}
+  userId: eOexsqawm4YO9GhnmYT9Ka7RbRq1
+  chickenValue: 0
+  waterValue: 0
+  Chicken: {fileID: 1708151409}
+  Water: {fileID: 815348564}
 --- !u!1 &2061222408
 GameObject:
   m_ObjectHideFlags: 0

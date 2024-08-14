@@ -13,6 +13,7 @@ public class SwitcherFoodWater : MonoBehaviour
 
     public GameObject buttonWater;
     public GameObject buttonChicken;
+    public GameObject CounterWaterChicken;
 
 
     public bool isWaterActive = true;
@@ -55,14 +56,14 @@ public class SwitcherFoodWater : MonoBehaviour
             //text.text = "Jedzenie";
             food.SetActive(false);
             foodCounter.SetActive(false);
-           
+
 
             water.SetActive(true);
             waterCounter.SetActive(true);
             if (rb != null)
             {
                 rb.freezeRotation = true;
-               
+
             }
 
             if (throwBallScript != null)
@@ -103,5 +104,24 @@ public class SwitcherFoodWater : MonoBehaviour
                 dogController.actionType = 5;
             }
         }
+
+        GetFoodData foodData = CounterWaterChicken.GetComponent<GetFoodData>();
+        int chickenCounterNumber = foodData.chickenValue;
+        int waterCounterNumber = foodData.waterValue;
+
+        if (chickenCounterNumber <= 0)
+        {
+            
+            food.SetActive(false);
+        }
+
+        if (waterCounterNumber <= 0)
+        {
+            water.SetActive(false);
+        }
+
+
+
+
     }
 }

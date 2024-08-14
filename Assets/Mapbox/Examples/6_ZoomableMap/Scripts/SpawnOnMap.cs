@@ -35,6 +35,8 @@
 		 [SerializeField]
     	public bool debugMode = true;
 
+		public bool isDogSpot = true;
+
 		// Wartości latitude, longitude i promienia
 		float latitude = 51.08666657545862f;
 		float longitude = 17.05298076897365f;
@@ -171,6 +173,15 @@
 
 					var instance = Instantiate(_markerPrefab);
 
+					if (isDogSpot)
+					{
+						instance.tag = "DogSpot";
+					}
+					else
+					{
+						instance.tag = "DogGym";
+					}
+
 
 					// Przekazanie id jako parametru do skryptu obiektu
 					var markerScript = instance.GetComponent<ClickDogSpot>(); // Zastąp "YourMarkerScript" rzeczywistą nazwą skryptu
@@ -188,15 +199,15 @@
 						Debug.Log("nie znalazł");
 					}
 
-					dogSpotStatus.text = "instance";
+					//dogSpotStatus.text = "instance";
 					instance.transform.localPosition = _map.GeoToWorldPosition(_locations[i], true);
-					dogSpotStatus.text = "localPosition";
+					//dogSpotStatus.text = "localPosition";
 					instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
-					dogSpotStatus.text = "new Vector3(_spawnScale, _spawnScale, _spawnScale)";
+					//dogSpotStatus.text = "new Vector3(_spawnScale, _spawnScale, _spawnScale)";
 					_spawnedObjects.Add(instance);
-					dogSpotStatus.text = "_spawnedObjects.Add(instance);";
+					//dogSpotStatus.text = "_spawnedObjects.Add(instance);";
 					i++;
-					dogSpotStatus.text = i.ToString();
+					//dogSpotStatus.text = i.ToString();
 				}
 			}
 			else{
