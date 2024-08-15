@@ -330,6 +330,15 @@ public class ClickDogSpot : MonoBehaviour
         Debug.Log("RESET CLICK");
         isClicked = false;
         clickedObject = null;
+
+        GameObject[] noticeboards = GameObject.FindGameObjectsWithTag("Noticeboard");
+
+        // Ustaw każdy znaleziony obiekt jako nieaktywny
+        foreach (GameObject noticeboard in noticeboards)
+        {
+            noticeboard.SetActive(false);
+        }
+
     }
 
     private IEnumerator HideOtherDogSpotsAndGymsWithDelay(GameObject clickedPoint, float delay)
