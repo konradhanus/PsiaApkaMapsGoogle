@@ -218,7 +218,7 @@ public class ClickDogSpot : MonoBehaviour
                 isClicked = true;
                 clickedObject = dogspot;
 
-                StartCoroutine(HideOtherDogSpotsAndGymsWithDelay(clickedObject, 0.6f));
+                StartCoroutine(HideOtherDogSpotsAndGymsWithDelay(clickedObject, 0.4f));
 
                 // 
 
@@ -360,7 +360,15 @@ public class ClickDogSpot : MonoBehaviour
         }
     }
 
-    public static void ShowAllDogSpotsAndGyms()
+    public void ShowAllDogSpotsAndGyms()
+    {
+        StartCoroutine(ShowAllWithDelay());
+ 
+         Debug.Log("SHOW ALL");
+    }
+
+
+    private IEnumerator ShowAllWithDelay()
     {
         // Znajdź wszystkie obiekty z tagiem DogSpot
         List<GameObject> dogSpots = GameObjectFinder.FindGameObjectsWithTagIncludingInactive("DogSpot");
@@ -377,8 +385,64 @@ public class ClickDogSpot : MonoBehaviour
         {
             dogGym.SetActive(true);
         }
+
         Debug.Log("SHOW ALL");
+
+        // Odczekaj 0,7 sekundy
+        yield return new WaitForSeconds(0.2f);
+
+        // Ponowne uruchomienie tej samej logiki
+        foreach (GameObject dogSpot in dogSpots)
+        {
+            dogSpot.SetActive(true);
+        }
+
+        foreach (GameObject dogGym in dogGyms)
+        {
+            dogGym.SetActive(true);
+        }
+
+        Debug.Log("SHOW ALL AGAIN");
+
+        Debug.Log("SHOW ALL");
+
+        // Odczekaj 0,7 sekundy
+        yield return new WaitForSeconds(0.4f);
+
+        // Ponowne uruchomienie tej samej logiki
+        foreach (GameObject dogSpot in dogSpots)
+        {
+            dogSpot.SetActive(true);
+        }
+
+        foreach (GameObject dogGym in dogGyms)
+        {
+            dogGym.SetActive(true);
+        }
+
+        Debug.Log("SHOW ALL AGAIN");
+
+        Debug.Log("SHOW ALL");
+
+        // Odczekaj 0,7 sekundy
+        yield return new WaitForSeconds(0.6f);
+
+        // Ponowne uruchomienie tej samej logiki
+        foreach (GameObject dogSpot in dogSpots)
+        {
+            dogSpot.SetActive(true);
+        }
+
+        foreach (GameObject dogGym in dogGyms)
+        {
+            dogGym.SetActive(true);
+        }
+
+        Debug.Log("SHOW ALL AGAIN");
+
+
     }
+
 
     IEnumerator SendRequest()
     {
