@@ -29,6 +29,10 @@ public class ThrowBall : MonoBehaviour
     private Vector3 currentRotationSpeed;
     private Vector3 rotationDamping = new Vector3(0.95f, 0.95f, 0.95f); // Damping factor for rotation
 
+    public GameObject BallValue;
+
+    public GameObject ballObject;
+
     Rigidbody rb;
     public Animator dogAnimator; // Dodanie Animatora psa
 
@@ -133,10 +137,34 @@ public class ThrowBall : MonoBehaviour
             ResetBall();
             
         }
+
+        // Pobierz komponent BallScript z ballObject
+        GetBallNew ballScript = BallValue.GetComponent<GetBallNew>();
+
+        // Sprawdź, czy skrypt został znaleziony
+        if (ballScript != null)
+        {
+            // Odczytaj wartość ballValue
+            int value = ballScript.ballValue;
+            Debug.Log("BALL ::" + value);
+
+            if (value <= 0)
+            {
+                ball.SetActive(false);
+                ball2.SetActive(false);// urkyj piłkę 1
+            }
+
+            Debug.Log("Wartość ballValue: " + value);
+        }
+        else
+        {
+            Debug.LogError("Nie znaleziono skryptu BallScript na obiekcie " + ballObject.name);
+        }
     }
 
     public void ResetBall()
     {
+
         Debug.Log("Reset Ball from ResetBall");
         angle = Vector3.zero;
         endPos = Vector2.zero;
@@ -156,6 +184,8 @@ public class ThrowBall : MonoBehaviour
         
         ball.SetActive(true);  // pokaz piłkę 1
         ball2.SetActive(false);  // Ukryj piłkę 2
+
+       
 
     }
 

@@ -2,13 +2,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
-using UnityEngine.UI;  // Dodaj to, aby mie? dost?p do komponentu Image
+using UnityEngine.UI;  // Dodaj to, aby mieć dostęp do komponentu Image
 
 public class GlobalUserData : MonoBehaviour
 {
     public bool debugMode = true;
     public static GlobalUserData Instance;
 
+    public string defaultAccount = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
     public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
     private FirebaseAuthManager authManager;
 
@@ -28,11 +29,11 @@ public class GlobalUserData : MonoBehaviour
     public GameObject PlayerAvatar;
     public GameObject DogAvatar;
 
-    public Sprite[] DogsCircleAvatar; // Tablica dla wszystkich ps?w
+    public Sprite[] DogsCircleAvatar; // Tablica dla wszystkich psów
 
-    public GameObject[] Dogs; // Tablica dla wszystkich ps?w
-    public GameObject[] DogsProfile; // Tablica dla wszystkich ps?w
-    public GameObject[] DogsCoupleProfile; // Tablica dla wszystkich ps?w
+    public GameObject[] Dogs; // Tablica dla wszystkich psów
+    public GameObject[] DogsProfile; // Tablica dla wszystkich psów
+    public GameObject[] DogsCoupleProfile; // Tablica dla wszystkich psów
 
     UserData userData;
 
@@ -66,15 +67,21 @@ public class GlobalUserData : MonoBehaviour
 
             print("Player Id:" + userId);
 
+            if (userId == "")
+            {
+                Debug.Log("FetchUserData: pusty");
+                userId = defaultAccount;
+            }
+
         }
-        Debug.Log("FETCH! JESTEM PONOWNIE!");
+        Debug.Log("FetchUserData: FETCH! JESTEM PONOWNIE!: "+ userId);
         StartCoroutine(UpdateDataFromAPI());
     }
 
     public void FetchData()
     {
-        Debug.Log("FETCH!, fetch data");
-        Debug.Log("userId" + userId);
+        Debug.Log("FetchUserData: FETCH!, fetch data");
+        Debug.Log("FetchUserData: userId" + userId);
         StartCoroutine(UpdateDataFromAPI());
     }
 
@@ -82,13 +89,13 @@ public class GlobalUserData : MonoBehaviour
     {
         string url = "https://psiaapka.pl/psiaapka/userData.php?user_id=" + userId;
 
-        Debug.Log("FETCH! " + url);
+        Debug.Log("FetchUserData: FETCH! " + url);
         UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("B??d podczas pobierania danych z API: " + request.error);
+            Debug.LogError("FetchUserData: Błąd podczas pobierania danych z API: " + request.error);
             yield break;
         }
 
@@ -97,37 +104,36 @@ public class GlobalUserData : MonoBehaviour
 
         if (dataResponse != null && dataResponse.data != null)
         {
-            Debug.Log("FETCH!!!" + dataResponse);
+            Debug.Log("FetchUserData: FETCH!!!" + dataResponse);
             userData = dataResponse.data;
             UpdateUserData(dataResponse.data);
         }
         else
         {
-            Debug.LogError("B??d podczas parsowania odpowiedzi z API.");
+            Debug.LogError("FetchUserData: Błąd podczas parsowania odpowiedzi z API.");
         }
     }
 
     public void UpdateUserData(UserData userData)
     {
-        Debug.Log("FETCH! Nick: " + userData.nick + ", SkinId: " + userData.id_avatar + ", DogSkinId: " + userData.id_avatar_dog + ", Registration Date: " + userData.date_created);
+        Debug.Log("FetchUserData: FETCH! Nick: " + userData.nick + ", SkinId: " + userData.id_avatar + ", DogSkinId: " + userData.id_avatar_dog + ", Registration Date: " + userData.date_created);
 
         // Update UI elements with received data
         // nickNameText.text = userData.nick;
 
         // Update avatar and character visibility based on skinId
-        Debug.Log("FETCH!" + userData.id_avatar);
+        Debug.Log("FetchUserData: FETCH!" + userData.id_avatar);
 
         if (PlayerArmature == null)
         {
-            Debug.LogError("PlayerArmature is not assigned.");
+            Debug.LogError("FetchUserData: PlayerArmature is not assigned.");
             return;
         }
 
-       
         Animator playerAnimator = PlayerArmature.GetComponent<Animator>();
         if (playerAnimator == null)
         {
-            Debug.LogError("Animator component not found on PlayerArmature.");
+            Debug.LogError("FetchUserData: Animator component not found on PlayerArmature.");
             return;
         }
 
@@ -135,17 +141,14 @@ public class GlobalUserData : MonoBehaviour
         Image avatarImage = PlayerAvatar.GetComponent<Image>();
         if (avatarImage == null)
         {
-            Debug.LogError("Image component not found on PlayerAvatar.");
+            Debug.LogError("FetchUserData: Image component not found on PlayerAvatar.");
             return;
         }
 
-       
-
-
-        Debug.Log("FETCH!" + (userData.id_avatar == 0));
+        Debug.Log("FetchUserData: FETCH!" + (userData.id_avatar == 0));
         if (userData.id_avatar == 0)
         {
-            Debug.Log("FETCH! WOMAN");
+            Debug.Log("FetchUserData: FETCH! WOMAN");
             playerAnimator.avatar = WomanAvatar;
             Woman.SetActive(true);
             Man.SetActive(false);
@@ -157,7 +160,7 @@ public class GlobalUserData : MonoBehaviour
         }
         else if (userData.id_avatar == 1)
         {
-            Debug.Log("FETCH! MAN");
+            Debug.Log("FetchUserData: FETCH! MAN");
             playerAnimator.avatar = ManAvatar;
             Woman.SetActive(false);
             Man.SetActive(true);
@@ -165,18 +168,16 @@ public class GlobalUserData : MonoBehaviour
             WomanProfile.SetActive(false);
             ManProfile.SetActive(true);
 
-
             avatarImage.sprite = ManCircleAvatarImage;  // Zmieniamy sprite 
         }
-        Debug.Log("FETCH!" + userData.id_avatar_dog);
+        Debug.Log("FetchUserData: FETCH!" + userData.id_avatar_dog);
         // Update the visibility of the dogs based on the id_avatar_dog
         ShowDog(userData.id_avatar_dog);
     }
 
     private void ShowDog(int dogId)
     {
-
-        Debug.Log("FETCH!XXX" + dogId);
+        Debug.Log("FetchUserData: FETCH!XXX" + dogId);
         // Ukryj wszystkie psy
         foreach (GameObject dog in Dogs)
         {
@@ -196,16 +197,16 @@ public class GlobalUserData : MonoBehaviour
         int index;
         if (dogId >= 0 && dogId <= Dogs.Length)
         {
-            index = dogId; // Przekszta?cenie dogId (1-28) na indeks (0-27)
+            index = dogId; // Przekształcenie dogId (1-28) na indeks (0-27)
         }
         else
         {
-            index = 24; // Domy?lnie ustaw psa nr 14 (indeks 13)
+            index = 24; // Domyślnie ustaw psa nr 14 (indeks 13)
         }
 
         if (DogAvatar == null)
         {
-            Debug.LogError("DogAvatar is not assigned.");
+            Debug.LogError("FetchUserData: DogAvatar is not assigned.");
             return;
         }
 
@@ -213,7 +214,7 @@ public class GlobalUserData : MonoBehaviour
         Image avatarDogImage = DogAvatar.GetComponent<Image>();
         if (avatarDogImage == null)
         {
-            Debug.LogError("Image component not found on DogAvatar.");
+            Debug.LogError("FetchUserData: Image component not found on DogAvatar.");
             return;
         }
 

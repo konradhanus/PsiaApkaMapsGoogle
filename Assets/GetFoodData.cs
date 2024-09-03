@@ -37,9 +37,10 @@ public class GetFoodData : MonoBehaviour
 
     void Start()
     {
-       
-            
-            authManager = new FirebaseAuthManager();
+
+        
+
+        authManager = new FirebaseAuthManager();
             // Wykonaj call do API i zaktualizuj dane
             userId = ReferencesUserFirebase.userId;
 
@@ -74,6 +75,10 @@ public class GetFoodData : MonoBehaviour
 
     void HandleData(ResourceResponseBall resourceResponse)
     {
+        ThrowBall throwBallScript = ChickenWaterContainer.GetComponent<ThrowBall>();
+
+        
+
         foreach (var data in resourceResponse.data)
         {
             Debug.Log("Gold: " + data.gold);
@@ -91,13 +96,27 @@ public class GetFoodData : MonoBehaviour
                     if (chickenValue <= 0)
                     {
                         Chicken.SetActive(false);
+
+
+                        if (throwBallScript != null)
+                        {
+                        
+                            bool isChicken = throwBallScript.isChicken;
+
+                            if (isChicken)
+                            {
+                                ChickenWaterContainer.SetActive(false);
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogError("ThrowBall script not found on ChickenWaterContainer.");
+                        }
+
+                        //active 
                        // ChickenWaterContainer.SetActive(false);
                     }
                 }
-
-              
-
-
             }
 
             if (textWater != null)
@@ -109,7 +128,21 @@ public class GetFoodData : MonoBehaviour
                     if (waterValue <= 0)
                     {
                         Water.SetActive(false);
-                       // ChickenWaterContainer.SetActive(false);
+
+                        if (throwBallScript != null)
+                        {
+
+                            bool isWater = throwBallScript.isWater;
+
+                            if (isWater)
+                            {
+                                ChickenWaterContainer.SetActive(false);
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogError("ThrowBall script not found on ChickenWaterContainer.");
+                        }
                     }
                 }
             }

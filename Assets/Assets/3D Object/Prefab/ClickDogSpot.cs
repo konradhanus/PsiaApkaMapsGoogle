@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
-
+using UnityEngine.SceneManagement;
 
 public class ClickDogSpot : MonoBehaviour
 {
@@ -17,7 +17,7 @@ public class ClickDogSpot : MonoBehaviour
     private string prevUserId;
     public GameObject dogspot;
     public GameObject PlayerArmature;
-    public bool isDogGym = false; 
+    public bool isDogGym = false;
     public Cinemachine.CinemachineVirtualCamera virtualCamera;
     public GameObject menuToDisable; // Menu do wyłączenia
     public GameObject menuToEnable; // Menu do wyłączenia
@@ -35,7 +35,7 @@ public class ClickDogSpot : MonoBehaviour
     {
         long lastVisitTimestamp = GetCurrentTimestamp();
         string data = lastVisitTimestamp.ToString();
-        string keyDogSpot = VisitedDogSpotId+id;
+        string keyDogSpot = VisitedDogSpotId + id;
         PlayerPrefs.SetString(keyDogSpot, data);
         PlayerPrefs.Save();
         //Debug.Log("SAVE: "+data);
@@ -52,7 +52,7 @@ public class ClickDogSpot : MonoBehaviour
     }
 
     public Material visitedDogSpotMaterial; // Nowy materiał, który chcesz przypisać dzieciom
-   
+
 
     public float rotationSpeed = 50f; // Prędkość obrotu
     public float fastRotationSpeedMultiplier = 2f; // Mnożnik szybkości obrotu po kliknięciu
@@ -110,7 +110,7 @@ public class ClickDogSpot : MonoBehaviour
             long longValue = long.Parse(date);
             lastDate = longValue;
         }
-        Debug.Log("SET date"+date);
+        Debug.Log("SET date" + date);
     }
 
 
@@ -134,8 +134,8 @@ public class ClickDogSpot : MonoBehaviour
         gemPrefabs[3] = gemPrefab4;
         gemPrefabs[4] = gemPrefab5;
 
-        
-        
+
+
     }
 
     // Update is called once per frame
@@ -161,8 +161,8 @@ public class ClickDogSpot : MonoBehaviour
                 }
             }
         }
-       
-        if(prevUserId != ReferencesUserFirebase.userId)
+
+        if (prevUserId != ReferencesUserFirebase.userId)
         {
             userId = ReferencesUserFirebase.userId;
             prevUserId = userId;
@@ -197,22 +197,22 @@ public class ClickDogSpot : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
 
-           
 
-             // Jeśli już kliknięto, zablokuj dalsze kliknięcia
+
+            // Jeśli już kliknięto, zablokuj dalsze kliknięcia
             if (isClicked && clickedObject != dogspot)
             {
                 return;
             }
-            
-            
+
+
             // Pobierz kliknięty obiekt
             if (dogspot == getClickedObject(out RaycastHit hit))
             {
                 CloseInfoBar();
                 Transform infoBar = transform.Find("InfoBar");
-                
-                  
+
+
 
                 // Ustaw, że zaznaczyło dogspot aby uniemozliwić zaznaczanie innego
                 isClicked = true;
@@ -225,22 +225,25 @@ public class ClickDogSpot : MonoBehaviour
                 if (!string.IsNullOrEmpty(id))
                 {
                     //Debug.Log("AAA DogSpot Id:"+id);
-                }else{
+                }
+                else
+                {
                     //Debug.Log("AAA Nie ma DogSpot Id:"+id);
                 }
                 clickCount++; // Inkrementuj licznik kliknięć
 
                 if (Vector3.Distance(PlayerArmature.transform.position, transform.position) > 4f)
                 {
-                                    
-                                    
+
+
                     if (infoBar != null)
                     {
                         infoBar.gameObject.SetActive(true);
                     }
-                                    
-                    // Debug.Log("za daleko" + Vector3.Distance(PlayerArmature.transform.position, transform.position));
-                }else
+
+                    Debug.Log("za daleko" + Vector3.Distance(PlayerArmature.transform.position, transform.position));
+                }
+                else
                 {
                     // Debug.Log("za blisko" + Vector3.Distance(PlayerArmature.transform.position, transform.position));
                     if (infoBar != null)
@@ -248,40 +251,44 @@ public class ClickDogSpot : MonoBehaviour
                         infoBar.gameObject.SetActive(false);
                     }
                     if (clickCount == 3) // Jeśli kliknięto trzy razy
-                {
-                    if(!isDogGym)
                     {
-                     StartCoroutine(SendRequest());
+                        if (!isDogGym)
+                        {
+                            StartCoroutine(SendRequest());
+                        }
+                        else
+                        {
+                            SceneManager.LoadSceneAsync(3);
+                        }
+                        //Debug.Log("AAA"+clickCount);
+                        // }
+                        print("3x kliknołeś"); // Wyświetl informację w konsoli
+
+                        // Lista przechowująca pozycje już istniejących prefabów
+                        List<Vector3> usedPositions = new List<Vector3>();
+
+                        // Tworzenie gemów z wykorzystaniem tablicy prefabrykatów
+                        GameObject dogSpotBack = GameObject.Find("DogSpotBack");
+                        // for (int i = 0; i < 5; i++)
+                        // {
+                        //     Vector3 gemPosition = GenerateRandomPosition(usedPositions);
+
+                        //     // Utwórz obiekt gem w losowej pozycji
+                        //     GameObject gem = Instantiate(gemPrefabs[i], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
+                        //     gem.name = "Gem"; // Nadaj nazwę elementowi
+                        //     gem.transform.localScale = new Vector3(30f, 30f, 30f);
+                        //     gem.layer = LayerMask.NameToLayer("UI");
+                        //     gem.transform.SetParent(dogSpotBack.transform, false);
+
+                        //     // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
+                        //     usedPositions.Add(gemPosition);
+                        // }
+
+                        clickCount = 0; // Zresetuj licznik kliknięć
                     }
-                     //Debug.Log("AAA"+clickCount);
-                // }
-                    print("3x kliknołeś"); // Wyświetl informację w konsoli
 
-                    // Lista przechowująca pozycje już istniejących prefabów
-                    List<Vector3> usedPositions = new List<Vector3>();
-
-                    // Tworzenie gemów z wykorzystaniem tablicy prefabrykatów
-                    GameObject dogSpotBack = GameObject.Find("DogSpotBack");
-                    // for (int i = 0; i < 5; i++)
-                    // {
-                    //     Vector3 gemPosition = GenerateRandomPosition(usedPositions);
-
-                    //     // Utwórz obiekt gem w losowej pozycji
-                    //     GameObject gem = Instantiate(gemPrefabs[i], gemPosition, Quaternion.Euler(-90f, 0f, 0f));
-                    //     gem.name = "Gem"; // Nadaj nazwę elementowi
-                    //     gem.transform.localScale = new Vector3(30f, 30f, 30f);
-                    //     gem.layer = LayerMask.NameToLayer("UI");
-                    //     gem.transform.SetParent(dogSpotBack.transform, false);
-
-                    //     // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
-                    //     usedPositions.Add(gemPosition);
-                    // }
-
-                     clickCount = 0; // Zresetuj licznik kliknięć
                 }
-                
-                }
-                
+
                 currentRotationSpeed = fastRotationSpeedMultiplier * rotationSpeed; // Ustaw prędkość na szybką prędkość obrotu
                 currentDecelerationTime = 0f; // Zresetuj czas opóźnienia
 
@@ -292,10 +299,10 @@ public class ClickDogSpot : MonoBehaviour
                 // Pobranie aktualnej pozycji dogspot
                 Vector3 dogspotPosition = dogspot.transform.position;
                 Vector3 virutalCameraPosition = virtualCamera.transform.position;
-                
+
                 // Dodanie przesunięcia o x: 20, y: 10
                 Vector3 cameraPosition = new Vector3(dogspotPosition.x + 3, 2, dogspotPosition.z + 3);
-                
+
                 // Ustawienie nowej pozycji kamery
                 virtualCamera.transform.position = cameraPosition;
 
@@ -305,7 +312,7 @@ public class ClickDogSpot : MonoBehaviour
                     menuToDisable.SetActive(false);
                     menuToEnable.SetActive(true);
                 }
-            } 
+            }
         }
     }
 
@@ -372,8 +379,8 @@ public class ClickDogSpot : MonoBehaviour
     public void ShowAllDogSpotsAndGyms()
     {
         StartCoroutine(ShowAllWithDelay());
- 
-         Debug.Log("SHOW ALL");
+
+        Debug.Log("SHOW ALL");
     }
 
 
@@ -455,7 +462,7 @@ public class ClickDogSpot : MonoBehaviour
 
     IEnumerator SendRequest()
     {
-        
+
         string url = $"https://psiaapka.pl/visitdogspot.php?dog_spot_id={id}&user_id={userId}&message=test";
         //Debug.Log("AAA SendRequest: "+ url);
 
@@ -475,7 +482,7 @@ public class ClickDogSpot : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-              
+
                 string responseText = request.downloadHandler.text;
                 //Debug.Log("AAA SendRequest: response "+ responseText);
                 // Sprawdź, czy odpowiedź to JSON
@@ -485,15 +492,15 @@ public class ClickDogSpot : MonoBehaviour
                     DataResponse dataResponse = JsonUtility.FromJson<DataResponse>(responseText);
                     //Debug.Log("AAA SendRequest: ZA FORMJSON ");
                     // Odpowiedź JSON
-                  
+
                     //GlobalData.Instance.UpdateData(int.Parse(dataResponse.data[0].gold), int.Parse(dataResponse.data[0].diamond), int.Parse(dataResponse.data[0].chicken), int.Parse(dataResponse.data[0].ball), int.Parse(dataResponse.data[0].water));
-                     //Debug.Log("AAA SendRequest: ZA GlobalData ");
+                    //Debug.Log("AAA SendRequest: ZA GlobalData ");
                     int awardGold = dataResponse.award.gold;
                     int awardDiamond = dataResponse.award.diamond;
                     int awardBall = dataResponse.award.ball;
                     int awardWater = dataResponse.award.water;
                     int awardChicken = dataResponse.award.chicken;
-                   // Debug.Log("AAA SendRequest: ZA awardChicken ");
+                    // Debug.Log("AAA SendRequest: ZA awardChicken ");
                     // Lista przechowująca pozycje już istniejących prefabów
                     List<Vector3> usedPositions = new List<Vector3>();
 
@@ -501,8 +508,8 @@ public class ClickDogSpot : MonoBehaviour
                     GameObject dogSpotBack = GameObject.Find("DogSpotBack");
                     //Debug.Log("AAA SendRequest: ZA GameObject ");
                     // Wykonaj kod tworzenia obiektów gem tylko jeśli otrzymano odpowiedź JSON
-                   if(awardGold > 0)
-                   {
+                    if (awardGold > 0)
+                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
                         //Debug.Log("AAA SendRequest: GOLD ");
                         // Utwórz obiekt gem w losowej pozycji
@@ -514,10 +521,10 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
-                   }  
+                    }
 
-                   if(awardDiamond > 0)
-                   {
+                    if (awardDiamond > 0)
+                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
                         //Debug.Log("AAA SendRequest: DIAMOND ");
                         // Utwórz obiekt gem w losowej pozycji
@@ -529,10 +536,10 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
-                   }     
+                    }
 
-                   if(awardWater > 0)
-                   {
+                    if (awardWater > 0)
+                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
                         //Debug.Log("AAA SendRequest: WATER ");
                         // Utwórz obiekt gem w losowej pozycji
@@ -544,10 +551,10 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
-                   }     
+                    }
 
-                   if(awardBall > 0)
-                   {
+                    if (awardBall > 0)
+                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
                         //Debug.Log("AAA SendRequest: BALL ");
                         // Utwórz obiekt gem w losowej pozycji
@@ -559,10 +566,10 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
-                   }     
+                    }
 
-                   if(awardChicken > 0)
-                   {
+                    if (awardChicken > 0)
+                    {
                         Vector3 gemPosition = GenerateRandomPosition(usedPositions);
                         //Debug.Log("AAA SendRequest: CHICKEN ");
                         // Utwórz obiekt gem w losowej pozycji
@@ -574,8 +581,8 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
-                   }     
-                    
+                    }
+
                 }
                 else
                 {
@@ -584,7 +591,7 @@ public class ClickDogSpot : MonoBehaviour
                     //Debug.Log("AAA Odpowiedź nie jest w formacie JSON: " + responseText);
                     // Sprawdź, czy istnieje canvas o nazwie "Noticeboard" jako dziecko tego obiektu
                     Transform noticeboard = transform.Find("Noticeboard");
-                    
+
                     // Jeśli canvas został znaleziony, ustaw go jako aktywny
                     if (noticeboard != null)
                     {
@@ -606,36 +613,36 @@ public class ClickDogSpot : MonoBehaviour
 
     public void CloseNoticeBoard()
     {
-         // Znajdź wszystkie canvasy o nazwie "Noticeboard" na planszy
-            Canvas[] noticeboards = FindObjectsOfType<Canvas>();
+        // Znajdź wszystkie canvasy o nazwie "Noticeboard" na planszy
+        Canvas[] noticeboards = FindObjectsOfType<Canvas>();
 
-            // Przejdź przez wszystkie znalezione canvasy
-            foreach (Canvas noticeboard in noticeboards)
+        // Przejdź przez wszystkie znalezione canvasy
+        foreach (Canvas noticeboard in noticeboards)
+        {
+            // Sprawdź, czy canvas ma nazwę "Noticeboard"
+            if (noticeboard.gameObject.name == "Noticeboard")
             {
-                // Sprawdź, czy canvas ma nazwę "Noticeboard"
-                if (noticeboard.gameObject.name == "Noticeboard")
-                {
-                    // Ustaw canvas na nieaktywny
-                    noticeboard.gameObject.SetActive(false);
-                }
+                // Ustaw canvas na nieaktywny
+                noticeboard.gameObject.SetActive(false);
             }
+        }
     }
 
     public void CloseInfoBar()
     {
-         // Znajdź wszystkie canvasy o nazwie "Noticeboard" na planszy
-            Canvas[] infobars = FindObjectsOfType<Canvas>();
+        // Znajdź wszystkie canvasy o nazwie "Noticeboard" na planszy
+        Canvas[] infobars = FindObjectsOfType<Canvas>();
 
-            // Przejdź przez wszystkie znalezione canvasy
-            foreach (Canvas infobar in infobars)
+        // Przejdź przez wszystkie znalezione canvasy
+        foreach (Canvas infobar in infobars)
+        {
+            // Sprawdź, czy canvas ma nazwę "Noticeboard"
+            if (infobar.gameObject.name == "InfoBar")
             {
-                // Sprawdź, czy canvas ma nazwę "Noticeboard"
-                if (infobar.gameObject.name == "InfoBar")
-                {
-                    // Ustaw canvas na nieaktywny
-                    infobar.gameObject.SetActive(false);
-                }
+                // Ustaw canvas na nieaktywny
+                infobar.gameObject.SetActive(false);
             }
+        }
     }
 
     Vector3 GenerateRandomPosition(List<Vector3> usedPositions)
@@ -682,10 +689,10 @@ public class ClickDogSpot : MonoBehaviour
     public void UsunElementPoNazwie(GameObject dogSpotBack)
     {
         string nazwaElementu = "Gem";
-        string chickenName  = "Chicken";
-        string goldName  = "Gold";
-        string waterName  = "Water";
-        string ballName  = "Ball";
+        string chickenName = "Chicken";
+        string goldName = "Gold";
+        string waterName = "Water";
+        string ballName = "Ball";
         // Sprawdź, czy obiekt dogSpotBack istnieje
         if (dogSpotBack != null)
         {
@@ -700,15 +707,15 @@ public class ClickDogSpot : MonoBehaviour
                 {
                     Destroy(child.gameObject);
                 }
-                 if (child.gameObject.name == goldName)
+                if (child.gameObject.name == goldName)
                 {
                     Destroy(child.gameObject);
                 }
-                 if (child.gameObject.name == waterName)
+                if (child.gameObject.name == waterName)
                 {
                     Destroy(child.gameObject);
                 }
-                 if (child.gameObject.name == ballName)
+                if (child.gameObject.name == ballName)
                 {
                     Destroy(child.gameObject);
                 }

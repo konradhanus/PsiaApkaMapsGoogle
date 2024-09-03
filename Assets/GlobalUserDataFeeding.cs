@@ -55,6 +55,7 @@ public class GlobalUserDataFeeding : MonoBehaviour
 
     IEnumerator UpdateDataFromAPI()
     {
+       
         string url = "https://psiaapka.pl/psiaapka/userData.php?user_id=" + userId;
 
         Debug.Log("FETCH! " + url);
@@ -118,5 +119,148 @@ public class GlobalUserDataFeeding : MonoBehaviour
 
     }
 
+    public void OnUpdateButtonBallClick()
+    {
+        StartCoroutine(UpdateTaskDataBall(userId));
+    }
+
+    public void OnUpdateButtonFoodAndWaterClick()
+    {
+        StartCoroutine(UpdateTaskDataFoodAndWater(userId));
+    }
+
+
+    [System.Serializable]
+    public class Task
+    {
+        public string id;
+        public string UUID;
+        public string walk;
+        public string play;
+        public string treat;
+        public string treasure;
+        public string water;
+        public string date;
+    }
+
+    [System.Serializable]
+    public class TaskResponse
+    {
+        public List<Task> tasks;
+    }
+
+    IEnumerator UpdateTaskDataBall(string userId)
+    {
+        
+
+        // 1. Pobierz aktualny stan z API
+        string fetchUrl = "https://psiaapka.pl/getTasks.php?uuid=" + userId;
+        Debug.Log("UPDATE: " + fetchUrl);
+        UnityWebRequest fetchRequest = UnityWebRequest.Get(fetchUrl);
+        yield return fetchRequest.SendWebRequest();
+
+        if (fetchRequest.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("UPDATE: Błąd podczas pobierania danych z API: " + fetchRequest.error);
+            yield break;
+        }
+
+        string fetchJsonResponse = fetchRequest.downloadHandler.text;
+        TaskResponse taskResponse = JsonUtility.FromJson<TaskResponse>(fetchJsonResponse);
+
+        // Sprawdź, czy odpowiedź zawiera zadania
+        string walkValue, playValue, treatValue, treasureValue, waterValue;
+
+        if (taskResponse == null || taskResponse.tasks.Count == 0)
+        {
+            Debug.Log("UPDATE: Brak zadań w odpowiedzi z API. Ustawiam domyślne wartości.");
+            // Ustaw domyślne wartości
+            walkValue = "0";
+            playValue = "1"; // Ustaw playValue na 1, gdy brak danych
+            treatValue = "0";
+            treasureValue = "0";
+            waterValue = "0";
+        }
+        else
+        {
+            Task task = taskResponse.tasks[0]; // Zakładam, że interesuje Cię pierwsze zadanie
+            walkValue = task.walk;
+            playValue = (int.Parse(task.play) + 1).ToString(); // Zwiększ playValue o 1
+            treatValue = task.treat;
+            treasureValue = task.treasure;
+            waterValue = task.water;
+        }
+
+        // Użyj UUID z userId2 (zakładając, że jest to UUID)
+        string updateUrl = $"https://psiaapka.pl/updateTasks.php?walk={walkValue}&play={playValue}&treat={treatValue}&treasure={treasureValue}&water={waterValue}&uuid={userId}";
+        UnityWebRequest updateRequest = UnityWebRequest.Get(updateUrl);
+        yield return updateRequest.SendWebRequest();
+
+        if (updateRequest.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("UPDATE: Błąd podczas aktualizacji danych z API: " + updateRequest.error);
+        }
+        else
+        {
+            Debug.Log("UPDATE: Dane zostały pomyślnie zaktualizowane.");
+        }
+    }
+
+    IEnumerator UpdateTaskDataFoodAndWater(string userId)
+    {
+
+
+        // 1. Pobierz aktualny stan z API
+        string fetchUrl = "https://psiaapka.pl/getTasks.php?uuid=" + userId;
+        Debug.Log("UPDATE: " + fetchUrl);
+        UnityWebRequest fetchRequest = UnityWebRequest.Get(fetchUrl);
+        yield return fetchRequest.SendWebRequest();
+
+        if (fetchRequest.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("UPDATE: Błąd podczas pobierania danych z API: " + fetchRequest.error);
+            yield break;
+        }
+
+        string fetchJsonResponse = fetchRequest.downloadHandler.text;
+        TaskResponse taskResponse = JsonUtility.FromJson<TaskResponse>(fetchJsonResponse);
+
+        // Sprawdź, czy odpowiedź zawiera zadania
+        string walkValue, playValue, treatValue, treasureValue, waterValue;
+
+        if (taskResponse == null || taskResponse.tasks.Count == 0)
+        {
+            Debug.Log("UPDATE: Brak zadań w odpowiedzi z API. Ustawiam domyślne wartości.");
+            // Ustaw domyślne wartości
+            walkValue = "0";
+            playValue = "0"; // Ustaw playValue na 1, gdy brak danych
+            treatValue = "1";
+            treasureValue = "0";
+            waterValue = "1";
+        }
+        else
+        {
+            Task task = taskResponse.tasks[0]; // Zakładam, że interesuje Cię pierwsze zadanie
+            walkValue = task.walk;
+            playValue = task.play; // Zwiększ playValue o 1
+            treatValue = (int.Parse(task.treat) + 1).ToString(); ;
+            treasureValue = task.treasure;
+            waterValue = (int.Parse(task.water) + 1).ToString(); ;
+        }
+
+        // Użyj UUID z userId2 (zakładając, że jest to UUID)
+        string updateUrl = $"https://psiaapka.pl/updateTasks.php?walk={walkValue}&play={playValue}&treat={treatValue}&treasure={treasureValue}&water={waterValue}&uuid={userId}";
+        UnityWebRequest updateRequest = UnityWebRequest.Get(updateUrl);
+        yield return updateRequest.SendWebRequest();
+
+        if (updateRequest.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("UPDATE: Błąd podczas aktualizacji danych z API: " + updateRequest.error);
+        }
+        else
+        {
+            Debug.Log("UPDATE: Dane zostały pomyślnie zaktualizowane.");
+        }
+    }
 
 }

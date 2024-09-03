@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+
 public class GlobalData : MonoBehaviour
 {
     public bool debugMode = true;
@@ -47,37 +48,40 @@ public class GlobalData : MonoBehaviour
         public string ball;
         public string water;
     }
-    
+
     void Start()
     {
-        if(debugMode)
+        if (debugMode)
         {
 
-        }else{
+        }
+        else
+        {
             authManager = new FirebaseAuthManager();
             // Wykonaj call do API i zaktualizuj dane
             userId = ReferencesUserFirebase.userId;
-    
+
             print("Player Id:" + userId);
             logTxt.text = userId;
             // nickName.text = ReferencesUserFirebase.userName;
         }
-        Debug.Log("FETCH! JESTEM PONOWNIE!");
+        Debug.Log("Resources: FETCH! JESTEM PONOWNIE!");
         StartCoroutine(UpdateDataFromAPI());
     }
 
 
-    public void FetchData() {
-        Debug.Log("FETCH!, fetch data");
-        Debug.Log("userId"+ userId);
+    public void FetchData()
+    {
+        Debug.Log("Resources: FETCH!, fetch data");
+        Debug.Log("Resources: userId" + userId);
         StartCoroutine(UpdateDataFromAPI());
     }
     IEnumerator UpdateDataFromAPI()
     {
         // URL do API
-        string url = "https://psiaapka.pl/resources.php?user_id="+userId;
+        string url = "https://psiaapka.pl/resources.php?user_id=" + userId;
 
-        Debug.Log("FETCH! "+url);
+        Debug.Log("Resources: FETCH! " + url);
         // Wykonaj call do API
         UnityWebRequest request = UnityWebRequest.Get(url);
         yield return request.SendWebRequest();
@@ -85,7 +89,7 @@ public class GlobalData : MonoBehaviour
         // Sprawdź, czy wystąpił błąd podczas pobierania danych
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("Błąd podczas pobierania danych z API: " + request.error);
+            Debug.LogError("Resources: Błąd podczas pobierania danych z API: " + request.error);
             yield break;
         }
 
@@ -96,12 +100,12 @@ public class GlobalData : MonoBehaviour
         // Aktualizuj dane na podstawie otrzymanego JSON-a
         if (dataResponse != null && dataResponse.data.Length > 0)
         {
-            Debug.Log("FETCH!");
+            Debug.Log("Resources: FETCH!");
             UpdateData(int.Parse(dataResponse.data[0].gold), int.Parse(dataResponse.data[0].diamond), int.Parse(dataResponse.data[0].chicken), int.Parse(dataResponse.data[0].ball), int.Parse(dataResponse.data[0].water));
         }
         else
         {
-            Debug.LogError("Błąd podczas parsowania odpowiedzi z API.");
+            Debug.LogError("Resources: Błąd podczas parsowania odpowiedzi z API.");
         }
     }
 
@@ -124,7 +128,7 @@ public class GlobalData : MonoBehaviour
     // Metoda do aktualizacji danych z odpowiedzi API
     public void UpdateData(int newGold, int newDiamond, int newChicken, int newBall, int newWater)
     {
-        Debug.Log("FETCH! gold:"+newGold+", diamond:"+newDiamond+", chicken: "+newChicken+", ball:"+newBall+", water:"+newWater);
+        Debug.Log("Resources: FETCH! gold:" + newGold + ", diamond:" + newDiamond + ", chicken: " + newChicken + ", ball:" + newBall + ", water:" + newWater);
         gold = newGold;
         diamond = newDiamond;
         chicken = newChicken;
@@ -133,12 +137,12 @@ public class GlobalData : MonoBehaviour
 
         chickenText.text = chicken.ToString();
         diamondText.text = diamond.ToString();
-        waterText.text =  water.ToString();
-        ballText.text =  ball.ToString();
-        coinText.text =  gold.ToString();
+        waterText.text = water.ToString();
+        ballText.text = ball.ToString();
+        coinText.text = gold.ToString();
     }
 
-     // Metoda do odczytywania danych
+    // Metoda do odczytywania danych
     public void ReadData(out int goldValue, out int diamondValue, out int chickenValue, out int ballValue, out int waterValue)
     {
         goldValue = gold;

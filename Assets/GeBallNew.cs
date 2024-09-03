@@ -68,9 +68,14 @@ public class GetBallNew : MonoBehaviour
                 textBall.text = data.ball;
                 if (int.TryParse(data.ball, out ballValue))
                 {
+                    Debug.Log("BALL " + ballValue);
+
                     if (ballValue <= 0)
                     {
                         Invoke("DisableBall", 3f);
+                    }
+                    else {
+                        EnableBall();
                     }
                 }
             }
@@ -81,6 +86,11 @@ public class GetBallNew : MonoBehaviour
     void DisableBall()
     {
         Ball.SetActive(false);
+    }
+
+    void EnableBall()
+    {
+        Ball.SetActive(true);
     }
 
     public IEnumerator UpdateResource(string resourceName, int quantity)
