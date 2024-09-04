@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using TMPro; // Dodaj to na początku pliku, aby używać TextMeshPro
+using UnityEngine.UI; // Dodaj to na początku pliku, aby używać Slider
 
 public class PanelGetData : MonoBehaviour
 {
@@ -25,12 +26,25 @@ public class PanelGetData : MonoBehaviour
     public GameObject WaterStar2;
     public GameObject WaterStar3;
 
-    public GameObject Resources; // Obiekt, który zawiera GlobalData
+    // Publiczne przyciski
+    public GameObject playButtonEnableGetPrize;
+    public GameObject playButtonDisableGetPrize;
 
+    public GameObject List1; // Obiekt GameObject z komponentem Image
+
+    public Sprite enableImageListBackground;
+    public Sprite disableImageListBackground;
+
+
+    public Slider taskCompletionSlider; // Dodaj to pole dla suwaka
+    public TextMeshProUGUI Text_Info; // Dodaj to pole dla TextMeshPro
+
+    public GameObject Resources; // Obiekt, który zawiera GlobalData
     public TextMeshProUGUI UUIDText; // Dodaj to pole dla TextMeshPro
 
-    private string uuid; // UUID przypisywane z GlobalData
+    public bool enableDebugLogs = true; // Dodaj to pole, aby kontrolować wyświetlanie logów
 
+    private string uuid; // UUID przypisywane z GlobalData
     private const string ApiUrl = "https://psiaapka.pl/getTasks.php?uuid=";
 
     void Start()
@@ -49,7 +63,8 @@ public class PanelGetData : MonoBehaviour
         }
         else
         {
-            Debug.LogError("GlobalData component is missing on the Resources GameObject.");
+            if (enableDebugLogs)
+                Debug.LogError("PanelGetData: GlobalData component is missing on the Resources GameObject.");
         }
     }
 
@@ -85,13 +100,15 @@ public class PanelGetData : MonoBehaviour
                 else
                 {
                     SetStars(0, 0, 0, 0, 0);
-                    Debug.LogWarning("Brak danych dla UUID: " + uuid);
+                    if (enableDebugLogs)
+                        Debug.LogWarning("PanelGetData: Brak danych dla UUID: " + uuid);
                 }
             }
             else
             {
                 SetStars(0, 0, 0, 0, 0);
-                Debug.LogError("Błąd pobierania danych: " + webRequest.error);
+                if (enableDebugLogs)
+                    Debug.LogError("PanelGetData: Błąd pobierania danych: " + webRequest.error);
             }
         }
     }
@@ -102,6 +119,51 @@ public class PanelGetData : MonoBehaviour
         // Resetowanie widoczności wszystkich gwiazdek
         SetStarVisibility(WalkStar1, WalkStar2, WalkStar3, walk);
         SetStarVisibility(PlayStar1, PlayStar2, PlayStar3, play);
+
+        // Ustawienie domyślnej wartości suwaka
+        if (taskCompletionSlider != null)
+        {
+            taskCompletionSlider.value = play / 3f; // Ustawienie wartości suwaka
+        }
+
+        if (Text_Info != null)
+        {
+            Text_Info.text = play + " <#b3bedb>/ 3";
+        }
+
+        // Zmiana Source Image na "ListFrame02_d" w obiekcie List
+        if (List1 != null)
+        {
+            Image listImage = List1.GetComponent<Image>();
+            if (listImage != null)
+            {
+                if (play >= 3)
+                {
+                    listImage.sprite = enableImageListBackground;
+                    playButtonEnableGetPrize.SetActive(true);
+                    playButtonDisableGetPrize.SetActive(false);
+                }
+                else {
+                    listImage.sprite = disableImageListBackground;
+                    playButtonEnableGetPrize.SetActive(false);
+                    playButtonDisableGetPrize.SetActive(true);
+                }
+                
+            }
+            else
+            {
+                Debug.LogError("PanelGetData: Image component is missing on the List GameObject.");
+            }
+        }
+        else
+        {
+            Debug.LogError("PanelGetData: List GameObject is not assigned.");
+        }
+
+        if (enableDebugLogs)
+            Debug.Log("PanelGetData: dla UUID: " + uuid + " jest "+ play);
+
+
         SetStarVisibility(TreatStar1, TreatStar2, TreatStar3, treat);
         SetStarVisibility(TreasureStar1, TreasureStar2, TreasureStar3, treasure);
         SetStarVisibility(WaterStar1, WaterStar2, WaterStar3, water);
