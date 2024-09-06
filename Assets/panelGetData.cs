@@ -3,9 +3,26 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TMPro; // Dodaj to na początku pliku, aby używać TextMeshPro
 using UnityEngine.UI; // Dodaj to na początku pliku, aby używać Slider
+using System.Collections.Generic;
+
+
 
 public class PanelGetData : MonoBehaviour
 {
+    [System.Serializable]
+    public class UIElementData
+    {
+        public string name;
+        public GameObject playButtonEnableGetPrize;
+        public GameObject playButtonDisableGetPrize;
+        public GameObject listObject; // Obiekt GameObject z komponentem Image
+        public Sprite enableImageListBackground;
+        public Sprite disableImageListBackground;
+        public Slider taskCompletionSlider;
+        public TextMeshProUGUI textInfo;
+    }
+
+
     public GameObject WalkStar1;
     public GameObject WalkStar2;
     public GameObject WalkStar3;
@@ -25,6 +42,9 @@ public class PanelGetData : MonoBehaviour
     public GameObject WaterStar1;
     public GameObject WaterStar2;
     public GameObject WaterStar3;
+
+
+    public List<UIElementData> uiElements;
 
     // Publiczne przyciski
     public GameObject playButtonEnableGetPrize;
@@ -158,6 +178,18 @@ public class PanelGetData : MonoBehaviour
         else
         {
             Debug.LogError("PanelGetData: List GameObject is not assigned.");
+        }
+
+        foreach (UIElementData element in uiElements)
+        {
+            // Przykład: Zmiana tła dla pierwszego elementu
+            element.listObject.GetComponent<Image>().sprite = element.enableImageListBackground;
+
+            // Przykład: Ustawienie wartości suwaka
+            element.taskCompletionSlider.value = 0.5f;
+
+            // Przykład: Zmiana tekstu
+            element.textInfo.text = "Zadanie w trakcie realizacji";
         }
 
         if (enableDebugLogs)
