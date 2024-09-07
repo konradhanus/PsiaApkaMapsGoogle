@@ -119,7 +119,7 @@ public class PanelGetData : MonoBehaviour
                 }
                 else
                 {
-                    SetStars(0, 0, 0, 0, 0);
+                    SetStars(0, 1, 2, 3, 4);
                     if (enableDebugLogs)
                         Debug.LogWarning("PanelGetData: Brak danych dla UUID: " + uuid);
                 }
@@ -139,12 +139,6 @@ public class PanelGetData : MonoBehaviour
         // Resetowanie widoczności wszystkich gwiazdek
         SetStarVisibility(WalkStar1, WalkStar2, WalkStar3, walk);
         SetStarVisibility(PlayStar1, PlayStar2, PlayStar3, play);
-
-        // Ustawienie domyślnej wartości suwaka
-        if (taskCompletionSlider != null)
-        {
-            taskCompletionSlider.value = play / 3f; // Ustawienie wartości suwaka
-        }
 
         if (Text_Info != null)
         {
@@ -182,14 +176,42 @@ public class PanelGetData : MonoBehaviour
 
         foreach (UIElementData element in uiElements)
         {
-            // Przykład: Zmiana tła dla pierwszego elementu
-            element.listObject.GetComponent<Image>().sprite = element.enableImageListBackground;
 
-            // Przykład: Ustawienie wartości suwaka
-            element.taskCompletionSlider.value = 0.5f;
+            if (element.name == "play")
+            {
+                setAll(element, play);
+            }
+
+            if (element.name == "treat")
+            {
+                setAll(element, treat);
+            }
+
+            if (element.name == "treasure")
+            {
+                setAll(element, treasure);
+            }
+
+            if (element.name == "water")
+            {
+                setAll(element, water);
+            }
+
+            if (element.name == "walk")
+            {
+
+                setAll(element, walk);
+               
+                
+            }
+
+            // Przykład: Zmiana tła dla pierwszego elementu
+            
+
+            
 
             // Przykład: Zmiana tekstu
-            element.textInfo.text = "Zadanie w trakcie realizacji";
+            //element.textInfo.text = "Zadanie w trakcie realizacji";
         }
 
         if (enableDebugLogs)
@@ -199,6 +221,37 @@ public class PanelGetData : MonoBehaviour
         SetStarVisibility(TreatStar1, TreatStar2, TreatStar3, treat);
         SetStarVisibility(TreasureStar1, TreasureStar2, TreasureStar3, treasure);
         SetStarVisibility(WaterStar1, WaterStar2, WaterStar3, water);
+    }
+
+    private void setAll(UIElementData element, float task)
+    {
+
+        element.taskCompletionSlider.value = task / 3f;
+        
+        if (task >= 3)
+        {
+            element.listObject.GetComponent<Image>().sprite = element.enableImageListBackground;
+            element.playButtonEnableGetPrize.SetActive(false);
+            element.playButtonDisableGetPrize.SetActive(true);
+        }
+        else
+        {
+            element.listObject.GetComponent<Image>().sprite = element.disableImageListBackground;
+            
+            element.playButtonEnableGetPrize.SetActive(true);
+            element.playButtonDisableGetPrize.SetActive(false);
+
+        }
+
+        if (element.name == "walk")
+        {
+            element.textInfo.text = task + " km <#b3bedb>/ 3 km";
+        }
+        else {
+            element.textInfo.text = task + " <#b3bedb>/ 3";
+        }
+
+    
     }
 
     // Pomocnicza funkcja do ustawiania widoczności gwiazdek
