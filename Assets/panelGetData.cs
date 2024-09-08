@@ -20,6 +20,7 @@ public class PanelGetData : MonoBehaviour
         public Sprite disableImageListBackground;
         public Slider taskCompletionSlider;
         public TextMeshProUGUI textInfo;
+        public GameObject thumbsUp;
     }
 
 
@@ -88,10 +89,35 @@ public class PanelGetData : MonoBehaviour
         }
     }
 
+    // Dodaj tę funkcję do swojej klasy PanelGetData
+    public void FetchDataFromApi()
+    {
+        Debug.Log("PanelGetData: FECHDATAFROMAPI");
+        GlobalData globalData = Resources.GetComponent<GlobalData>();
+        if (globalData != null)
+        {
+            uuid = globalData.userId; // Przypisanie UserId do zmiennej uuid
+            // Ustawienie UUID w TextMeshPro
+            if (UUIDText != null)
+            {
+                UUIDText.text = "UUID: " + uuid;
+            }
+            StartCoroutine(FetchAndUpdateStars()); // Wywołanie funkcji pobierającej dane
+        }
+        else
+        {
+            if (enableDebugLogs)
+                Debug.LogError("PanelGetData: GlobalData component is missing on the Resources GameObject.");
+        }
+
+    }
+
     // Funkcja do pobierania danych z API i aktualizowania gwiazdek
     private IEnumerator FetchAndUpdateStars()
     {
         string url = ApiUrl + uuid;
+
+        Debug.Log("PanelGetData: " + url);
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
@@ -110,7 +136,7 @@ public class PanelGetData : MonoBehaviour
                     // Przypisanie wartości do zmiennych
                     int walk = int.Parse(task.walk);
                     int play = int.Parse(task.play);
-                    int treat = int.Parse(task.treat);
+                    int treat =  int.Parse(task.treat);
                     int treasure = int.Parse(task.treasure);
                     int water = int.Parse(task.water);
 
@@ -119,7 +145,7 @@ public class PanelGetData : MonoBehaviour
                 }
                 else
                 {
-                    SetStars(0, 1, 2, 3, 4);
+                    SetStars(0, 0, 0, 0, 0);
                     if (enableDebugLogs)
                         Debug.LogWarning("PanelGetData: Brak danych dla UUID: " + uuid);
                 }
@@ -233,6 +259,7 @@ public class PanelGetData : MonoBehaviour
             element.listObject.GetComponent<Image>().sprite = element.enableImageListBackground;
             element.playButtonEnableGetPrize.SetActive(false);
             element.playButtonDisableGetPrize.SetActive(true);
+            element.thumbsUp.SetActive(false);
         }
         else
         {
@@ -240,6 +267,7 @@ public class PanelGetData : MonoBehaviour
             
             element.playButtonEnableGetPrize.SetActive(true);
             element.playButtonDisableGetPrize.SetActive(false);
+            element.thumbsUp.SetActive(false);
 
         }
 
