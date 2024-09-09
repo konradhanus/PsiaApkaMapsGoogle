@@ -140,19 +140,28 @@ public class PanelGetData : MonoBehaviour
                     int treasure = int.Parse(task.treasure);
                     int water = int.Parse(task.water);
 
+                    int reward_walk = int.Parse(task.reward_walk);
+                    int reward_play = int.Parse(task.reward_play);
+                    int reward_treat = int.Parse(task.reward_treat);
+                    int reward_treasure = int.Parse(task.reward_treasure);
+                    int reward_water = int.Parse(task.reward_water);
+
+
+                    Debug.Log("TO CO PRZYSZŁO Z API"+ reward_walk + " " + reward_play +" "+reward_treasure + " " + reward_treat + " " + reward_water);
+
                     // Wywołanie funkcji ustawiającej widoczność gwiazdek
-                    SetStars(walk, play, treat, treasure, water);
+                    SetStars(walk, play, treat, treasure, water, reward_walk, reward_play, reward_treat, reward_treasure, reward_water);
                 }
                 else
                 {
-                    SetStars(0, 0, 0, 0, 0);
+                    SetStars(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                     if (enableDebugLogs)
                         Debug.LogWarning("PanelGetData: Brak danych dla UUID: " + uuid);
                 }
             }
             else
             {
-                SetStars(0, 0, 0, 0, 0);
+                SetStars(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                 if (enableDebugLogs)
                     Debug.LogError("PanelGetData: Błąd pobierania danych: " + webRequest.error);
             }
@@ -160,7 +169,7 @@ public class PanelGetData : MonoBehaviour
     }
 
     // Funkcja do ustawienia widoczności gwiazdek
-    public void SetStars(int walk, int play, int treat, int treasure, int water)
+    public void SetStars(int walk, int play, int treat, int treasure, int water, int reward_walk, int reward_play, int reward_treat, int reward_treasure, int reward_water)
     {
         // Resetowanie widoczności wszystkich gwiazdek
         SetStarVisibility(WalkStar1, WalkStar2, WalkStar3, walk);
@@ -203,32 +212,64 @@ public class PanelGetData : MonoBehaviour
         foreach (UIElementData element in uiElements)
         {
 
+           
+
             if (element.name == "play")
             {
                 setAll(element, play);
+                if (reward_play >= 1)
+                {
+                    element.thumbsUp.SetActive(true);
+                    element.playButtonEnableGetPrize.SetActive(false);
+                    element.playButtonDisableGetPrize.SetActive(false);
+                }
             }
 
             if (element.name == "treat")
             {
                 setAll(element, treat);
+                if (reward_treat >= 1)
+                {
+                    element.thumbsUp.SetActive(true);
+                    element.playButtonEnableGetPrize.SetActive(false);
+                    element.playButtonDisableGetPrize.SetActive(false);
+                }
             }
 
             if (element.name == "treasure")
             {
                 setAll(element, treasure);
+                if (reward_treasure >= 1)
+                {
+                    element.thumbsUp.SetActive(true);
+                    element.playButtonEnableGetPrize.SetActive(false);
+                    element.playButtonDisableGetPrize.SetActive(false);
+                }
             }
 
             if (element.name == "water")
             {
                 setAll(element, water);
+                if (reward_water >= 1)
+                {
+                    element.thumbsUp.SetActive(true);
+                    element.playButtonEnableGetPrize.SetActive(false);
+                    element.playButtonDisableGetPrize.SetActive(false);
+                }
             }
 
             if (element.name == "walk")
             {
 
                 setAll(element, walk);
-               
-                
+                if (reward_walk >= 1)
+                {
+                    element.thumbsUp.SetActive(true);
+                    element.playButtonEnableGetPrize.SetActive(false);
+                    element.playButtonDisableGetPrize.SetActive(false);
+                }
+
+
             }
 
             // Przykład: Zmiana tła dla pierwszego elementu
@@ -307,6 +348,13 @@ public class PanelGetData : MonoBehaviour
         public string treat;
         public string treasure;
         public string water;
+
+        public string reward_walk;
+        public string reward_play;
+        public string reward_treat;
+        public string reward_treasure;
+        public string reward_water;
+
         public string date;
     }
 }
