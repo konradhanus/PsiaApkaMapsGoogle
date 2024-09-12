@@ -18,9 +18,13 @@ namespace LayerLab
             GlobalData globalData = Resources.GetComponent<GlobalData>();
             if (globalData != null)
             {
-                uuid = globalData.userId; // Przypisanie UserId do zmiennej uuid                    
+                uuid = globalData.userId; // Przypisanie UserId do zmiennej uuid
+                Debug.Log("AAAAAAA UUID set: " + uuid);
             }
-            
+            else
+            {
+                Debug.Log("AAAAAAA GlobalData is null!");
+            }
         }
 
         void Start()
@@ -57,11 +61,11 @@ namespace LayerLab
         // Metoda do ustawienia widoczności tylko ikony i wartości monety
         public async void ShowCoin(int value)
         {
-            getUUID();
+            //getUUID();
             string url = $"https://psiaapka.pl/updateReward.php?reward_play=1&uuid={uuid}";
             // Wywołanie API
             await CallApi(url);
-
+            Debug.Log("AAAAAAA" + url);
             ResetIcons();
             coinIcon.SetActive(true);
             title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
@@ -71,11 +75,11 @@ namespace LayerLab
         // Metoda do ustawienia widoczności tylko ikony i wartości diamentu
         public async void ShowDiamondAsync(int value)
         {
-            getUUID();
+            //getUUID();
             string url = $"https://psiaapka.pl/updateReward.php?reward_treat=1&uuid={uuid}";
             // Wywołanie API
             await CallApi(url);
-
+            Debug.Log("AAAAAAA" + url);
             ResetIcons();
             diamondIcon.SetActive(true);
             title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
@@ -85,10 +89,12 @@ namespace LayerLab
         // Metoda do ustawienia widoczności tylko ikony i wartości skrzyni
         public async void ShowChestAsync(int value)
         {
-            getUUID();
+            //getUUID();
             // URL API, do którego zostanie wysłane zapytanie
 
             string url = $"https://psiaapka.pl/updateReward.php?reward_water=1&uuid={uuid}";
+
+            Debug.Log("AAAAAAA" + url);
             // Wywołanie API
             await CallApi(url);
 
@@ -103,7 +109,7 @@ namespace LayerLab
         // Metoda do ustawienia widoczności tylko ikony i wartości jedzenia
         public async void ShowFood(int value)
         {
-            getUUID();
+            //getUUID();
             string url = $"https://psiaapka.pl/updateReward.php?reward_walk=1&uuid={uuid}";
             // Wywołanie API
             await CallApi(url);
@@ -126,8 +132,11 @@ namespace LayerLab
         // Metoda do ustawienia widoczności tylko ikony i wartości torby
         public async void ShowBag(int value)
         {
-            getUUID();
+
+            Debug.Log("AAAAAAA");
+            // getUUID();
             string url = $"https://psiaapka.pl/updateReward.php?reward_treasure=1&uuid={uuid}";
+            Debug.Log("AAAAAAA" + url);
             // Wywołanie API
             await CallApi(url);
 

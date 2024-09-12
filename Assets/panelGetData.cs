@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 using TMPro; // Dodaj to na początku pliku, aby używać TextMeshPro
 using UnityEngine.UI; // Dodaj to na początku pliku, aby używać Slider
 using System.Collections.Generic;
+using System.Net.Http;
 
 
 
@@ -44,6 +45,8 @@ public class PanelGetData : MonoBehaviour
     public GameObject WaterStar2;
     public GameObject WaterStar3;
 
+    public TextMeshProUGUI UUID_Text;
+
 
     public List<UIElementData> uiElements;
 
@@ -65,7 +68,7 @@ public class PanelGetData : MonoBehaviour
 
     public bool enableDebugLogs = true; // Dodaj to pole, aby kontrolować wyświetlanie logów
 
-    private string uuid; // UUID przypisywane z GlobalData
+    public string uuid; // UUID przypisywane z GlobalData
     private const string ApiUrl = "https://psiaapka.pl/getTasks.php?uuid=";
 
     void Start()
@@ -78,7 +81,12 @@ public class PanelGetData : MonoBehaviour
             // Ustawienie UUID w TextMeshPro
             if (UUIDText != null)
             {
-                UUIDText.text = "UUID: " + uuid;
+                UUIDText.text = " " + uuid;
+            }
+
+            if (UUID_Text != null)
+            {
+                UUID_Text.text = " " + uuid;
             }
             StartCoroutine(FetchAndUpdateStars()); // Wywołanie funkcji pobierającej dane
         }
@@ -100,7 +108,12 @@ public class PanelGetData : MonoBehaviour
             // Ustawienie UUID w TextMeshPro
             if (UUIDText != null)
             {
-                UUIDText.text = "UUID: " + uuid;
+                UUIDText.text = " " + uuid;
+            }
+
+            if (UUID_Text != null)
+            {
+                UUID_Text.text = " " + uuid;
             }
             StartCoroutine(FetchAndUpdateStars()); // Wywołanie funkcji pobierającej dane
         }
@@ -357,4 +370,132 @@ public class PanelGetData : MonoBehaviour
 
         public string date;
     }
+
+
+    private static readonly HttpClient httpClient = new HttpClient();
+
+    private async void CallApi(string url)
+    {
+        try
+        {
+            HttpResponseMessage response = await httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Debug.Log("API response: " + responseBody);
+            }
+            else
+            {
+                Debug.LogError("Błąd w wywołaniu API: " + response.StatusCode);
+            }
+        }
+        catch (HttpRequestException e)
+        {
+            Debug.LogError("Wystąpił wyjątek w czasie wywołania API: " + e.Message);
+        }
+    }
+
+    // Metoda do ustawienia widoczności tylko ikony i wartości monety
+    public async void ShowCoin(int value)
+    {
+        //getUUID();
+        string url = $"https://psiaapka.pl/updateReward.php?reward_play=1&uuid={uuid}";
+        // Wywołanie API
+        CallApi(url);
+        Debug.Log("AAAAAAA" + url);
+        //ResetIcons();
+        //coinIcon.SetActive(true);
+        //title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
+        //textValue.text = value.ToString();
+    }
+
+    // Metoda do ustawienia widoczności tylko ikony i wartości diamentu
+    public async void ShowDiamondAsync(int value)
+    {
+        //getUUID();
+        string url = $"https://psiaapka.pl/updateReward.php?reward_treat=1&uuid={uuid}";
+        // Wywołanie API
+        CallApi(url);
+        Debug.Log("AAAAAAA" + url);
+        //ResetIcons();
+        //diamondIcon.SetActive(true);
+        //title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
+        //textValue.text = value.ToString();
+    }
+
+    // Metoda do ustawienia widoczności tylko ikony i wartości skrzyni
+    public async void ShowChestAsync(int value)
+    {
+        //getUUID();
+        // URL API, do którego zostanie wysłane zapytanie
+
+        string url = $"https://psiaapka.pl/updateReward.php?reward_water=1&uuid={uuid}";
+
+        Debug.Log("AAAAAAA" + url);
+        // Wywołanie API
+        CallApi(url);
+
+        //ResetIcons();
+        //chestIcon.SetActive(true);
+        //title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
+        //textValue.text = value.ToString();
+
+
+    }
+
+    // Metoda do ustawienia widoczności tylko ikony i wartości jedzenia
+    public async void ShowFood(int value)
+    {
+        //getUUID();
+        string url = $"https://psiaapka.pl/updateReward.php?reward_walk=1&uuid={uuid}";
+
+        Debug.Log("AAAAAAA" + url);
+        // Wywołanie API
+        CallApi(url);
+
+        //ResetIcons();
+        //foodIcon.SetActive(true);
+        //title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
+        //textValue.text = value.ToString();
+    }
+
+    //// Metoda do ustawienia widoczności tylko ikony i wartości piłki
+    //public void ShowBall(int value)
+    //{
+    //    ResetIcons();
+    //    ballIcon.SetActive(true);
+    //    title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
+    //    textValue.text = value.ToString();
+    //}
+
+    // Metoda do ustawienia widoczności tylko ikony i wartości torby
+    public async void ShowBag(int value)
+    {
+
+        Debug.Log("AAAAAAA");
+        // getUUID();
+        string url = $"https://psiaapka.pl/updateReward.php?reward_treasure=1&uuid={uuid}";
+        Debug.Log("AAAAAAA" + url);
+        // Wywołanie API
+        CallApi(url);
+
+        //ResetIcons();
+        //bagIcon.SetActive(true); // Jeśli backIcon oznacza torbę, można to zmienić
+        //title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
+        //textValue.text = value.ToString();
+    }
+
+   
+
+    //// Resetuje widoczność wszystkich ikon
+    //private void ResetIcons()
+    //{
+    //    coinIcon.SetActive(false);
+    //    diamondIcon.SetActive(false);
+    //    bagIcon.SetActive(false);
+    //    chestIcon.SetActive(false);
+    //    foodIcon.SetActive(false);
+    //    //ballIcon.SetActive(false);
+    //}
 }
