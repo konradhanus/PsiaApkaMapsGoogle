@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using BeliefEngine.HealthKit;
 
+namespace BeliefEngine.HealthKit
+{
+
 /*! @brief 		Simple test class.
 	@details	This class should help get you started. It demonstrates everything you need to start reading health data.
 				To read steps in the last 24 hours, simply tap "Read data". To read sleep, uncomment the ReadSleep() call in Test().
@@ -49,86 +52,35 @@ public class HealthKitTest : MonoBehaviour {
 	}
 
 	/*! @brief Fire off the appropriate HealthKit query.
- */
-	/*! @brief Fire off the appropriate HealthKit query.
- */
-	public void ReadData()
-	{
-		// since this can take a while, especially on older devices, I use this to avoid firing off multiple concurrent requests.
-		Debug.Log("read data...");
-		if (!reading)
-		{
-			reading = true;
-
-			// Zahardcodowana data: 13.09.2024
-			DateTime now = new DateTime(2024, 9, 13, 0, 0, 0, DateTimeKind.Utc);
-			DateTime start = now.AddDays(-1);  // 12.09.2024
-
-			double steps = 0;
-			string stepsWithDates = "";  // String to accumulate steps with dates
-
-			DateTimeOffset now3 = DateTimeOffset.UtcNow;
-			DateTimeOffset start3 = now3.AddDays(-1);
-
-			this.healthStore.ReadQuantitySamples(HKDataType.HKQuantityTypeIdentifierStepCount, start3, now3, delegate (List<QuantitySample> samples) {
-
-				foreach (QuantitySample sample in samples)
-				{
-					Debug.Log(String.Format(" - {0} from {1} to {2}",
-						sample.quantity.doubleValue,
-						sample.startDate.ToString("yyyy-MM-dd HH:mm"),
-						sample.endDate.ToString("yyyy-MM-dd HH:mm")));
-				}
-			});
-
-			DateTimeOffset endx = DateTimeOffset.UtcNow;
-			DateTimeOffset startx = now.AddDays(-1);
-			this.healthStore.ReadSteps(startx, endx, delegate (double steps) {
-				stepsWithDates += String.Format("totalnie steps: {0}", steps);
-			});
-
-			DateTimeOffset nowzz = DateTimeOffset.UtcNow;
-			DateTimeOffset startzz = now.AddDays(-7);
-			this.healthStore.ReadCombinedQuantitySamples(HKDataType.HKQuantityTypeIdentifierDistanceWalkingRunning, startzz, nowzz, delegate (double total) {
-				resultsLabel.text = String.Format("total distance: {0} miles", total);
-			});
-
-
-			//this.healthStore.ReadQuantitySamples(HKDataType.HKQuantityTypeIdentifierStepCount, start, now, delegate (List<QuantitySample> samplesW) {
-			//	if (samplesW.Count > 0)
-			//	{
-			//		foreach (QuantitySample sample in samplesW)
-			//		{
-			//			// Assuming `sample.startDate` and `sample.endDate` are DateTimeOffset values
-			//			DateTimeOffset sampleStartDate = sample.startDate;
-			//			DateTimeOffset sampleEndDate = sample.endDate;
-
-			//			// Convert `DateTimeOffset` to `DateTime`
-			//			DateTime startDate = sampleStartDate.UtcDateTime;
-			//			DateTime endDate = sampleEndDate.UtcDateTime;
-
-			//			Debug.Log(String.Format(" - {0} from {1} to {2}", sample.quantity.doubleValue, startDate, endDate));
-			//			steps += sample.quantity.doubleValue;
-
-			//			// Append steps with formatted date range to the string
-			//			stepsWithDates += String.Format("{0} steps from {1} to {2}\n",
-			//				sample.quantity.doubleValue,
-			//				startDate.ToString("yyyy-MM-dd HH:mm"),
-			//				endDate.ToString("yyyy-MM-dd HH:mm"));
-			//		}
-
-			//		// Display the total steps and the breakdown with dates
-			//		resultsLabel.text = "Total steps: " + steps.ToString() + "\n" + stepsWithDates;
-			//	}
-			//	reading = false;
-			//});
+ 	 */
+	public void ReadData() {
+		if (!this.reading) {
+			this.reading = true;
+			AddObserver();
+		} else {
+			this.reading = false;
+			StopObserver();
 		}
 	}
 
+	public void AddObserver() {
+		this.resultsLabel.text = "starting observer query...\n";
+		this.healthStore.AddObserverQuery(HKDataType.HKQuantityTypeIdentifierStepCount, delegate (List<Sample> samples, Error error) {
+			string text = this.resultsLabel.text;
+			foreach (Sample sample in samples) {
+				QuantitySample quantitySample = sample as QuantitySample;
+				if (quantitySample != null) {
+					text = text + $"\n-{quantitySample.quantity.doubleValue}";
+				}
 
+			}
+			this.resultsLabel.text = text;
+		});
+	}
 
-
-
+	private void StopObserver() {
+		this.healthStore.StopObserverQuery(HKDataType.HKQuantityTypeIdentifierStepCount);
+	}
 
 	private void GenerateDummyData() {
 		this.healthStore.GenerateDummyData(this.types);
@@ -156,4 +108,6 @@ public class HealthKitTest : MonoBehaviour {
 			}
 		}
 	}
+}
+
 }

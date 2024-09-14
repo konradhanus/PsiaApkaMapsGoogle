@@ -1,10 +1,12 @@
 fileFormatVersion: 2
-guid: d70b5bd8d353a494b88f50bfd5db52a1
+guid: 8eb9174ac42954efeb4244f1120fee9b
+labels:
+- IOS
+- HealthKit
 folderAsset: yes
-timeCreated: 1520106042
-licenseType: Free
+timeCreated: 1434493407
+licenseType: Store
 DefaultImporter:
-  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
