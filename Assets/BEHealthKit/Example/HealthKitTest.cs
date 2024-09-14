@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using BeliefEngine.HealthKit;
 
+namespace BeliefEngine.HealthKit
+{
+
 /*! @brief 		Simple test class.
 	@details	This class should help get you started. It demonstrates everything you need to start reading health data.
 				To read steps in the last 24 hours, simply tap "Read data". To read sleep, uncomment the ReadSleep() call in Test().
@@ -51,27 +54,32 @@ public class HealthKitTest : MonoBehaviour {
 	/*! @brief Fire off the appropriate HealthKit query.
  	 */
 	public void ReadData() {
-		// since this can take a while, especially on older devices, I use this to avoid firing off multiple concurrent requests.
-		Debug.Log("read data...");
-		if (!reading) {
-			reading = true;
-			
-			DateTimeOffset now = DateTimeOffset.UtcNow;
-			// for this example, we'll read everything from the past 24 hours
-			DateTimeOffset start = now.AddDays(-1);
-			
-			double steps = 0;
-			healthStore.ReadQuantitySamples(HKDataType.HKQuantityTypeIdentifierStepCount, start, now, delegate(List<QuantitySample> samplesW) {
-				if (samplesW.Count > 0) {
-		            foreach (QuantitySample sample in samplesW) {
-						Debug.Log(String.Format(" - {0} from {1} to {2}", sample.quantity.doubleValue, sample.startDate, sample.endDate));
-						steps += sample.quantity.doubleValue;
-		            }
-					 resultsLabel.text = "steps:" + steps.ToString();
-				}
-				reading = false;
-	        });
+		if (!this.reading) {
+			this.reading = true;
+			AddObserver();
+		} else {
+			this.reading = false;
+			StopObserver();
 		}
+	}
+
+	public void AddObserver() {
+		this.resultsLabel.text = "starting observer query...\n";
+		this.healthStore.AddObserverQuery(HKDataType.HKQuantityTypeIdentifierStepCount, delegate (List<Sample> samples, Error error) {
+			string text = this.resultsLabel.text;
+			foreach (Sample sample in samples) {
+				QuantitySample quantitySample = sample as QuantitySample;
+				if (quantitySample != null) {
+					text = text + $"\n-{quantitySample.quantity.doubleValue}";
+				}
+
+			}
+			this.resultsLabel.text = text;
+		});
+	}
+
+	private void StopObserver() {
+		this.healthStore.StopObserverQuery(HKDataType.HKQuantityTypeIdentifierStepCount);
 	}
 
 	private void GenerateDummyData() {
@@ -100,4 +108,6 @@ public class HealthKitTest : MonoBehaviour {
 			}
 		}
 	}
+}
+
 }

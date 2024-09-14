@@ -23,8 +23,8 @@ public class DateTimeBridge : ScriptableObject {
 	public static string DateToString(DateTimeOffset date) {
 		TimeSpan span = date - DateTimeBridge.referenceDate;
 		double interval = span.TotalSeconds;
-		string dateString = Convert.ToString(interval);
-		Debug.Log("date string:" + dateString);
+		string dateString = Convert.ToString(interval, new CultureInfo("en-US"));
+		// Debug.Log("date string:" + dateString);
 		return dateString;
 	}
 	
@@ -33,14 +33,17 @@ public class DateTimeBridge : ScriptableObject {
 	 */
 	public static DateTimeOffset DateFromString(string stamp) {
 		Double d;
-		if (Double.TryParse(stamp, out d)) {
+		DateTimeOffset ret;
+		if (Double.TryParse(stamp, NumberStyles.AllowDecimalPoint, CultureInfo.GetCultureInfo("en-US"), out d)) {
 			DateTimeOffset date = DateTimeBridge.referenceDate.AddSeconds(d);
 			// return TimeZoneInfo.ConvertTime(date, TimeZoneInfo.Local);
-			return date.ToLocalTime();
+			ret = date.ToLocalTime();
 		} else {
 			Debug.LogErrorFormat("error parsing '{0}'", stamp);
-			return new DateTimeOffset();
+			ret = new DateTimeOffset();
 		}
+		// Debug.LogFormat("stamp: {0} => date: {1}", stamp, ret);
+		return ret;
 	}
 } 
 

@@ -1218,6 +1218,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dogspot: {fileID: 6272536218258163439}
+  PlayerArmature: {fileID: 0}
+  isDogGym: 0
   virtualCamera: {fileID: 0}
   menuToDisable: {fileID: 0}
   menuToEnable: {fileID: 0}
