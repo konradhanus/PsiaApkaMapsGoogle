@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static GlobalUserData;
 using UnityEngine.Networking;
-using Mapbox.Map;
+//using Mapbox.Map;
 
 public class GlobalUserDataFeeding : MonoBehaviour
 {

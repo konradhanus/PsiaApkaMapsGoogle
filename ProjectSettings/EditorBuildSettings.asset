@@ -6,6 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/GO Map - 3D Map For AR Gaming/Demo/Retrowave theme - Demo.unity
+    guid: 42f9e70e1760b4af8942f02d744eae10
+  - enabled: 1
+    path: Assets/GO Map - 3D Map For AR Gaming/Demo/POI - Demo.unity
+    guid: 5957a47a787674751ab0ed255f61bb0f
+  - enabled: 1
+    path: "Assets/GO Map - 3D Map For AR Gaming/Demo/Flat Map - Poke\u0300mon GO
+      Style.unity"
+    guid: 331e65508a1194ad58e0fcfb4ca518b4
+  - enabled: 1
     path: Assets/Scenes/StartGame.unity
     guid: 429ec0fcf8d8c4bd3b20e977d68c8501
   - enabled: 1
@@ -23,9 +33,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dog.unity
     guid: 3f48203b190d806498f6982e149da473
-  - enabled: 0
-    path: Assets/BEHealthKit/Example/Full Test Scene.unity
-    guid: cf2be9da2fa594c5586590252c5dd629
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 484fbebaad686490daf465e8e94929a9,
       type: 2}
@@ -34,4 +41,8 @@ EditorBuildSettings:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: 5406895a0e1cb4e94bd3a8bbbb07b181, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7,
+      type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: e28a297a5c4da4b4d9bed6d90b90b70c,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 814efc7926b394d4c865cc004aeda831,
       type: 2}

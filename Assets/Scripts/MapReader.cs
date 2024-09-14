@@ -7,12 +7,12 @@ using UnityEngine;                  // klasy i funkcje do pracy z silnikiem Unit
 using UnityEngine.Networking;       // która obsługuje funkcje sieciowe w Unity
 using UnityEngine.UI;    
            // klasy obsługujące interfejs użytkownika w Unity
-using Mapbox.Unity.Location;
-using Mapbox.Utils;
+//using Mapbox.Unity.Location;
+//using Mapbox.Utils;
 
 class MapReader : MonoBehaviour 
 {
-    private AbstractLocationProvider _locationProvider = null;
+    //private AbstractLocationProvider _locationProvider = null;
 
     float latitude = 51.08666657545862f;
     float longitude = 17.05298076897365f;
@@ -60,10 +60,10 @@ class MapReader : MonoBehaviour
     // Metoda wywoływana przy starcie aplikacji
     void Start()
     {
-        if (null == _locationProvider)
-        {
-            _locationProvider = LocationProviderFactory.Instance.DefaultLocationProvider as AbstractLocationProvider;
-        }
+        //if (null == _locationProvider)
+        //{
+        //    _locationProvider = LocationProviderFactory.Instance.DefaultLocationProvider as AbstractLocationProvider;
+        //}
         
     }
 
@@ -160,40 +160,40 @@ class MapReader : MonoBehaviour
     // Metoda wywoływana co klatkę
     void Update()
     {
-        Location currLoc = _locationProvider.CurrentLocation;
+   //     Location currLoc = _locationProvider.CurrentLocation;
 
-			if (currLoc.IsLocationServiceInitializing)
-			{
-				// _statusText.text = "location services are initializing";
-			}
-			else
-			{
-				if (!currLoc.IsLocationServiceEnabled)
-				{
-					// _statusText.text = "location services not enabled";
-				}
-				else
-				{
-					if (currLoc.LatitudeLongitude.Equals(Vector2d.zero))
-					{
-						// _statusText.text = "Waiting for location ....";
-					}
-					else
-					{
-                        if(getCoorditanes)
-                        {
-                            // _statusText.text = string.Format("{0}", currLoc.LatitudeLongitude);
-                            latitudeGPS = (float)currLoc.LatitudeLongitude.x;
-                            longitudeGPS = (float)currLoc.LatitudeLongitude.y;
+			//if (currLoc.IsLocationServiceInitializing)
+			//{
+			//	// _statusText.text = "location services are initializing";
+			//}
+			//else
+			//{
+			//	if (!currLoc.IsLocationServiceEnabled)
+			//	{
+			//		// _statusText.text = "location services not enabled";
+			//	}
+			//	else
+			//	{
+			//		if (currLoc.LatitudeLongitude.Equals(Vector2d.zero))
+			//		{
+			//			// _statusText.text = "Waiting for location ....";
+			//		}
+			//		else
+			//		{
+   //                     if(getCoorditanes)
+   //                     {
+   //                         // _statusText.text = string.Format("{0}", currLoc.LatitudeLongitude);
+   //                         latitudeGPS = (float)currLoc.LatitudeLongitude.x;
+   //                         longitudeGPS = (float)currLoc.LatitudeLongitude.y;
                             
-                            // Możesz tutaj wykorzystać zmienne latitude i longitude według potrzeb
-                            Debug.Log("Latitude: " + latitude + ", Longitude: " + longitude);
-                            getCoorditanes = false;
-                            StartCoroutine(DownloadAndLoadOSMData());
-                        }
-					}
-				}
-			}
+   //                         // Możesz tutaj wykorzystać zmienne latitude i longitude według potrzeb
+   //                         Debug.Log("Latitude: " + latitude + ", Longitude: " + longitude);
+   //                         getCoorditanes = false;
+   //                         StartCoroutine(DownloadAndLoadOSMData());
+   //                     }
+			//		}
+			//	}
+			//}
 
         if (bounds != null && nodes != null)
         {
