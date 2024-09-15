@@ -111,7 +111,7 @@ namespace GoMap
 
 			if (mapType == GOMapType.Protomaps && locationManager.zoomLevel > 15)
 			{
-				ShowAlert("Zoom level " + zoomLevel + "is not available with this map provider. Zoom level 15 is set.", false);
+			    ShowAlert("Zoom level " + zoomLevel + "is not available with this map provider. Zoom level 15 is set.", false);
 				zoomLevel = 15;
 			}
 
