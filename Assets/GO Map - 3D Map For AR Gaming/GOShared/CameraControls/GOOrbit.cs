@@ -9,7 +9,7 @@ namespace GoShared {
 		public Transform target;
 		public float distance = 55.0f;
 		public float orbitSpeed = 1.0f;
-//		public float pinchSpeed = 3.0f;
+		public float pinchSpeed = 25.0f;
 
 		public float yMinLimit = 20f;
 		public float yMaxLimit = 60f;
@@ -154,7 +154,7 @@ namespace GoShared {
 					touch1 = Input.GetTouch (1).position;
 					d = Mathf.Abs (Vector2.Distance (touch0, touch1));
 
-					deltaD = Mathf.Clamp (prevPinchDist - d, -1, 1) * (distanceMax - distanceMin) / 25;  //pinchSpeed;
+					deltaD = Mathf.Clamp (prevPinchDist - d, -1, 1) * (distanceMax - distanceMin) / pinchSpeed;  //pinchSpeed;
 					prevPinchDist = d;
 
 					distance = Mathf.Clamp (distance + deltaD, distanceMin, distanceMax);
@@ -162,7 +162,7 @@ namespace GoShared {
 				}
 			} else {
 
-				deltaD = Input.GetAxis ("Mouse ScrollWheel") * (distanceMax - distanceMin) / 25;
+				deltaD = Input.GetAxis ("Mouse ScrollWheel") * (distanceMax - distanceMin) / pinchSpeed;
 				float newD = distance - deltaD;
 				distance = Mathf.Clamp (newD, distanceMin, distanceMax);
 
