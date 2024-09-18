@@ -301,7 +301,9 @@ public class ClickDogSpot : MonoBehaviour
                 Vector3 virutalCameraPosition = virtualCamera.transform.position;
 
                 // Dodanie przesunięcia o x: 20, y: 10
-                Vector3 cameraPosition = new Vector3(dogspotPosition.x + 3, 2, dogspotPosition.z + 3);
+                //Vector3 cameraPosition = new Vector3(dogspotPosition.x + 3, 2, dogspotPosition.z + 3);
+
+                Vector3 cameraPosition = new Vector3(dogspotPosition.x, 50, dogspotPosition.z + 50);
 
                 // Ustawienie nowej pozycji kamery
                 virtualCamera.transform.position = cameraPosition;
