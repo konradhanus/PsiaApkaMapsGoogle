@@ -33,6 +33,8 @@ public class ClickDogSpot : MonoBehaviour
     public GameObject gemPrefab4; // Prefabrykat obiektu gem
     public GameObject gemPrefab5; // Prefabrykat obiektu gem
     public GameObject[] gemPrefabs;
+    public bool hasVisited = false;
+    public string dateVisited = "null";
 
     // SAVE DATA
     private const string VisitedDogSpotId = "VisitedDogSpotId";
@@ -107,6 +109,19 @@ public class ClickDogSpot : MonoBehaviour
     {
         id = newId;
         Debug.Log("ClickDogSpot: SET ID" + id);
+    }
+
+    // Dodaj metodę SetId, która ustawia id
+    public void SetVisited()
+    {
+        hasVisited = true;
+        // Zmiana materiału dla wszystkich dzieci
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material = visitedDogSpotMaterial;
+        }
+        Debug.Log("ClickDogSpot: SET VISITED");
     }
 
     public void SetLastDate(string date)

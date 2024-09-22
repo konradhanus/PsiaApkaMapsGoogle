@@ -1669,8 +1669,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goMap: {fileID: 1044621998}
+  isDogSpots: 1
   prefab: {fileID: 1059122967}
-  endpointURL: https://psiaapka.pl/psiaapka/dogspots_v2.php
+  uuid: eOexsqawm4YO9GhnmYT9Ka7RbRq1
+  endpointURL: https://psiaapka.pl/psiaapka/dogspots_v3.php
   debug: 1
 --- !u!114 &851687196
 MonoBehaviour:
@@ -1685,7 +1687,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goMap: {fileID: 1044621998}
+  isDogSpots: 0
   prefab: {fileID: 736538502}
+  uuid: eOexsqawm4YO9GhnmYT9Ka7RbRq1
   endpointURL: https://psiaapka.pl/psiaapka/doggyms_v2.php
   debug: 1
 --- !u!114 &1044621998 stripped
@@ -2330,6 +2334,21 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.24789003
       objectReference: {fileID: 0}
+    - target: {fileID: 635582793117747203, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0.0025510206
+      objectReference: {fileID: 0}
+    - target: {fileID: 635582793117747203, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0.1079545
+      objectReference: {fileID: 0}
+    - target: {fileID: 635582793117747203, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 757760770268635755, guid: 64a40b6daf42e4b3d894cf32963efbb1,
         type: 3}
       propertyPath: m_IsActive
@@ -2453,6 +2472,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 550946014}
+    - targetCorrespondingSourceObject: {fileID: 4462416130433468591, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2016845846}
   m_SourcePrefab: {fileID: 100100000, guid: 64a40b6daf42e4b3d894cf32963efbb1, type: 3}
 --- !u!1001 &1642530489
 PrefabInstance:
@@ -2544,7 +2567,7 @@ PrefabInstance:
     - target: {fileID: 405677220014571055, guid: 38a954e9fd14f4ff69dc8af98a5629dc,
         type: 3}
       propertyPath: DebugLog
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 405677220014571055, guid: 38a954e9fd14f4ff69dc8af98a5629dc,
         type: 3}
@@ -2663,7 +2686,7 @@ PrefabInstance:
     - target: {fileID: 394627174134428155, guid: 87f37ce2b31a744eabb4e873c7e8d17e,
         type: 3}
       propertyPath: DebugLog
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 394627174134428155, guid: 87f37ce2b31a744eabb4e873c7e8d17e,
         type: 3}
@@ -2961,6 +2984,25 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68ac4f1c1651f46178a8e2062b29b968, type: 3}
+--- !u!1 &2016845844 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4462416130433468591, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1516007686}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2016845846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016845844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 650fa170f886f42a18249c948f72e21a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationDuration: 5
 --- !u!4 &2040789364 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4308304210543902349, guid: 76fe8fbd24a054a51bcde478dcd7d588,

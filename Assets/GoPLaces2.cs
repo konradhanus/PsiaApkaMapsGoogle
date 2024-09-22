@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using GoShared;
+using System;
 
 namespace GoMap
 {
     public class GoPlaces2 : MonoBehaviour
     {
         public GOMap goMap;
+        public bool isDogSpots = true;
         public GameObject prefab;
         private List<GameObject> placedObjects = new List<GameObject>();
+        public string uuid = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
 
         // Warto?ci latitude, longitude i promienia
         float latitude = 51.08666657545862f;
@@ -19,7 +22,7 @@ namespace GoMap
         float radius = 0.5f;
 
         // Adres URL endpointu
-        public string endpointURL = "https://psiaapka.pl/psiaapka/dogspots_v2.php";
+        public string endpointURL = "https://psiaapka.pl/psiaapka/dogspots_v3.php";
 
         List<DataObject> dataObjects;
 
@@ -62,7 +65,7 @@ namespace GoMap
             string radiusStr = radius.ToString().Replace(',', '.');
 
             // Tworzenie URL z poprawnym formatowaniem
-            string url = $"{endpointURL}?latitude={latitudeStr}&longitude={longitudeStr}&radius={radiusStr}";
+            string url = $"{endpointURL}?latitude={latitudeStr}&longitude={longitudeStr}&radius={radiusStr}&uuid={uuid}";
             if (debug) Debug.Log($"GO_PLACES2: FetchData - Fetching from URL: {url}");
 
             UnityWebRequest request = UnityWebRequest.Get(url);
@@ -108,6 +111,15 @@ namespace GoMap
                 {
                     // Użyj SetId na komponencie
                     clickDogSpotComponent.SetId(dataObject.id);
+                    if (dataObject.visit_date.HasValue)
+                    {
+                        Debug.Log("GO_PLACES2: VISITED");
+                        clickDogSpotComponent.SetVisited();
+                    }
+                    else
+                    {
+                        Debug.Log("GO PLACES2 X" + dataObject.visit_date);
+                    }
                 }
                 else
                 {
@@ -146,6 +158,7 @@ namespace GoMap
             public float longitude;
             public string type;
             public string name;
+            public DateTime? visit_date;
         }
     }
 }
