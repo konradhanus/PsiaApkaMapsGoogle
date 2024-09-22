@@ -2543,6 +2543,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 405677220014571055, guid: 38a954e9fd14f4ff69dc8af98a5629dc,
         type: 3}
+      propertyPath: DebugLog
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 405677220014571055, guid: 38a954e9fd14f4ff69dc8af98a5629dc,
+        type: 3}
       propertyPath: menuToEnable
       value: 
       objectReference: {fileID: 1904403671}
@@ -2655,6 +2660,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 394627174134428155, guid: 87f37ce2b31a744eabb4e873c7e8d17e,
+        type: 3}
+      propertyPath: DebugLog
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 394627174134428155, guid: 87f37ce2b31a744eabb4e873c7e8d17e,
         type: 3}
       propertyPath: menuToEnable

@@ -106,7 +106,7 @@ public class ClickDogSpot : MonoBehaviour
     public void SetId(string newId)
     {
         id = newId;
-        //Debug.Log("SET ID"+id);
+        Debug.Log("ClickDogSpot: SET ID" + id);
     }
 
     public void SetLastDate(string date)
@@ -120,15 +120,24 @@ public class ClickDogSpot : MonoBehaviour
     }
 
 
-
     void Start()
     {
-
         console = new Coonsole("ClickDogSpot");
 
+        // Sprawdź, czy userId jest ustawione w ReferencesUserFirebase
         userId = ReferencesUserFirebase.userId;
-        // print("AA Click Dog Spot Player Id:" + userId);
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            console.Warn("ClickDogSpot: User ID is not set or is empty set userId: test !");
+            // Możesz dodać domyślne ID lub zakończyć metodę, jeśli userId jest wymagane
+            userId = "test";
+            //return; // Zakończ wykonanie, jeśli userId jest puste
+        }
+
+        if (DebugLog) Debug.Log("ClickDogSpot: AA Click Dog Spot Player Id: " + userId);
         prevUserId = userId;
+
         // Dodaj losowe przesunięcie do początkowej rotacji
         transform.Rotate(Vector3.up, UnityEngine.Random.Range(0f, 360f));
 
@@ -141,9 +150,6 @@ public class ClickDogSpot : MonoBehaviour
         gemPrefabs[2] = gemPrefab3;
         gemPrefabs[3] = gemPrefab4;
         gemPrefabs[4] = gemPrefab5;
-
-
-
     }
 
     // Update is called once per frame
@@ -478,7 +484,7 @@ public class ClickDogSpot : MonoBehaviour
     IEnumerator SendRequest()
     {
         console.Log("tu");
-        string url = $"https://psiaapka.pl/visitdogspot.php?dog_spot_id={id}&user_id={userId}&message=test";
+       
         console.Log("tu2");
         //Debug.Log("AAA SendRequest: "+ url);
 
@@ -491,9 +497,12 @@ public class ClickDogSpot : MonoBehaviour
 
         if (string.IsNullOrEmpty(userId))
         {
-            console.Error("User ID cannot be null or empty.");
-            yield break; // Zakończ IEnumerator, jeśli userId jest niepoprawne
+            console.Warn("User ID cannot be null or empty. Set in SendRequest: userId = test");
+            userId = "test";
+            //yield break; // Zakończ IEnumerator, jeśli userId jest niepoprawne
         }
+
+        string url = $"https://psiaapka.pl/visitdogspot.php?dog_spot_id={id}&user_id={userId}&message=test";
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {

@@ -83,7 +83,8 @@ namespace GoMap
 
         void PlaceObjectOnMap(GOTile tile, DataObject dataObject)
         {
-            if (debug) Debug.Log($"GO_PLACES2: PlaceObjectOnMap - Placing object: {dataObject.name}");
+            if (debug) Debug.Log($"GO_PLACES2: PlaceObjectOnMap - Placing object Name: {dataObject.name}");
+            if (debug) Debug.Log($"GO_PLACES2: PlaceObjectOnMap - Placing object id: {dataObject.id}");
 
             Coordinates coordinates = new Coordinates(dataObject.latitude, dataObject.longitude, 0);
 
@@ -100,6 +101,20 @@ namespace GoMap
                 newObject.transform.localPosition = position;
                 newObject.transform.SetParent(tile.transform);
                 newObject.name = dataObject.name;
+                 
+                // Uzyskaj komponent ClickDogSpot
+                ClickDogSpot clickDogSpotComponent = newObject.GetComponent<ClickDogSpot>();
+                if (clickDogSpotComponent != null)
+                {
+                    // Użyj SetId na komponencie
+                    clickDogSpotComponent.SetId(dataObject.id);
+                }
+                else
+                {
+                    Debug.LogError("GO_PLACES2: ClickDogSpot component not found on the instantiated object.");
+                }
+
+
 
                 if (debug)
                 {
