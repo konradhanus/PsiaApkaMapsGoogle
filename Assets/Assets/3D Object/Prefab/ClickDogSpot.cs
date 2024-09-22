@@ -9,6 +9,9 @@ using UnityEngine.SceneManagement;
 
 public class ClickDogSpot : MonoBehaviour
 {
+
+    public bool DebugLog = false;
+
     private static bool isClicked = false; // Statyczna zmienna, aby przechowywać stan kliknięcia
     private static GameObject clickedObject = null; // Statyczna zmienna do przechowywania obiektu, który zablokował kliknięcia
 
@@ -38,7 +41,7 @@ public class ClickDogSpot : MonoBehaviour
         string keyDogSpot = VisitedDogSpotId + id;
         PlayerPrefs.SetString(keyDogSpot, data);
         PlayerPrefs.Save();
-        //Debug.Log("SAVE: "+data);
+        if (DebugLog) Debug.Log("ClickDogSpot: SAVE: " + data);
     }
 
     public void AddVisitedDogSpot(int dogSpotId)
@@ -110,7 +113,7 @@ public class ClickDogSpot : MonoBehaviour
             long longValue = long.Parse(date);
             lastDate = longValue;
         }
-        Debug.Log("SET date" + date);
+        if (DebugLog) Debug.Log("ClickDogSpot: SET date" + date);
     }
 
 
@@ -212,8 +215,6 @@ public class ClickDogSpot : MonoBehaviour
                 CloseInfoBar();
                 Transform infoBar = transform.Find("InfoBar");
 
-
-
                 // Ustaw, że zaznaczyło dogspot aby uniemozliwić zaznaczanie innego
                 isClicked = true;
                 clickedObject = dogspot;
@@ -232,7 +233,9 @@ public class ClickDogSpot : MonoBehaviour
                 }
                 clickCount++; // Inkrementuj licznik kliknięć
 
-                if (Vector3.Distance(PlayerArmature.transform.position, transform.position) > 4f)
+                if (DebugLog) Debug.Log("ClickDogSpot: ClickDogSpot distance: " + Vector3.Distance(PlayerArmature.transform.position, transform.position));
+
+                if (Vector3.Distance(PlayerArmature.transform.position, transform.position) > 55f)
                 {
 
 
@@ -241,7 +244,7 @@ public class ClickDogSpot : MonoBehaviour
                         infoBar.gameObject.SetActive(true);
                     }
 
-                    Debug.Log("za daleko" + Vector3.Distance(PlayerArmature.transform.position, transform.position));
+                    if (DebugLog) Debug.Log("ClickDogSpot: za daleko" + Vector3.Distance(PlayerArmature.transform.position, transform.position));
                 }
                 else
                 {
@@ -252,6 +255,8 @@ public class ClickDogSpot : MonoBehaviour
                     }
                     if (clickCount == 3) // Jeśli kliknięto trzy razy
                     {
+                        if (DebugLog) Debug.Log("ClickDogSpot: Jeśli kliknięto trzy razy");
+
                         if (!isDogGym)
                         {
                             StartCoroutine(SendRequest());
@@ -262,7 +267,7 @@ public class ClickDogSpot : MonoBehaviour
                         }
                         //Debug.Log("AAA"+clickCount);
                         // }
-                        print("3x kliknołeś"); // Wyświetl informację w konsoli
+                        if (DebugLog) Debug.Log("ClickDogSpot: 3x kliknołeś"); // Wyświetl informację w konsoli
 
                         // Lista przechowująca pozycje już istniejących prefabów
                         List<Vector3> usedPositions = new List<Vector3>();
@@ -382,7 +387,7 @@ public class ClickDogSpot : MonoBehaviour
     {
         StartCoroutine(ShowAllWithDelay());
 
-        Debug.Log("SHOW ALL");
+        if (DebugLog) Debug.Log("ClickDogSpot: SHOW ALL");
     }
 
 
@@ -404,7 +409,7 @@ public class ClickDogSpot : MonoBehaviour
             dogGym.SetActive(true);
         }
 
-        Debug.Log("SHOW ALL");
+        if (DebugLog) Debug.Log("ClickDogSpot: SHOW ALL");
 
         // Odczekaj 0,7 sekundy
         yield return new WaitForSeconds(0.2f);
@@ -420,9 +425,9 @@ public class ClickDogSpot : MonoBehaviour
             dogGym.SetActive(true);
         }
 
-        Debug.Log("SHOW ALL AGAIN");
+        if (DebugLog) Debug.Log("ClickDogSpot: SHOW ALL AGAIN");
 
-        Debug.Log("SHOW ALL");
+        if (DebugLog) Debug.Log("ClickDogSpot: SHOW ALL");
 
         // Odczekaj 0,7 sekundy
         yield return new WaitForSeconds(0.4f);
@@ -438,9 +443,9 @@ public class ClickDogSpot : MonoBehaviour
             dogGym.SetActive(true);
         }
 
-        Debug.Log("SHOW ALL AGAIN");
+        if (DebugLog) Debug.Log("ClickDogSpot: SHOW ALL AGAIN");
 
-        Debug.Log("SHOW ALL");
+        if (DebugLog) Debug.Log("ClickDogSpot: SHOW ALL");
 
         // Odczekaj 0,7 sekundy
         yield return new WaitForSeconds(0.6f);
@@ -456,7 +461,7 @@ public class ClickDogSpot : MonoBehaviour
             dogGym.SetActive(true);
         }
 
-        Debug.Log("SHOW ALL AGAIN");
+        if (DebugLog) Debug.Log("ClickDogSpot: SHOW ALL AGAIN");
 
 
     }
@@ -601,7 +606,7 @@ public class ClickDogSpot : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogError("Canvas 'Noticeboard' not found as a child of this object.");
+                        if (DebugLog) Debug.LogError("Canvas 'Noticeboard' not found as a child of this object.");
                     }
                 }
             }
