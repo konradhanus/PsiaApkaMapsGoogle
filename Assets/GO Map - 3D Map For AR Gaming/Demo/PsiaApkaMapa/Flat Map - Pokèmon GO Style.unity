@@ -2025,6 +2025,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goMap: {fileID: 1044621998}
   avatarFigure: {fileID: 259074294}
+  avatarDogFigure: {fileID: 550946011}
   animationState: 0
   dist: 0
   OnAnimationStateChanged:
@@ -2404,6 +2405,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6240215690624784699, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7083211825921007365, guid: 64a40b6daf42e4b3d894cf32963efbb1,
         type: 3}
       propertyPath: m_ApplyRootMotion
@@ -2419,12 +2425,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: NestedParentArmature_Unpack
       objectReference: {fileID: 0}
+    - target: {fileID: 7921996867372671298, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8886680833648295504, guid: 64a40b6daf42e4b3d894cf32963efbb1,
         type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3484495653098021250, guid: 64a40b6daf42e4b3d894cf32963efbb1, type: 3}
+    - {fileID: 806794573468654075, guid: 64a40b6daf42e4b3d894cf32963efbb1, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

@@ -11,6 +11,7 @@ public class MoveAvatar : MonoBehaviour {
 
 	public GOMap goMap;
 	public GameObject avatarFigure;
+	public GameObject avatarDogFigure;
 
 	public AvatarAnimationState animationState = AvatarAnimationState.Idle;
 	[HideInInspector] public float dist;
@@ -97,6 +98,8 @@ public class MoveAvatar : MonoBehaviour {
 		{
 			transform.position = Vector3.Lerp(lastPosition, currentPosition, (elapsedTime / time));
 			avatarFigure.transform.rotation = Quaternion.Lerp(avatarFigure.transform.rotation, finalRotation,(elapsedTime / time));
+			avatarDogFigure.transform.rotation = Quaternion.Lerp(avatarDogFigure.transform.rotation, finalRotation, (elapsedTime / time));
+
 
 			elapsedTime += Time.deltaTime;
 
@@ -132,6 +135,7 @@ public class MoveAvatar : MonoBehaviour {
 				Quaternion.LookRotation(targetDir),
 				Time.deltaTime * 10.0f
 			);
+
 		}
 	}
 
