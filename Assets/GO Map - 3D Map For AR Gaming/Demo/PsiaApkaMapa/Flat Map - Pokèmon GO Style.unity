@@ -1068,6 +1068,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b08760a4cd847ebb5b43e6b4db5d23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &550946011 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7083211825911655745, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1516007686}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &550946014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550946011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5922fd66cd87644eaaf73821d0164dc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &554048841
 GameObject:
   m_ObjectHideFlags: 0
@@ -2024,6 +2042,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 550946014}
+        m_TargetAssemblyTypeName: AnimateDogCharacter, Assembly-CSharp
+        m_MethodName: OnAnimationStateChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!850595691 &1409578941
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -2374,6 +2404,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7083211825921007365, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7557191775420130175, guid: 64a40b6daf42e4b3d894cf32963efbb1,
         type: 3}
       propertyPath: m_Enabled
@@ -2401,6 +2436,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 259074297}
+    - targetCorrespondingSourceObject: {fileID: 7083211825911655745, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 550946014}
   m_SourcePrefab: {fileID: 100100000, guid: 64a40b6daf42e4b3d894cf32963efbb1, type: 3}
 --- !u!1001 &1642530489
 PrefabInstance:

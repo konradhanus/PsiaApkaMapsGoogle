@@ -23,7 +23,7 @@ public class AnimateDogCharacter : MonoBehaviour
             Debug.LogError("WARTOSC Animator parameter 'Movement_f' not found!");
         }
 
-        initialPosition = transform.position;
+        //initialPosition = transform.position;
 
         // Testowe ustawienie wartości
         //animator.SetFloat("Movement_f", 3.5f);
@@ -33,7 +33,7 @@ public class AnimateDogCharacter : MonoBehaviour
     void Update()
     {
         // Blokada pozycji postaci
-        transform.position = initialPosition;
+        //transform.position = initialPosition;
     }
 
     public void OnAnimationStateChange(MoveAvatar.AvatarAnimationState animationState)
