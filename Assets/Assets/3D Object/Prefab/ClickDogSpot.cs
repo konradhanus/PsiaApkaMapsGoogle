@@ -10,6 +10,9 @@ using UnityEngine.SceneManagement;
 public class ClickDogSpot : MonoBehaviour
 {
 
+
+    private Coonsole console;
+
     public bool DebugLog = false;
 
     private static bool isClicked = false; // Statyczna zmienna, aby przechowywać stan kliknięcia
@@ -121,6 +124,8 @@ public class ClickDogSpot : MonoBehaviour
     void Start()
     {
 
+        console = new Coonsole("ClickDogSpot");
+
         userId = ReferencesUserFirebase.userId;
         // print("AA Click Dog Spot Player Id:" + userId);
         prevUserId = userId;
@@ -208,6 +213,7 @@ public class ClickDogSpot : MonoBehaviour
                 return;
             }
 
+            
 
             // Pobierz kliknięty obiekt
             if (dogspot == getClickedObject(out RaycastHit hit))
@@ -259,10 +265,12 @@ public class ClickDogSpot : MonoBehaviour
 
                         if (!isDogGym)
                         {
+                            console.Log("test");
                             StartCoroutine(SendRequest());
                         }
                         else
                         {
+                            console.Log("test2");
                             SceneManager.LoadSceneAsync(3);
                         }
                         //Debug.Log("AAA"+clickCount);
@@ -469,26 +477,46 @@ public class ClickDogSpot : MonoBehaviour
 
     IEnumerator SendRequest()
     {
-
+        console.Log("tu");
         string url = $"https://psiaapka.pl/visitdogspot.php?dog_spot_id={id}&user_id={userId}&message=test";
+        console.Log("tu2");
         //Debug.Log("AAA SendRequest: "+ url);
+
+        // Sprawdź, czy id i userId są poprawne
+        if (string.IsNullOrEmpty(id))
+        {
+            console.Error("ID cannot be null or empty.");
+            yield break; // Zakończ IEnumerator, jeśli id jest niepoprawne
+        }
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            console.Error("User ID cannot be null or empty.");
+            yield break; // Zakończ IEnumerator, jeśli userId jest niepoprawne
+        }
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             yield return request.SendWebRequest();
+            console.Log("tu3");
 
             int dogSpotId = int.Parse(id);
+            console.Log("tu4");
             AddVisitedDogSpot(dogSpotId);
+            console.Log("tu5");
 
             // Zmiana materiału dla wszystkich dzieci
             Renderer[] renderers = GetComponentsInChildren<Renderer>();
+            console.Log("tu6");
             foreach (Renderer renderer in renderers)
             {
                 renderer.material = visitedDogSpotMaterial;
+                console.Log("tu7");
             }
 
             if (request.result == UnityWebRequest.Result.Success)
             {
+                console.Log("tu8");
 
                 string responseText = request.downloadHandler.text;
                 //Debug.Log("AAA SendRequest: response "+ responseText);
