@@ -38,6 +38,9 @@ public class GlobalUserData : MonoBehaviour
     UserData userData;
 
     public TextMeshProUGUI nickNameText;
+    public TextMeshProUGUI userNameText;
+    public TextMeshProUGUI registerDateValue;
+    public TextMeshProUGUI UUID;
 
     [System.Serializable]
     public class DataResponse
@@ -65,15 +68,18 @@ public class GlobalUserData : MonoBehaviour
             authManager = new FirebaseAuthManager();
             userId = ReferencesUserFirebase.userId;
 
-            print("Player Id:" + userId);
+            print("Player Id1:" + userId);
 
             if (userId == "")
             {
                 Debug.Log("FetchUserData: pusty");
                 userId = defaultAccount;
+                print("Player Id2:" + userId);
             }
 
         }
+
+        UUID.text = userId;
         Debug.Log("FetchUserData: FETCH! JESTEM PONOWNIE!: "+ userId);
         StartCoroutine(UpdateDataFromAPI());
     }
@@ -119,7 +125,9 @@ public class GlobalUserData : MonoBehaviour
         Debug.Log("FetchUserData: FETCH! Nick: " + userData.nick + ", SkinId: " + userData.id_avatar + ", DogSkinId: " + userData.id_avatar_dog + ", Registration Date: " + userData.date_created);
 
         // Update UI elements with received data
-        // nickNameText.text = userData.nick;
+        nickNameText.text = userData.nick;
+        userNameText.text = userData.nick;
+        registerDateValue.text = userData.date_created;
 
         // Update avatar and character visibility based on skinId
         Debug.Log("FetchUserData: FETCH!" + userData.id_avatar);
