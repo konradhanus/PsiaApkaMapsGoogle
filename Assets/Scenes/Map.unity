@@ -19911,6 +19911,9 @@ MonoBehaviour:
   - {fileID: 185335606}
   - {fileID: 728900960}
   nickNameText: {fileID: 0}
+  userNameText: {fileID: 0}
+  registerDateValue: {fileID: 0}
+  UUID: {fileID: 0}
 --- !u!4 &1397531315
 Transform:
   m_ObjectHideFlags: 0

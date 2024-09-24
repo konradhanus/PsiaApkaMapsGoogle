@@ -1217,6 +1217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b33f9295819244d96a9c422675c949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugLog: 0
   dogspot: {fileID: 6272536218258163439}
   PlayerArmature: {fileID: 0}
   isDogGym: 0
@@ -1234,6 +1235,8 @@ MonoBehaviour:
   gemPrefab5: {fileID: 7383793194712369058, guid: 9428437e1677c483ca34a0699a0c7fa7,
     type: 3}
   gemPrefabs: []
+  hasVisited: 0
+  dateVisited: null
   visitedDogSpotMaterial: {fileID: 2100000, guid: 505e75a86ad74104e9e6972654fb67d5,
     type: 2}
   rotationSpeed: 50
