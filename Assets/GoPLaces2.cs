@@ -14,7 +14,11 @@ namespace GoMap
         public bool isDogSpots = true;
         public GameObject prefab;
         private List<GameObject> placedObjects = new List<GameObject>();
-        public string uuid = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
+
+        public string defaultAccount = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
+        public string userId = "";
+        private FirebaseAuthManager authManager;
+
 
         // Warto?ci latitude, longitude i promienia
         float latitude = 51.08666657545862f;
@@ -31,6 +35,18 @@ namespace GoMap
 
         void Awake()
         {
+            authManager = new FirebaseAuthManager();
+            userId = ReferencesUserFirebase.userId;
+
+            print("Player Id1:" + userId);
+
+            if (userId == "")
+            {
+                Debug.Log("FetchUserData: pusty");
+                userId = defaultAccount;
+                print("Player Id2:" + userId);
+            }
+
             if (debug) Debug.Log("GO_PLACES2: Awake - Initializing.");
             goMap.OnTileLoad.AddListener((GOTile tile) => {
                 if (debug) Debug.Log($"GO_PLACES2: OnTileLoad - Tile loaded: {tile}");
@@ -65,7 +81,7 @@ namespace GoMap
             string radiusStr = radius.ToString().Replace(',', '.');
 
             // Tworzenie URL z poprawnym formatowaniem
-            string url = $"{endpointURL}?latitude={latitudeStr}&longitude={longitudeStr}&radius={radiusStr}&uuid={uuid}";
+            string url = $"{endpointURL}?latitude={latitudeStr}&longitude={longitudeStr}&radius={radiusStr}&uuid={userId}";
             if (debug) Debug.Log($"GO_PLACES2: FetchData - Fetching from URL: {url}");
 
             UnityWebRequest request = UnityWebRequest.Get(url);
