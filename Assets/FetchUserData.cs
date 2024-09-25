@@ -15,7 +15,9 @@ public class GlobalUserData : MonoBehaviour
 
     public GameObject PlayerArmature;
 
-    public Avatar WomanAvatar;
+    public GameObject Avatar;
+
+    public Avatar WomanAvatar; 
     public Avatar ManAvatar;
     public GameObject Woman;
     public GameObject Man;
@@ -165,6 +167,26 @@ public class GlobalUserData : MonoBehaviour
             ManProfile.SetActive(false);
 
             avatarImage.sprite = WomanCircleAvatarImage;  // Zmieniamy sprite
+
+            if (Avatar != null)
+            {
+                // Uzyskanie dostępu do skryptu MoveAvatar z obiektu Avatar
+                MoveAvatar moveAvatarScript = Avatar.GetComponent<MoveAvatar>();
+
+                if (moveAvatarScript != null)
+                {
+                    // Przypisanie nowej wartości do parametru AvatarFigure
+                    moveAvatarScript.avatarFigure = Woman;
+                }
+                else
+                {
+                    Debug.LogError("MoveAvatar script not found on Avatar GameObject.");
+                }
+            }
+            else
+            {
+                Debug.LogError("Avatar or NewAvatarFigure is not assigned.");
+            }
         }
         else if (userData.id_avatar == 1)
         {
@@ -176,7 +198,27 @@ public class GlobalUserData : MonoBehaviour
             WomanProfile.SetActive(false);
             ManProfile.SetActive(true);
 
-            avatarImage.sprite = ManCircleAvatarImage;  // Zmieniamy sprite 
+            avatarImage.sprite = ManCircleAvatarImage;  // Zmieniamy sprite
+
+            if (Avatar != null)
+            {
+                // Uzyskanie dostępu do skryptu MoveAvatar z obiektu Avatar
+                MoveAvatar moveAvatarScript = Avatar.GetComponent<MoveAvatar>();
+
+                if (moveAvatarScript != null)
+                {
+                    // Przypisanie nowej wartości do parametru AvatarFigure
+                    moveAvatarScript.avatarFigure = Man;
+                }
+                else
+                {
+                    Debug.LogError("MoveAvatar script not found on Avatar GameObject.");
+                }
+            }
+            else
+            {
+                Debug.LogError("Avatar or NewAvatarFigure is not assigned.");
+            }
         }
         Debug.Log("FetchUserData: FETCH!" + userData.id_avatar_dog);
         // Update the visibility of the dogs based on the id_avatar_dog

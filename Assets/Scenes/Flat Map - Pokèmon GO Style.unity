@@ -447,6 +447,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1516007686}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &205644321 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7921996867372671298, guid: 64a40b6daf42e4b3d894cf32963efbb1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1516007686}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &217769294
 GameObject:
   m_ObjectHideFlags: 0
@@ -3274,9 +3280,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5903846131755222470, guid: 76fe8fbd24a054a51bcde478dcd7d588,
         type: 3}
+      propertyPath: Man
+      value: 
+      objectReference: {fileID: 205644321}
+    - target: {fileID: 5903846131755222470, guid: 76fe8fbd24a054a51bcde478dcd7d588,
+        type: 3}
       propertyPath: UUID
       value: 
       objectReference: {fileID: 1228096852}
+    - target: {fileID: 5903846131755222470, guid: 76fe8fbd24a054a51bcde478dcd7d588,
+        type: 3}
+      propertyPath: Woman
+      value: 
+      objectReference: {fileID: 259074294}
+    - target: {fileID: 5903846131755222470, guid: 76fe8fbd24a054a51bcde478dcd7d588,
+        type: 3}
+      propertyPath: Avatar
+      value: 
+      objectReference: {fileID: 1379913656}
     - target: {fileID: 5903846131755222470, guid: 76fe8fbd24a054a51bcde478dcd7d588,
         type: 3}
       propertyPath: nickNameText
@@ -3287,6 +3308,11 @@ PrefabInstance:
       propertyPath: userNameText
       value: 
       objectReference: {fileID: 376426245}
+    - target: {fileID: 5903846131755222470, guid: 76fe8fbd24a054a51bcde478dcd7d588,
+        type: 3}
+      propertyPath: PlayerArmature
+      value: 
+      objectReference: {fileID: 413293316}
     - target: {fileID: 5903846131755222470, guid: 76fe8fbd24a054a51bcde478dcd7d588,
         type: 3}
       propertyPath: registerDateValue
