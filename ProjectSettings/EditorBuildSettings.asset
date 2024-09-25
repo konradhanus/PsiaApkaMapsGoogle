@@ -9,8 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/StartGame.unity
     guid: 429ec0fcf8d8c4bd3b20e977d68c8501
   - enabled: 1
-    path: "Assets/GO Map - 3D Map For AR Gaming/Demo/PsiaApkaMapa/Flat Map - Poke\u0300mon
-      GO Style.unity"
+    path: "Assets/Scenes/Flat Map - Poke\u0300mon GO Style.unity"
     guid: 67a1adbb9227c46e3b827b4d20be88e6
   - enabled: 1
     path: Assets/BallThrow/Feeding.unity
