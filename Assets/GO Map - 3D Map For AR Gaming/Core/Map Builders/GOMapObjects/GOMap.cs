@@ -21,6 +21,7 @@ namespace GoMap
 	public class GOMap : MonoBehaviour 
 	{
 
+		public Material myMaterial; // Zmienna do przechowywania materiału
         public BaseLocationManager locationManager;
 		[Range (0,8)]  public int tileBuffer = 2;
 		[ShowOnly] public int zoomLevel = 0;
@@ -353,6 +354,11 @@ namespace GoMap
 
 			tile.goTile = goTile;
 			tiles.Add(tile);
+
+			// Dodajemy komponent MeshRenderer i ustawiamy rzucanie cieni
+			// MeshRenderer meshRenderer = tileObj.AddComponent<MeshRenderer>();
+			// meshRenderer.material = myMaterial;
+			// meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 
 			return tile;
 		}

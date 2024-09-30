@@ -15,6 +15,7 @@ public class SceneLightingSetup : MonoBehaviour
             dirLight.type = LightType.Directional;
             dirLight.color = new Color(1f, 0.956f, 0.839f); // Ciepłe, słoneczne światło
             dirLight.intensity = 1.2f; // Można dostosować
+            dirLight.shadows = LightShadows.Soft; // Włączenie miękkich cieni
             directionalLight.transform.rotation = Quaternion.Euler(50, 30, 0); // Rotacja, aby symulować słońce
         }
 
