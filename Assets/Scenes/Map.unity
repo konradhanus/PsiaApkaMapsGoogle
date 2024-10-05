@@ -19782,6 +19782,7 @@ MonoBehaviour:
   defaultAccount: eOexsqawm4YO9GhnmYT9Ka7RbRq1
   userId: 6Fc26T7jRbXcqBFq6DfO5rn7bML2
   PlayerArmature: {fileID: 5459964453452615341}
+  Avatar: {fileID: 0}
   WomanAvatar: {fileID: 9000000, guid: d65be7113a77e47f38a31b9d44073478, type: 3}
   ManAvatar: {fileID: 9000000, guid: 0b72f1ae8ccc04aa7bfc88e4daa08137, type: 3}
   Woman: {fileID: 1211229489}
