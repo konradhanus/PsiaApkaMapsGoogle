@@ -1,15 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using BeliefEngine.HealthKit;
 using TMPro;
-using System.Collections;
+using System.Collections.Generic;
 
 public class HealthStepAndDistance : MonoBehaviour
 {
-
     private HealthStore healthStore;
 
     public Text day1ago;
@@ -19,234 +16,175 @@ public class HealthStepAndDistance : MonoBehaviour
     public Text day5ago;
     public Text day6ago;
     public Text day7ago;
-    public Text resultsLabel;
 
-    public Text Sum;
+    public Text NameDay1ago;
+    public Text NameDay2ago;
+    public Text NameDay3ago;
+    public Text NameDay4ago;
+    public Text NameDay5ago;
+    public Text NameDay6ago;
+    public Text NameDay7ago;
+    public TMP_Text resultsLabel;
+    private double distanceTotal = 0;
+
+    public TMP_Text TodaySumDistance;
     private bool reading = false;
-
 
     void Start()
     {
-        this.healthStore = this.GetComponent<HealthStore>();
-        // Uruchom funkcje sekwencyjnie
-        StartCoroutine(ReadAllDaysSequentially());
-        Debug.Log("CO TO JEST START");
+        
+
+        healthStore = GetComponent<HealthStore>();
+        Debug.Log("today2");
+        // DISTANCE IS NOW WORKING FIX IT 
+        GetDistanceToday();
+        // Uruchom sekwencyjny odczyt kroków
+        ReadStepsSequentially(1);
     }
 
-    IEnumerator ReadAllDaysSequentially()
+    // Metoda rekurencyjna dla sekwencyjnego odczytu kroków
+    private void ReadStepsSequentially(int dayOffset)
     {
-        Debug.Log("CO TO JEST iterator");
-        yield return ReadStepsForSpecificDayAgo(1, day1ago);
-        Debug.Log("CO TO JEST iterator1");
-        yield return ReadStepsForSpecificDayAgo(2, day2ago);
-        Debug.Log("CO TO JEST iterator2");
-        yield return ReadStepsForSpecificDayAgo(3, day3ago);
-        yield return ReadStepsForSpecificDayAgo(4, day4ago);
-        yield return ReadStepsForSpecificDayAgo(5, day5ago);
-        yield return ReadStepsForSpecificDayAgo(6, day6ago);
-        yield return ReadStepsForSpecificDayAgo(7, day7ago);
-    }
+        // Sprawdź czy nie przekroczyliśmy zakresu dni
+        if (dayOffset > 7) return;
 
-    public void ReadSteps()
-    {
-        //DateTimeOffset end = DateTimeOffset.UtcNow;
-        //DateTimeOffset start = end.AddDays(-1);
+        Text dayLabel = GetDayLabel(dayOffset);
+        Text dayNameLabel = GetDayNameLabel(dayOffset);
 
-        // Ustawiamy datę końcową na wczoraj o 23:59:59
-        DateTimeOffset end = DateTimeOffset.UtcNow.AddDays(-1).Date.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-        // Ustawiamy datę początkową na wczoraj o 00:00:00
-        DateTimeOffset start = end.Date;
-
-        this.healthStore.ReadSteps(start, end, delegate (double steps, Error error)
-        {
-            if (steps > 0)
-            {
-                this.resultsLabel.text += "total steps:" + steps + ": " + end.ToString() + " - " + start.ToString();
-            }
-            else
-            {
-                this.resultsLabel.text += "No steps during this period." + end.ToString() + " - " + start.ToString();
-            }
-
-            // all done
-            reading = false;
+        ReadStepsForSpecificDayAgo(dayOffset, dayLabel, dayNameLabel, () => {
+            // Po zakończeniu czytania dla bieżącego dnia, uruchom odczyt dla kolejnego
+            ReadStepsSequentially(dayOffset + 1);
         });
     }
 
-    // 1. Metoda liczy kroki od podanej daty (od początku tego dnia) do końca dzisiejszego dnia (23:59:59)
-    public void ReadStepsFromDateToNow(DateTimeOffset startDate)
+    // Funkcja do pobierania odpowiednich referencji do Text dla każdego dnia
+    private Text GetDayLabel(int dayOffset)
     {
-        // Ustawiamy start na początek podanego dnia (00:00:00)
-        DateTimeOffset start = startDate.Date;
-        // Ustawiamy koniec na koniec dzisiejszego dnia (23:59:59)
-        DateTimeOffset end = DateTimeOffset.UtcNow.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-        // Wyświetlamy zakresy dat w logach z nową linią
-        Debug.Log($"Reading steps from {start.ToString("yyyy-MM-dd HH:mm:ss")} to {end.ToString("yyyy-MM-dd HH:mm:ss")}\n");
-
-        this.healthStore.ReadSteps(start, end, delegate (double steps, Error error)
+        switch (dayOffset)
         {
-            if (steps > 0)
-            {
-                this.resultsLabel.text += $"Total steps from {start.ToString("yyyy-MM-dd HH:mm:ss")} to {end.ToString("yyyy-MM-dd HH:mm:ss")}: {steps}\n";
-            }
-            else
-            {
-                this.resultsLabel.text += $"No steps from {start.ToString("yyyy-MM-dd HH:mm:ss")} to {end.ToString("yyyy-MM-dd HH:mm:ss")}\n";
-            }
-            reading = false;
-        });
-    }
-
-    // 2. Metoda liczy kroki z ostatniego tygodnia (każdy dzień od 00:00:00 do 23:59:59)
-    public void ReadStepsFromLastWeek()
-    {
-        // Ustawiamy start na początek dnia, 7 dni temu (00:00:00)
-        DateTimeOffset start = DateTimeOffset.UtcNow.AddDays(-7).Date;
-        // Ustawiamy koniec na koniec dzisiejszego dnia (23:59:59)
-        DateTimeOffset end = DateTimeOffset.UtcNow.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
-
-        // Wyświetlamy zakresy dat w logach z nową linią
-        Debug.Log($"Reading steps from {start.ToString("yyyy-MM-dd HH:mm:ss")} to {end.ToString("yyyy-MM-dd HH:mm:ss")}\n");
-
-        this.healthStore.ReadSteps(start, end, delegate (double steps, Error error)
-        {
-            if (steps > 0)
-            {
-                this.resultsLabel.text += $"Total steps from {start.ToString("yyyy-MM-dd HH:mm:ss")} to {end.ToString("yyyy-MM-dd HH:mm:ss")}: {steps}\n";
-            }
-            else
-            {
-                this.resultsLabel.text += $"No steps in the last week from {start.ToString("yyyy-MM-dd HH:mm:ss")} to {end.ToString("yyyy-MM-dd HH:mm:ss")}\n";
-            }
-            reading = false;
-        });
-    }
-
-    // 3. Metoda liczy kroki dla konkretnego dnia wstecz (od 00:00:00 do 23:59:59)
-    public IEnumerator ReadStepsForSpecificDayAgo(int daysAgo, Text label)
-    {
-        if (!reading)
-        {
-            reading = true; // Rozpocznij odczyt
-
-            yield return StartCoroutine(ReadStepsCoroutine(daysAgo, label));
-
-            reading = false; // Zakończ odczyt
+            case 1: return day1ago;
+            case 2: return day2ago;
+            case 3: return day3ago;
+            case 4: return day4ago;
+            case 5: return day5ago;
+            case 6: return day6ago;
+            case 7: return day7ago;
+            default: return null;
         }
     }
 
-    private IEnumerator ReadStepsCoroutine(int daysAgo, Text label)
+    private Text GetDayNameLabel(int dayOffset)
     {
+        switch (dayOffset)
+        {
+            case 1: return NameDay1ago;
+            case 2: return NameDay2ago;
+            case 3: return NameDay3ago;
+            case 4: return NameDay4ago;
+            case 5: return NameDay5ago;
+            case 6: return NameDay6ago;
+            case 7: return NameDay7ago;
+            default: return null;
+        }
+    }
 
-        HealthStore healthStore2 = this.GetComponent<HealthStore>();
-        Debug.Log("CO TO JEST in1");
+    public void TotalStepCounter(string joinDate) {
+
+        Debug.Log("JOIN DATE" + joinDate);
+        ReadStepSinceJoin(joinDate, resultsLabel);
+    }
+
+    // Funkcja do czytania kroków dla konkretnego dnia wstecz
+    public void ReadStepsForSpecificDayAgo(int daysAgo, Text label, Text dayNameLabel, Action onComplete)
+    {
+        if (reading) return;
+
+        reading = true;
 
         DateTimeOffset end = DateTimeOffset.UtcNow.AddDays(-daysAgo).Date.AddHours(23).AddMinutes(59).AddSeconds(59);
         DateTimeOffset start = DateTimeOffset.UtcNow.AddDays(-daysAgo).Date;
-        Debug.Log("CO TO JEST in3");
 
-        Debug.Log($"Reading steps for {daysAgo} days ago: from {start.ToString("yyyy-MM-dd HH:mm:ss")} to {end.ToString("yyyy-MM-dd HH:mm:ss")}\n");
+        dayNameLabel.text = start.ToString("dddd").ToUpper() + " \n" + start.ToString("MM-dd");
 
-        bool hasError = false; // Zmienna do monitorowania błędów
-        Debug.Log("CO TO JEST in4");
-        // Użyj zagnieżdżonego delegata do obsługi odczytu kroków
-        healthStore2.ReadSteps(start, end, delegate (double steps, Error error)
+        healthStore.ReadSteps(start, end, (double steps, Error error) =>
         {
-            Debug.Log("CO TO JEST in5");
-            try
+            if (error != null)
             {
-                Debug.Log("CO TO JEST in6");
-                if (error != null)
-                {
-                    Debug.Log("CO TO JEST in7");
-                    Debug.LogError("Błąd przy odczycie kroków: " + error.localizedDescription);
-                    label.text = "Error";
-                    hasError = true; // Ustaw flagę błędu
-                }
-                else if (steps > 0)
-                {
-                    Debug.Log("CO TO JEST in8");
-                    label.text = steps.ToString();
-                    Debug.Log("CO TO JEST in TEXT:" + steps.ToString());
-                }
-                else
-                {
-                    Debug.Log("CO TO JEST in9");
-                    label.text = "0";
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.Log("CO TO JEST in10: " + ex.Message);
-                Debug.LogError("Wystąpił wyjątek podczas przetwarzania kroków: " + ex.Message);
+                Debug.LogError("Błąd przy odczycie kroków: " + error.localizedDescription);
                 label.text = "Error";
-                hasError = true; // Ustaw flagę błędu
             }
-            finally
+            else if (steps > 0)
             {
-                Debug.Log("CO TO JEST in11: ");
-                reading = false; // Zakończ odczyt
+                label.text = steps.ToString();
             }
+            else
+            {
+                label.text = "0";
+            }
+            
+            reading = false;
+            onComplete?.Invoke(); // Wywołaj callback po zakończeniu
         });
+    }
 
-        // Poczekaj, aż zakończy się odczytywanie
-        while (reading)
+    // Funkcja do czytania kroków dla konkretnego dnia wstecz
+    public void ReadStepSinceJoin(string joinDate, TMP_Text label)
+    {
+
+        DateTimeOffset end = DateTimeOffset.UtcNow.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+
+        DateTime start = DateTime.ParseExact(joinDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+        
+        healthStore.ReadSteps(start, end, (double steps, Error error) =>
         {
-            yield return null;
-        }
+            if (error != null)
+            {
+                Debug.LogError("Błąd przy odczycie kroków: " + error.localizedDescription);
+                label.text = "Error";
+            }
+            else if (steps > 0)
+            {
+                label.text = steps.ToString();
+            }
+            else
+            {
+                label.text = "0";
+            }
 
-        // Sprawdź, czy wystąpił błąd
-        if (hasError)
-        {
-            Debug.LogError("Wystąpił błąd w odczycie kroków.");
-        }
+            
+        });
     }
 
-
-
-
-
-    public void Wczoraj()
+    public void GetDistanceToday()
     {
+        Debug.Log("today2 in");
 
-        ReadStepsForSpecificDayAgo(1, day1ago);
+        DateTimeOffset now = DateTimeOffset.UtcNow;
+        DateTimeOffset startOfDay = new DateTimeOffset(now.Year, now.Month, now.Day, 0, 0, 0, TimeSpan.Zero); // Początek dzisiejszego dnia
+        DateTimeOffset endOfDay = startOfDay.AddDays(1); // Końcowy czas to początek następnego dnia
+
+
+        this.healthStore.ReadQuantitySamples(HKDataType.HKQuantityTypeIdentifierDistanceWalkingRunning, startOfDay, endOfDay, delegate (List<QuantitySample> samples, Error error) {
+            if (error != null)
+            {
+                Debug.LogError("Error fetching distance: " + error.localizedDescription);
+                return;
+            }
+
+            // Zresetuj distanceTotal na początku
+            distanceTotal = 0;
+
+            foreach (QuantitySample sample in samples)
+            {
+                double sampleDistance = sample.quantity.doubleValue; // Pobierz wartość dystansu z próbki
+                distanceTotal += sampleDistance; // Dodaj dystans do distanceTotal
+                Debug.Log(string.Format("DISTANCEX - {0} from {1} to {2}", sampleDistance, sample.startDate, sample.endDate));
+            }
+
+            // Loguj całkowity dystans po przetworzeniu wszystkich próbek
+            Debug.Log($"Total distance for today: {distanceTotal} miles");
+            TodaySumDistance.text = distanceTotal.ToString() + " km";
+        });
     }
 
-    public void Przedwczoraj()
-    {
-
-        ReadStepsForSpecificDayAgo(2, day2ago);
-    }
-
-    public void TrzyDniTemu()
-    {
-
-        ReadStepsForSpecificDayAgo(3, day3ago);
-    }
-
-    public void CzteryDniTemu()
-    {
-
-        ReadStepsForSpecificDayAgo(4, day4ago);
-    }
-
-    public void PiecDniTemu()
-    {
-
-        ReadStepsForSpecificDayAgo(5, day5ago);
-    }
-
-    public void SzescDniTemu()
-    {
-
-        ReadStepsForSpecificDayAgo(6, day6ago);
-    }
-
-    public void SiedemDniTemu()
-    {
-
-        ReadStepsForSpecificDayAgo(7, day7ago);
-    }
 }
