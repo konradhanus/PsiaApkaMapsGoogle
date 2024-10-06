@@ -14,7 +14,7 @@ public class CircleSlider : MonoBehaviour
 
     // Nowa zmienna do przechowywania liczby kroków
     private float steps = 0f; // Przykładowa wartość kroków
-    private const float MAX_STEPS = 6000f; // Maksymalna wartość kroków
+    public const float MAX_STEPS = 12000f; // Maksymalna wartość kroków
     private float previousFillAmount = -1f; // Przechowuje poprzednią wartość fillAmount
     private string previousProgressText = ""; // Przechowuje poprzedni tekst progress
 

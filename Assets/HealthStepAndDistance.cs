@@ -4,6 +4,7 @@ using System;
 using BeliefEngine.HealthKit;
 using TMPro;
 using System.Collections.Generic;
+using Score;
 
 public class HealthStepAndDistance : MonoBehaviour
 {
@@ -24,18 +25,32 @@ public class HealthStepAndDistance : MonoBehaviour
     public Text NameDay5ago;
     public Text NameDay6ago;
     public Text NameDay7ago;
-    public TMP_Text resultsLabel;
+
+    
+    public GameObject CircleFood;
+    public GameObject CircleFun;
+    public GameObject CircleStep;
+    public TMP_Text StepValueToday;
+    public GameObject CircleWater;
+
     private double distanceTotal = 0;
+
+    public TMP_Text levelNumber;
+    public Slider slider;
+    public TMP_Text score;
+
 
     public TMP_Text TodaySumDistance;
     private bool reading = false;
 
+    // Example score to test
+    public long playerScore = 2500;
+
+
     void Start()
     {
-        
 
         healthStore = GetComponent<HealthStore>();
-        Debug.Log("today2");
         // DISTANCE IS NOW WORKING FIX IT 
         GetDistanceToday();
         // Uruchom sekwencyjny odczyt kroków
@@ -90,8 +105,28 @@ public class HealthStepAndDistance : MonoBehaviour
 
     public void TotalStepCounter(string joinDate) {
 
-        Debug.Log("JOIN DATE" + joinDate);
-        ReadStepSinceJoin(joinDate, resultsLabel);
+        ReadStepSinceJoin(joinDate, score);
+    }
+
+    private void UpdateScoreAndLevel(long playerScore)
+    {
+        // Utworzenie instancji klasy Scoring
+        Scoring scoring = new Scoring();
+
+        // Użycie metod klasy Scoring
+        int level = scoring.GetCurrentLevel(playerScore);
+        float progress = scoring.GetLevelProgress(playerScore);
+        string progressText = scoring.GetProgressText(playerScore);
+
+        // Wypisanie wyników do konsoli (lub do interfejsu UI w realnym projekcie Unity)
+        Debug.Log($"Poziom gracza: {level}");
+        Debug.Log($"Postęp: {progress:P}");
+        Debug.Log($"Informacje o postępie: {progressText}");
+
+        // Aktualizacja UI
+        score.text = progressText;
+        levelNumber.text = level.ToString();
+        slider.value = progress;
     }
 
     // Funkcja do czytania kroków dla konkretnego dnia wstecz
@@ -127,10 +162,50 @@ public class HealthStepAndDistance : MonoBehaviour
         });
     }
 
+    // Funkcja do czytania kroków z dzisiaj
+    public void ReadStepsForToday()
+    {
+        Debug.Log("pobieram 2");
+        Image circle = CircleStep.GetComponent<Image>();
+        //if (reading) return;
+
+        //reading = true;
+
+        // Ustalanie początku i końca dnia
+        DateTimeOffset start = DateTimeOffset.UtcNow.Date; // Początek dzisiaj (00:00:00)
+        DateTimeOffset end = start.AddDays(1).AddSeconds(-1); // Koniec dzisiaj (23:59:59)
+
+
+        healthStore.ReadSteps(start, end, (double steps, Error error) =>
+        {
+            if (error != null)
+            {
+                Debug.LogError("Błąd przy odczycie kroków: " + error.localizedDescription);
+            }
+            else if (steps > 0)
+            {
+                Debug.Log("Circle" + (float)steps / 12000);
+
+                Image circle = CircleStep.GetComponent<Image>();
+                float amount = Mathf.Clamp01((float)steps / 12000);
+                StepValueToday.text = steps.ToString() ; 
+                Debug.Log("Circle clamp01" + amount);
+                circle.fillAmount = amount;
+            }
+            else
+            {
+                circle.fillAmount = 0f;
+            }
+
+            //reading = false;
+        });
+    }
+
     // Funkcja do czytania kroków dla konkretnego dnia wstecz
     public void ReadStepSinceJoin(string joinDate, TMP_Text label)
     {
 
+        Debug.Log("ReadStepSinceJoin" + joinDate);
         DateTimeOffset end = DateTimeOffset.UtcNow.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
 
         DateTime start = DateTime.ParseExact(joinDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
@@ -144,20 +219,22 @@ public class HealthStepAndDistance : MonoBehaviour
             }
             else if (steps > 0)
             {
-                label.text = steps.ToString();
+                
+                UpdateScoreAndLevel((long)steps);
+               
             }
             else
             {
                 label.text = "0";
             }
 
-            
         });
     }
 
     public void GetDistanceToday()
     {
-        Debug.Log("today2 in");
+
+        Debug.Log("pobieram");
 
         DateTimeOffset now = DateTimeOffset.UtcNow;
         DateTimeOffset startOfDay = new DateTimeOffset(now.Year, now.Month, now.Day, 0, 0, 0, TimeSpan.Zero); // Początek dzisiejszego dnia
@@ -180,11 +257,40 @@ public class HealthStepAndDistance : MonoBehaviour
                 distanceTotal += sampleDistance; // Dodaj dystans do distanceTotal
                 Debug.Log(string.Format("DISTANCEX - {0} from {1} to {2}", sampleDistance, sample.startDate, sample.endDate));
             }
-
-            // Loguj całkowity dystans po przetworzeniu wszystkich próbek
-            Debug.Log($"Total distance for today: {distanceTotal} miles");
             TodaySumDistance.text = distanceTotal.ToString() + " km";
         });
+
+        ReadStepsForToday();
+
     }
+
+    //public void UpdateStepCircle()
+    //{
+    //    // Pobierz komponent Image z GameObject
+    //    Image circle = CircleStep.GetComponent<Image>();
+    //    circle.fillAmount = 0.5f;
+    //}
+
+    //public void UpdateFoodCircle()
+    //{
+    //    // Pobierz komponent Image z GameObject
+    //    Image circle = CircleFood.GetComponent<Image>();
+    //    circle.fillAmount = 0.5f;
+    //}
+
+    //public void UpdateWaterCircle()
+    //{
+    //    // Pobierz komponent Image z GameObject
+    //    Image circle = CircleWater.GetComponent<Image>();
+    //    circle.fillAmount = 0.5f;
+    //}
+
+    //public void UpdateDistanceCircle()
+    //{
+    //    // Pobierz komponent Image z GameObject
+    //    Image circle = CircleFun.GetComponent<Image>();
+    //    circle.fillAmount = 0.5f;
+
+    //}
 
 }

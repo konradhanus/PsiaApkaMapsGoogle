@@ -18,7 +18,7 @@ public class DateHandler : MonoBehaviour
             // Pobierz datę jako string z TextMeshPro
             string dateString = dateTextMeshPro.text;
 
-          Debug.Log("TEST" + dateString);
+          
                 // Wywołaj metodę TotalStepCounter z klasy HealthStepAndDistance
                 healthStepAndDistance.TotalStepCounter(dateString);  
         }
