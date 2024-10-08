@@ -105,7 +105,8 @@ public class HealthStepAndDistance : MonoBehaviour
 
     public void TotalStepCounter(string joinDate) {
 
-        ReadStepSinceJoin(joinDate, score);
+        Debug.Log("joinDate:" + joinDate);
+        ReadStepSinceJoin(joinDate);
     }
 
     private void UpdateScoreAndLevel(long playerScore)
@@ -176,58 +177,85 @@ public class HealthStepAndDistance : MonoBehaviour
         DateTimeOffset end = start.AddDays(1).AddSeconds(-1); // Koniec dzisiaj (23:59:59)
 
 
-        healthStore.ReadSteps(start, end, (double steps, Error error) =>
-        {
+        //healthStore.ReadSteps(start, end, (double steps, Error error) =>
+        //{
+        //    if (error != null)
+        //    {
+        //        Debug.LogError("Błąd przy odczycie kroków: " + error.localizedDescription);
+        //    }
+        //    else if (steps > 0)
+        //    {
+        //        Debug.Log("Circle" + (float)steps / 12000);
+
+        //        Image circle = CircleStep.GetComponent<Image>();
+        //        float amount = Mathf.Clamp01((float)steps / 12000);
+        //        StepValueToday.text = steps.ToString() ; 
+        //        Debug.Log("Circle clamp01" + amount);
+        //        circle.fillAmount = amount;
+        //    }
+        //    else
+        //    {
+        //        circle.fillAmount = 0f;
+        //    }
+
+        //    //reading = false;
+        //});
+
+        this.healthStore.ReadQuantitySamples(HKDataType.HKQuantityTypeIdentifierStepCount, start, end, delegate (List<QuantitySample> samples, Error error) {
             if (error != null)
             {
-                Debug.LogError("Błąd przy odczycie kroków: " + error.localizedDescription);
-            }
-            else if (steps > 0)
-            {
-                Debug.Log("Circle" + (float)steps / 12000);
-
-                Image circle = CircleStep.GetComponent<Image>();
-                float amount = Mathf.Clamp01((float)steps / 12000);
-                StepValueToday.text = steps.ToString() ; 
-                Debug.Log("Circle clamp01" + amount);
-                circle.fillAmount = amount;
-            }
-            else
-            {
-                circle.fillAmount = 0f;
+                Debug.LogError("Error fetching distance: " + error.localizedDescription);
+                return;
             }
 
-            //reading = false;
+            // Zresetuj distanceTotal na początku
+            double stepsTotal = 0;
+
+            foreach (QuantitySample sample in samples)
+            {
+                double steps = sample.quantity.doubleValue; // Pobierz wartość dystansu z próbki
+                stepsTotal += steps; // Dodaj dystans do distanceTotal
+                Debug.Log(string.Format("DISTANCEX - {0} from {1} to {2}", stepsTotal, sample.startDate, sample.endDate));
+            }
+
+            Debug.Log("Circle" + (float)stepsTotal / 12000);
+
+            Image circle = CircleStep.GetComponent<Image>();
+            float amount = Mathf.Clamp01((float)stepsTotal / 12000);
+            StepValueToday.text = stepsTotal.ToString();
+            Debug.Log("Circle clamp01" + amount);
+            circle.fillAmount = amount;
         });
+
     }
 
     // Funkcja do czytania kroków dla konkretnego dnia wstecz
-    public void ReadStepSinceJoin(string joinDate, TMP_Text label)
+    public void ReadStepSinceJoin(string joinDate)
     {
 
         Debug.Log("ReadStepSinceJoin" + joinDate);
         DateTimeOffset end = DateTimeOffset.UtcNow.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+        DateTimeOffset start = DateTimeOffset.ParseExact(joinDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
 
-        DateTime start = DateTime.ParseExact(joinDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-        
-        healthStore.ReadSteps(start, end, (double steps, Error error) =>
-        {
+        this.healthStore.ReadQuantitySamples(HKDataType.HKQuantityTypeIdentifierStepCount, start, end, delegate (List<QuantitySample> samples, Error error) {
             if (error != null)
             {
-                Debug.LogError("Błąd przy odczycie kroków: " + error.localizedDescription);
-                label.text = "Error";
-            }
-            else if (steps > 0)
-            {
-                
-                UpdateScoreAndLevel((long)steps);
-               
-            }
-            else
-            {
-                label.text = "0";
+                Debug.LogError("Error fetching distance: " + error.localizedDescription);
+                return;
             }
 
+            // Zresetuj distanceTotal na początku
+            double stepsTotal = 0;
+
+            foreach (QuantitySample sample in samples)
+            {
+                double steps = sample.quantity.doubleValue; // Pobierz wartość dystansu z próbki
+                stepsTotal += steps; // Dodaj dystans do distanceTotal
+                Debug.Log(string.Format("DISTANCEX - {0} from {1} to {2}", stepsTotal, sample.startDate, sample.endDate));
+            }
+            UpdateScoreAndLevel((long)stepsTotal);
+            Debug.Log("since join krokow: " + stepsTotal);
+            TodaySumDistance.text = stepsTotal.ToString() + " km";
         });
     }
 
@@ -257,7 +285,40 @@ public class HealthStepAndDistance : MonoBehaviour
                 distanceTotal += sampleDistance; // Dodaj dystans do distanceTotal
                 Debug.Log(string.Format("DISTANCEX - {0} from {1} to {2}", sampleDistance, sample.startDate, sample.endDate));
             }
+            Debug.Log("dzisiaj: "+ distanceTotal);
             TodaySumDistance.text = distanceTotal.ToString() + " km";
+        });
+
+        ReadStepsForToday();
+
+    }
+
+    public void GetDistanceSinceJoin(string joinDate)
+    {
+
+        Debug.Log("pobieram");
+        DateTimeOffset startOfDay = DateTimeOffset.ParseExact(joinDate, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+        DateTimeOffset endOfDay = DateTimeOffset.UtcNow;
+
+        
+        this.healthStore.ReadQuantitySamples(HKDataType.HKQuantityTypeIdentifierDistanceWalkingRunning, startOfDay, endOfDay, delegate (List<QuantitySample> samples, Error error) {
+            if (error != null)
+            {
+                Debug.LogError("Error fetching distance: " + error.localizedDescription);
+                return;
+            }
+
+            // Zresetuj distanceTotal na początku
+            distanceTotal = 0;
+
+            foreach (QuantitySample sample in samples)
+            {
+                double sampleDistance = sample.quantity.doubleValue; // Pobierz wartość dystansu z próbki
+                distanceTotal += sampleDistance; // Dodaj dystans do distanceTotal
+                Debug.Log(string.Format("DISTANCEX - {0} from {1} to {2}", sampleDistance, sample.startDate, sample.endDate));
+            }
+            Debug.Log("since join km: " + distanceTotal);
+            //TodaySumDistance.text = distanceTotal.ToString() + " km";
         });
 
         ReadStepsForToday();
