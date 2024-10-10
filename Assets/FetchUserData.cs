@@ -44,6 +44,9 @@ public class GlobalUserData : MonoBehaviour
     public TextMeshProUGUI registerDateValue;
     public TextMeshProUGUI UUID;
 
+    // Referencja do skryptu HealthStepAndDistance
+    public HealthStepAndDistance healthStepAndDistance;
+
     [System.Serializable]
     public class DataResponse
     {
@@ -113,6 +116,7 @@ public class GlobalUserData : MonoBehaviour
         if (dataResponse != null && dataResponse.data != null)
         {
             Debug.Log("FetchUserData: FETCH!!!" + dataResponse);
+            
             userData = dataResponse.data;
             UpdateUserData(dataResponse.data);
         }
@@ -130,6 +134,20 @@ public class GlobalUserData : MonoBehaviour
         nickNameText.text = userData.nick;
         userNameText.text = userData.nick;
         registerDateValue.text = userData.date_created;
+
+        //TUTAJ
+        // Sprawdź, czy podano wszystkie referencje
+        if (healthStepAndDistance != null)
+        {
+            // Wywołaj metodę TotalStepCounter z klasy HealthStepAndDistance
+            healthStepAndDistance.TotalStepCounter(userData.date_created);
+        }
+        else
+        {
+            Debug.LogError("Brak referencji do GameObject, TextMeshPro lub HealthStepAndDistance.");
+        }
+        //TUTAJ
+
 
         // Update avatar and character visibility based on skinId
         Debug.Log("FetchUserData: FETCH!" + userData.id_avatar);
