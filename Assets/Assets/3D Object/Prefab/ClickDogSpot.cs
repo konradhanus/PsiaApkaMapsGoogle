@@ -272,16 +272,34 @@ public class ClickDogSpot : MonoBehaviour
                     }
 
                     if (DebugLog) Debug.Log("ClickDogSpot: za daleko" + Vector3.Distance(PlayerArmature.transform.position, transform.position));
+                    Taptic.Failure();
+
                 }
                 else
                 {
-                    // Debug.Log("za blisko" + Vector3.Distance(PlayerArmature.transform.position, transform.position));
-                    if (infoBar != null)
+                    if (clickCount == 1) // Jeśli kliknięto trzy razy
+                    {
+                        Taptic.Medium();
+                    }
+
+                    if (clickCount == 2) // Jeśli kliknięto trzy razy
+                    {
+                        Taptic.Heavy();
+                    }
+
+                    if (clickCount == 3) // Jeśli kliknięto trzy razy
+                    {
+                        
+                    }
+
+                                // Debug.Log("za blisko" + Vector3.Distance(PlayerArmature.transform.position, transform.position));
+                                if (infoBar != null)
                     {
                         infoBar.gameObject.SetActive(false);
                     }
                     if (clickCount == 3) // Jeśli kliknięto trzy razy
                     {
+
                         if (DebugLog) Debug.Log("ClickDogSpot: Jeśli kliknięto trzy razy");
 
                         if (!isDogGym)
@@ -580,6 +598,7 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
+                        Taptic.Success();
                     }
 
                     if (awardDiamond > 0)
@@ -595,6 +614,7 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
+                        Taptic.Success();
                     }
 
                     if (awardWater > 0)
@@ -610,6 +630,7 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
+                        Taptic.Success();
                     }
 
                     if (awardBall > 0)
@@ -625,6 +646,7 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
+                        Taptic.Success();
                     }
 
                     if (awardChicken > 0)
@@ -640,7 +662,10 @@ public class ClickDogSpot : MonoBehaviour
 
                         // Dodaj pozycję nowo utworzonego obiektu do listy użytych pozycji
                         usedPositions.Add(gemPosition);
+                        Taptic.Success();
                     }
+
+                    Taptic.Success();
 
                 }
                 else
