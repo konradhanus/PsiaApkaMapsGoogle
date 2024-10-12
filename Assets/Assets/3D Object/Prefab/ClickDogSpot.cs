@@ -540,25 +540,25 @@ public class ClickDogSpot : MonoBehaviour
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
             yield return request.SendWebRequest();
-            console.Log("tu3");
+         
 
             int dogSpotId = int.Parse(id);
-            console.Log("tu4");
+           
             AddVisitedDogSpot(dogSpotId);
-            console.Log("tu5");
+          
 
             // Zmiana materiału dla wszystkich dzieci
             Renderer[] renderers = GetComponentsInChildren<Renderer>();
-            console.Log("tu6");
+            
             foreach (Renderer renderer in renderers)
             {
                 renderer.material = visitedDogSpotMaterial;
-                console.Log("tu7");
+               
             }
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                console.Log("tu8");
+               
 
                 string responseText = request.downloadHandler.text;
                 //Debug.Log("AAA SendRequest: response "+ responseText);
@@ -680,6 +680,7 @@ public class ClickDogSpot : MonoBehaviour
                     if (noticeboard != null)
                     {
                         noticeboard.gameObject.SetActive(true);
+                        Taptic.Failure();
                     }
                     else
                     {
@@ -690,6 +691,7 @@ public class ClickDogSpot : MonoBehaviour
             else
             {
                 // Obsłuż błąd
+                Taptic.Failure();
                 Debug.LogError("AAA Błąd podczas wysyłania zapytania: " + request.error);
             }
         }
@@ -706,6 +708,7 @@ public class ClickDogSpot : MonoBehaviour
             // Sprawdź, czy canvas ma nazwę "Noticeboard"
             if (noticeboard.gameObject.name == "Noticeboard")
             {
+                Taptic.Light();
                 // Ustaw canvas na nieaktywny
                 noticeboard.gameObject.SetActive(false);
             }

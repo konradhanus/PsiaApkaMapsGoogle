@@ -25,7 +25,9 @@ public class BallController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
+
             hasTouchedGround = true;
+            Taptic.Heavy();
 
             if (single)
             {
@@ -38,6 +40,7 @@ public class BallController : MonoBehaviour
                 {
                     hungerSliderController.UpdateProgress(); // Wywołujemy metodę UpdateProgress
                     Debug.Log("HUNDER");
+                   
 
                 }
 
@@ -45,6 +48,7 @@ public class BallController : MonoBehaviour
                 {
                     tirstySliderController.UpdateProgress(); // Wywołujemy metodę UpdateProgress
                     Debug.Log("HUNDER _ PICIE");
+                   
 
                 }
             }

@@ -71,7 +71,7 @@ public class ThrowBall : MonoBehaviour
         endPos = Input.mousePosition;
         swipeDistance = (endPos - startPos).magnitude;
         swipeTime = endTime - startTime;
-
+        
         // Wywołaj metodę callback
         if (callbackGameObject != null)
         {
@@ -135,6 +135,7 @@ public class ThrowBall : MonoBehaviour
         else
         {
             ResetBall();
+          
             
         }
 
@@ -164,6 +165,7 @@ public class ThrowBall : MonoBehaviour
 
     public void ResetBall()
     {
+        Taptic.Success();
 
         Debug.Log("Reset Ball from ResetBall");
         angle = Vector3.zero;

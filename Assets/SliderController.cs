@@ -45,6 +45,7 @@ public class SliderController : MonoBehaviour
 
     private void ShowMessage()
     {
+        Taptic.Default();
         string randomMessage = HappyDogMessages.GetRandomMessage();
         messageText.text = randomMessage;
         messagePanel.SetActive(true);

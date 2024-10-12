@@ -24,7 +24,7 @@ public class PanelGetData : MonoBehaviour
         public GameObject thumbsUp;
     }
 
-
+    public TextMeshProUGUI todayWalk;
     public GameObject WalkStar1;
     public GameObject WalkStar2;
     public GameObject WalkStar3;
@@ -273,8 +273,11 @@ public class PanelGetData : MonoBehaviour
 
             if (element.name == "walk")
             {
-
-                setAll(element, walk);
+                
+                string numericPart = todayWalk.text.Replace(" km", ""); 
+                numericPart = numericPart.Replace(",", "."); 
+                float distance = float.Parse(numericPart); 
+                setAll(element, distance);
                 if (reward_walk >= 1)
                 {
                     element.thumbsUp.SetActive(true);
@@ -327,7 +330,7 @@ public class PanelGetData : MonoBehaviour
 
         if (element.name == "walk")
         {
-            element.textInfo.text = task + " km <#b3bedb>/ 3 km";
+            element.textInfo.text = todayWalk.text + " <#b3bedb>/ 3 km";
         }
         else {
             element.textInfo.text = task + " <#b3bedb>/ 3";

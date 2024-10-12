@@ -63,7 +63,7 @@ public class DogController : MonoBehaviour
                         rb.AddForce(direction * speed);
  
                         animator.SetFloat("Movement_f", 1f);
-                        
+                     
                     }
                     else
                     {
@@ -72,6 +72,7 @@ public class DogController : MonoBehaviour
                         rb.velocity = Vector3.zero;
                         rb.angularVelocity = Vector3.zero;
                         animator.SetFloat("Movement_f", 0f);
+                        
 
                         // Debug.Log("Pies dotarł do piłki. Zatrzymanie ruchu i uruchomienie animacji 2.");
                         //StartCoroutine(HideAndShowBallCoroutine());
