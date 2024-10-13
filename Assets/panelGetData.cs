@@ -5,8 +5,7 @@ using TMPro; // Dodaj to na początku pliku, aby używać TextMeshPro
 using UnityEngine.UI; // Dodaj to na początku pliku, aby używać Slider
 using System.Collections.Generic;
 using System.Net.Http;
-
-
+using System.Globalization;
 
 public class PanelGetData : MonoBehaviour
 {
@@ -273,10 +272,14 @@ public class PanelGetData : MonoBehaviour
 
             if (element.name == "walk")
             {
-                
-                string numericPart = todayWalk.text.Replace(" km", ""); 
-                numericPart = numericPart.Replace(",", "."); 
-                float distance = float.Parse(numericPart); 
+
+
+                string distanceString = todayWalk.text;
+
+                distanceString = distanceString.Replace(" km", "").Replace(",", ".");
+
+                // Konwersja na float
+                float distance = float.Parse(distanceString, CultureInfo.InvariantCulture);
                 setAll(element, distance);
                 if (reward_walk >= 1)
                 {
@@ -309,6 +312,9 @@ public class PanelGetData : MonoBehaviour
     private void setAll(UIElementData element, float task)
     {
 
+
+        Debug.Log("SLIDER VALUE:"+ element.name +": " + task);
+        Debug.Log("SLIDER VALUE2:" + element.name + ": "+ task / 3f);
         element.taskCompletionSlider.value = task / 3f;
         
         if (task >= 3)

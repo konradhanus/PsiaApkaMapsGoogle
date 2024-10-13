@@ -47,7 +47,6 @@ public class HealthStepAndDistance : MonoBehaviour
     public Slider slider;
     public TMP_Text score;
 
-
     public TMP_Text TodaySumDistance;
     private bool reading = false;
 
@@ -288,7 +287,6 @@ public class HealthStepAndDistance : MonoBehaviour
             }
             UpdateScoreAndLevel((long)stepsTotalSinceJoin);
             Debug.Log("since join krokow: " + stepsTotalSinceJoin);
-            TodaySumDistance.text = stepsTotalSinceJoin.ToString() + " km";
             Clepsidra.SetActive(false);
         });
     }
@@ -321,6 +319,10 @@ public class HealthStepAndDistance : MonoBehaviour
             }
             Debug.Log("dzisiaj: "+ distanceTotal);
             TodaySumDistance.text = distanceTotal.ToString() + " km";
+
+            //PlayerPrefs.SetFloat("todayDistance", (float)distanceTotal);
+            //PlayerPrefs.Save();  // zapisanie danych
+
         });
 
         ReadStepsForToday();
