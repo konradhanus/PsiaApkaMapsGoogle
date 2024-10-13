@@ -9,6 +9,7 @@ using System.Globalization;
 
 public class PanelGetData : MonoBehaviour
 {
+
     [System.Serializable]
     public class UIElementData
     {

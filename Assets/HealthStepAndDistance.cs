@@ -10,6 +10,8 @@ using UnityEngine.Networking;
 
 public class HealthStepAndDistance : MonoBehaviour
 {
+    public HealthKitDataTypes types; /*!< Provides editor UI for HealthKit datatypes, and used for authorization. */
+
     private HealthStore healthStore;
 
     public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
@@ -79,10 +81,34 @@ public class HealthStepAndDistance : MonoBehaviour
         userId = ReferencesUserFirebase.userId;
         Clepsidra.SetActive(true);
         healthStore = GetComponent<HealthStore>();
-        // DISTANCE IS NOW WORKING FIX IT 
-        GetDistanceToday();
-        // Uruchom sekwencyjny odczyt kroków
-        ReadStepsSequentially(1);
+
+        Debug.Log("---------- START ----------");
+        this.healthStore = this.GetComponent<HealthStore>();
+
+        if (Application.platform != RuntimePlatform.IPhonePlayer)
+        {
+
+            string error = "HealthKit only works on iOS devices! It will not work in the Unity Editor.";
+
+            Debug.LogError(error);
+        }
+        else
+        {
+            this.healthStore.Authorize(this.types, delegate (bool success) {
+                Debug.LogFormat("authorization: {0}", success);
+
+                // DISTANCE IS NOW WORKING FIX IT 
+                GetDistanceToday();
+                // Uruchom sekwencyjny odczyt kroków
+                ReadStepsSequentially(1);
+
+            });
+        }
+
+       
+       
+       
+       
     }
 
     // Metoda rekurencyjna dla sekwencyjnego odczytu kroków
