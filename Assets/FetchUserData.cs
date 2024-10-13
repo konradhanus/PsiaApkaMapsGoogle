@@ -115,9 +115,10 @@ public class GlobalUserData : MonoBehaviour
 
         if (dataResponse != null && dataResponse.data != null)
         {
-            Debug.Log("FetchUserData: FETCH!!!" + dataResponse);
-            
             userData = dataResponse.data;
+            Debug.Log("FetchUserData: FETCH!!!" + userData);
+            
+            
             UpdateUserData(dataResponse.data);
         }
         else
@@ -137,15 +138,15 @@ public class GlobalUserData : MonoBehaviour
 
         //TUTAJ
         // Sprawdź, czy podano wszystkie referencje
-        if (healthStepAndDistance != null)
-        {
-            // Wywołaj metodę TotalStepCounter z klasy HealthStepAndDistance
-            healthStepAndDistance.TotalStepCounter(userData.date_created);
-        }
-        else
-        {
-            Debug.LogError("Brak referencji do GameObject, TextMeshPro lub HealthStepAndDistance.");
-        }
+        // if (healthStepAndDistance != null)
+        // {
+        //     // Wywołaj metodę TotalStepCounter z klasy HealthStepAndDistance
+        //     healthStepAndDistance.TotalStepCounter(userData.date_created);
+        // }
+        // else
+        // {
+        //     Debug.LogError("Brak referencji do GameObject, TextMeshPro lub HealthStepAndDistance.");
+        // }
         //TUTAJ
 
 

@@ -5,11 +5,18 @@ using BeliefEngine.HealthKit;
 using TMPro;
 using System.Collections.Generic;
 using Score;
+using System.Collections;
+using UnityEngine.Networking;
 
 public class HealthStepAndDistance : MonoBehaviour
 {
     private HealthStore healthStore;
 
+    public string userId = "eOexsqawm4YO9GhnmYT9Ka7RbRq1";
+    private FirebaseAuthManager authManager;
+
+
+    public GameObject Clepsidra; 
     public Text day1ago;
     public Text day2ago;
     public Text day3ago;
@@ -34,6 +41,7 @@ public class HealthStepAndDistance : MonoBehaviour
     public GameObject CircleWater;
 
     private double distanceTotal = 0;
+    private double distanceSinceJoinTotal = 0;
 
     public TMP_Text levelNumber;
     public Slider slider;
@@ -46,10 +54,31 @@ public class HealthStepAndDistance : MonoBehaviour
     // Example score to test
     public long playerScore = 2500;
 
+    [System.Serializable]
+    public class UserData
+    {
+        public string nick;
+        public int id_avatar;
+        public int id_avatar_dog;
+        public string date_created;
+    }
+
+    [System.Serializable]
+    public class DataResponse
+    {
+        public UserData data;
+    }
+
+    UserData userData;
+
+
+
 
     void Start()
     {
-
+        authManager = new FirebaseAuthManager();
+        userId = ReferencesUserFirebase.userId;
+        Clepsidra.SetActive(true);
         healthStore = GetComponent<HealthStore>();
         // DISTANCE IS NOW WORKING FIX IT 
         GetDistanceToday();
@@ -61,7 +90,11 @@ public class HealthStepAndDistance : MonoBehaviour
     private void ReadStepsSequentially(int dayOffset)
     {
         // Sprawdź czy nie przekroczyliśmy zakresu dni
-        if (dayOffset > 7) return;
+        if (dayOffset > 7) {
+            FetchData();
+            return;
+        }
+        
 
         Text dayLabel = GetDayLabel(dayOffset);
         Text dayNameLabel = GetDayNameLabel(dayOffset);
@@ -245,17 +278,18 @@ public class HealthStepAndDistance : MonoBehaviour
             }
 
             // Zresetuj distanceTotal na początku
-            double stepsTotal = 0;
+            double stepsTotalSinceJoin = 0;
 
             foreach (QuantitySample sample in samples)
             {
                 double steps = sample.quantity.doubleValue; // Pobierz wartość dystansu z próbki
-                stepsTotal += steps; // Dodaj dystans do distanceTotal
-                Debug.Log(string.Format("DISTANCEX - {0} from {1} to {2}", stepsTotal, sample.startDate, sample.endDate));
+                stepsTotalSinceJoin += steps; // Dodaj dystans do distanceTotal
+                Debug.Log(string.Format("DISTANCEX - {0} from {1} to {2}", stepsTotalSinceJoin, sample.startDate, sample.endDate));
             }
-            UpdateScoreAndLevel((long)stepsTotal);
-            Debug.Log("since join krokow: " + stepsTotal);
-            TodaySumDistance.text = stepsTotal.ToString() + " km";
+            UpdateScoreAndLevel((long)stepsTotalSinceJoin);
+            Debug.Log("since join krokow: " + stepsTotalSinceJoin);
+            TodaySumDistance.text = stepsTotalSinceJoin.ToString() + " km";
+            Clepsidra.SetActive(false);
         });
     }
 
@@ -308,50 +342,60 @@ public class HealthStepAndDistance : MonoBehaviour
                 return;
             }
 
-            // Zresetuj distanceTotal na początku
-            distanceTotal = 0;
+            // Zresetuj distanceSinceJoinTotal na początku
+            distanceSinceJoinTotal = 0;
 
             foreach (QuantitySample sample in samples)
             {
                 double sampleDistance = sample.quantity.doubleValue; // Pobierz wartość dystansu z próbki
-                distanceTotal += sampleDistance; // Dodaj dystans do distanceTotal
+                distanceSinceJoinTotal += sampleDistance; // Dodaj dystans do distanceSinceJoinTotal
                 Debug.Log(string.Format("DISTANCEX - {0} from {1} to {2}", sampleDistance, sample.startDate, sample.endDate));
             }
-            Debug.Log("since join km: " + distanceTotal);
-            //TodaySumDistance.text = distanceTotal.ToString() + " km";
+            Debug.Log("since join km: " + distanceSinceJoinTotal);
+            //TodaySumDistance.text = distanceSinceJoinTotal.ToString() + " km";
         });
 
         ReadStepsForToday();
 
     }
 
-    //public void UpdateStepCircle()
-    //{
-    //    // Pobierz komponent Image z GameObject
-    //    Image circle = CircleStep.GetComponent<Image>();
-    //    circle.fillAmount = 0.5f;
-    //}
+    public void FetchData()
+    {
+        Debug.Log("HealthStepAndDistance: FETCH!, fetch data");
+        Debug.Log("HealthStepAndDistance: userId" + userId);
+        StartCoroutine(UpdateDataFromAPI());
+    }
 
-    //public void UpdateFoodCircle()
-    //{
-    //    // Pobierz komponent Image z GameObject
-    //    Image circle = CircleFood.GetComponent<Image>();
-    //    circle.fillAmount = 0.5f;
-    //}
+    IEnumerator UpdateDataFromAPI()
+    {
+        string url = "https://psiaapka.pl/psiaapka/userData.php?user_id=" + userId;
 
-    //public void UpdateWaterCircle()
-    //{
-    //    // Pobierz komponent Image z GameObject
-    //    Image circle = CircleWater.GetComponent<Image>();
-    //    circle.fillAmount = 0.5f;
-    //}
+        Debug.Log("HealthStepAndDistance: FETCH! " + url);
+        UnityWebRequest request = UnityWebRequest.Get(url);
+        yield return request.SendWebRequest();
 
-    //public void UpdateDistanceCircle()
-    //{
-    //    // Pobierz komponent Image z GameObject
-    //    Image circle = CircleFun.GetComponent<Image>();
-    //    circle.fillAmount = 0.5f;
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("HealthStepAndDistance: Błąd podczas pobierania danych z API: " + request.error);
+            yield break;
+        }
 
-    //}
+        string jsonResponse = request.downloadHandler.text;
+        DataResponse dataResponse = JsonUtility.FromJson<DataResponse>(jsonResponse);
+
+        if (dataResponse != null && dataResponse.data != null)
+        {
+            userData = dataResponse.data;
+            Debug.Log("HealthStepAndDistance: FETCH!!!" + userData);
+
+
+            string data_created = dataResponse.data.date_created;
+            TotalStepCounter(data_created);
+        }
+        else
+        {
+            Debug.LogError("HealthStepAndDistance: Błąd podczas parsowania odpowiedzi z API.");
+        }
+    }
 
 }
