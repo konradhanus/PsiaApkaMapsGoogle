@@ -44,7 +44,14 @@ public class PanelGetData : MonoBehaviour
     public GameObject WaterStar2;
     public GameObject WaterStar3;
 
+    public GameObject coinIcon;
+    public GameObject diamondIcon;
+    public GameObject bagIcon;
+    public GameObject chestIcon;
+    public GameObject foodIcon;
+
     public TextMeshProUGUI UUID_Text;
+    public TextMeshProUGUI popUpTextValue;
 
 
     public List<UIElementData> uiElements;
@@ -413,10 +420,10 @@ public class PanelGetData : MonoBehaviour
         // Wywołanie API
         CallApi(url);
         Debug.Log("AAAAAAA" + url);
-        //ResetIcons();
-        //coinIcon.SetActive(true);
+        ResetIcons();
+        coinIcon.SetActive(true);
         //title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
-        //textValue.text = value.ToString();
+        popUpTextValue.text = value.ToString();
     }
 
     // Metoda do ustawienia widoczności tylko ikony i wartości diamentu
@@ -427,10 +434,10 @@ public class PanelGetData : MonoBehaviour
         // Wywołanie API
         CallApi(url);
         Debug.Log("AAAAAAA" + url);
-        //ResetIcons();
-        //diamondIcon.SetActive(true);
+        ResetIcons();
+        diamondIcon.SetActive(true);
         //title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
-        //textValue.text = value.ToString();
+        popUpTextValue.text = value.ToString();
     }
 
     // Metoda do ustawienia widoczności tylko ikony i wartości skrzyni
@@ -445,10 +452,10 @@ public class PanelGetData : MonoBehaviour
         // Wywołanie API
         CallApi(url);
 
-        //ResetIcons();
-        //chestIcon.SetActive(true);
+        ResetIcons();
+        chestIcon.SetActive(true);
         //title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
-        //textValue.text = value.ToString();
+        popUpTextValue.text = value.ToString();
 
 
     }
@@ -463,10 +470,10 @@ public class PanelGetData : MonoBehaviour
         // Wywołanie API
         CallApi(url);
 
-        //ResetIcons();
-        //foodIcon.SetActive(true);
+        ResetIcons();
+        foodIcon.SetActive(true);
         //title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
-        //textValue.text = value.ToString();
+        popUpTextValue.text = value.ToString();
     }
 
     //// Metoda do ustawienia widoczności tylko ikony i wartości piłki
@@ -489,22 +496,22 @@ public class PanelGetData : MonoBehaviour
         // Wywołanie API
         CallApi(url);
 
-        //ResetIcons();
-        //bagIcon.SetActive(true); // Jeśli backIcon oznacza torbę, można to zmienić
+        ResetIcons();
+        bagIcon.SetActive(true); // Jeśli backIcon oznacza torbę, można to zmienić
         //title.GetComponent<TextMeshProUGUI>().text = "Nagroda";
-        //textValue.text = value.ToString();
+        popUpTextValue.text = value.ToString();
     }
 
-   
+
 
     //// Resetuje widoczność wszystkich ikon
-    //private void ResetIcons()
-    //{
-    //    coinIcon.SetActive(false);
-    //    diamondIcon.SetActive(false);
-    //    bagIcon.SetActive(false);
-    //    chestIcon.SetActive(false);
-    //    foodIcon.SetActive(false);
-    //    //ballIcon.SetActive(false);
-    //}
+    private void ResetIcons()
+    {
+        coinIcon.SetActive(false);
+        diamondIcon.SetActive(false);
+        bagIcon.SetActive(false);
+        chestIcon.SetActive(false);
+        foodIcon.SetActive(false);
+        //ballIcon.SetActive(false);
+    }
 }
